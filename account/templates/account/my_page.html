@@ -1,0 +1,65 @@
+
+{% extends "table/layout.html" %}
+
+{% block content %}
+	<div class="my_page_div" style="width:800px;height: 600px;margin-top: 330px;">
+		<div class="my_page_sub_div1">
+			<li>&nbsp;&nbsp;회원정보 보기&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+			<li>글 저장함 보기&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+			<li>쪽지함 보기&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+			<li>로그인 기록&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+			<li>내 알림 목록&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+			<li> 작성 글 보기&nbsp;&nbsp;|&nbsp;&nbsp;</li>
+			<li>작성 댓글 보기</li>
+		</div>
+		<div style="margin-top: 20px;" class="my_page_sub_div2">
+			<h3>회원정보</h3>
+			<table class="table-striped" style="margin-bottom: 20px;">
+  				<tbody style="border-top: 5px solid #444444;">
+    				<tr height="100">
+			      		<th scope="row">아이디</th>
+			      		<td>{{ users.user }}</td>
+			    	</tr>
+			    	<tr>
+			      		<th scope="row">이메일 주소</th>
+			     		<td>...</td>
+			    	</tr>
+			    	<tr>
+			      		<th scope="row">이름</th>
+			    		<td>Larry</td>
+			    	</tr>
+			    	<tr>
+			      		<th scope="row">닉네임</th>
+			    		<td>{{ users }}</td>
+			    	</tr>
+			    	<tr>
+			      		<th scope="row">생일</th>
+			    		<td>...</td>
+			    	</tr>
+			    	<tr>
+			      		<th scope="row">프로필사진</th>
+			    		<td>{{ photo }}</td>
+			    	</tr>
+			    	<tr>
+			      		<th scope="row">연락처</th>
+			    		<td>Larry</td>
+			    	</tr>
+			    	<tr>
+			      		<th scope="row">가입일</th>
+			    		<td>Larry</td>
+			    	</tr>
+			    	<tr>
+			      		<th scope="row">최근 로그인</th>
+			    		<td>Larry</td>
+			    	</tr>
+			  	</tbody>
+			</table>
+			<div class="my_page_button">
+				<a href="">회원정보 변경</a>
+				<a href="">비밀번호 변경</a>
+				<a href="">탈퇴</a>
+			</div>
+			
+		</div>
+	</div>
+{% endblock %}

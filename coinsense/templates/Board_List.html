@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="free_board" class="table" style="padding-top: 10px;margin-bottom: 20px;">
+    <div style="clear:both;padding-top: 10px;margin-bottom: 20px;">
+        <h5 style="float: left;"><b>{{boardtitle}}</b></h5>
+        {% if not request.user.is_authenticated %}
+            <a style="color: #383838;margin-left: 630px;border: 1px solid #383838;padding-left: 10px;padding-right: 10px;" onclick="return confirm('로그인후 이용해주시기바랍니다.')"><b>글쓰기</b></a>
+        {% else %}
+            <a style="color: #383838;margin-left: 630px;border: 1px solid #383838;padding-left: 10px;padding-right: 10px;" href="{% url 'bbs:free_create' %}"><b>글쓰기</b></a>
+        {% endif %}
+    </div>
+    <div style="clear: both;border: 1px solid #dcdddd;width:800px;margin-top: -10px;" id="free_board_sub">
+        <table>
+            <thead class="thead-light">
+                <tr>
+                    <th style="width:75px;">글번호</th>
+                    <th style="width:370px;">제목</th>
+                    <th style="width:170px;">작성자</th>
+                    <th style="width:75px;">작성일</th>
+                    <th style="width:75px;">조회</th>
+                    <th style="width:75px;">추천</th>
+                </tr>
+            </thead>
+            
+            <!-- 공지사항 -->
+            <tbody>       
+              
+            {% load el_pagination_tags %}
+            
+            {% for i in notice %}
+                <!-- 현재 페이지가 1페이지 라면 -->
+                {% if request.get_full_path == '/first_page' %}
+                <tr>
+                        <td>공지</td>
+                        <td>{{ i.title }}</td>
+                        <td>관리자</td>
+                        <td>{{ i.updated_at.year }}.{{ i.updated_at.month }}.{{ i.updated_at.day }}</td>
+                        <td>조회</td>
+                        <td>
+                           *
+                        </td>
+                </tr>
+                {% endif %}
+            {% endfor %} 
+
+            {% paginate post_list %}
+            {% for post in post_list %}
+                <tr>
+                        <td style="">{{ post.id }}</td>
+                        <td style=""><a href="{%url 'bbs:free_read' post.id %}" style="display: inline-block; white-space: nowrap; overflow: hidden;text-overflow: ellipsis; width:305px;text-overflow:clip;margin-left: -10px;margin-right:10px;text-decoration: none;color:black;">{{ post.title }}</a></td>
+                        <td style="">{{ post.author }}</td>
+                        <td>{{ post.updated_at.year }}.{{ post.updated_at.month }}.{{ post.updated_at.day }}</td>
+                        <td style="">{{post.views}}</td>
+                        <td style="">
+                                {{post.like_count}}
+                        </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        </div>
+        <div style="width:800px;">
+            <div style="display: table; margin-left: auto; margin-right: auto;padding-top: 3%;">
+                {% if request.get_full_path == '/first_page' %}
+                <<&emsp;이전
+                {% endif %}
+                {% show_pages %}
+                {% get_pages %}
+                {%  show_current_number  as  page_number  %} 
+                <!-- 현재 페이지가 마지막 페이지와 같다면(마지막이라면) -->
+                {% if page_number == pages|length %}
+                &emsp;다음&emsp;>>
+                {% endif %}
+            </div>
+            <form action="" method="get">
+                <input style="width:300px;margin-top: 20px;margin-left: 240px;border: 1px solid #383838;" type="text" name="q" value="{{ q }}">
+                <input style="background-color: #F4F4F7;border: 1px solid #383838;"type="submit" value="검색">
+            </form>
+        </div>
+        
+    </div>
+
+{% endblock %}
+
+<!-- ############################################################################# -->
+
+
+
+
+<!--------------------------------------------->
