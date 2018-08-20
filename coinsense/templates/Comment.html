@@ -1,11 +1,14 @@
-<div>
-    <div class="comment">
-        <div style="float: left;margin-top: 10px;">
-            <img style="width:50px;height: 50px;" src="/media/{{ comment.user.photo }}">
-            <strong>{{ comment.author }}</strong>
-            <div class="date">{{ comment.created_date }}</div>
-            <p>{{ comment.text|linebreaks }}</p>
-        </div>
+{% load static %}
+    <div style="float: left;margin-top: 10px;">
+        <img style="width:50px;height: 50px;"
+        {% if request.user.Photo %} src="{{request.user.Photo.url}}"  
+        {% else %} src="{% static 'no-screenshot.jpg' %}"
+        {%endif%}
+        >
+        <strong>{{ comment.author }}</strong>
+        <div class="date">{{ comment.created_date }}</div>
+        <p>{{ comment.text|linebreaks }}</p>
+    </div>
     
         {% if comment.author == request.user %}
             <button type="button" class="button" style="margin-left: 580px;margin-top: 50px;" data-toggle="modal" data-target="#exampleModalLong2">
@@ -35,6 +38,4 @@
                 </div>
             </div>
         {% endif %}     
-        <hr style="clear:both;width: 800px;margin-left: 0px;">        
-    </div>
-</div>
+    <hr style="clear:both;width: 800px;margin-left: 0px;">        

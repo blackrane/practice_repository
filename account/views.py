@@ -36,7 +36,7 @@ def signup(request,context={}):
             form.save()
             login_func(request)
             print("로그인완료?")
-            return redirect('index')
+            return redirect('account:index')
         else:
             print("로그인실패?")
             context['form'] = form
@@ -46,3 +46,7 @@ def signup(request,context={}):
         context['form']=form
 
     return render(request, 'account/signup.html', context)
+
+def myPage(request):
+    context={}
+    return render(request, 'account/my_page.html',context)

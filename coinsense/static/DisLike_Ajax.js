@@ -14,13 +14,11 @@ $(document).on('click','.dislike', function(e){
       // {'likes_count': post.like_count, 'message': message }
 
       success: function(response){ // 통신 성공시 - 좋아요 갯수 변경, 유저 목록 변경
-        if(response.message == 'like'){
+        if(response.message == 'dislike'){
         $(".dislike").attr("value","비추천 "+response.dislike_count);
-          console.log("clear")
         }
-        else{
+        else if((response.message == 'dislike_del')){
         $(".dislike").attr("value","비추천 "+response.dislike_count);
-          console.log('clear 취소')
         }
         //var users = $("#like-user-"+pk).text();
       },

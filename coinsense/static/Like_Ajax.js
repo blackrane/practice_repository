@@ -16,11 +16,9 @@ $(document).on('click','.like', function(e){
       success: function(response){ // 통신 성공시 - 좋아요 갯수 변경, 유저 목록 변경
         if(response.message == 'like'){
         $(".like").attr("value","추천 "+response.like_count);
-          console.log("clear")
         }
-        else{
+        else if(response.message=='like_del'){
         $(".like").attr("value","추천 "+response.like_count);
-          console.log('clear 취소')
         }
         //var users = $("#like-user-"+pk).text();
       },

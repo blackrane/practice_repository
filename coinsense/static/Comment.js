@@ -27,13 +27,12 @@ $(document).on("click",".commit",addAnswer);
                //서버에서 무사히 html을 리턴하였다면 실행 
                success : function(data, textStatus, jqXHR){ 
                 $('#id_text').val("")
-                $('#ajax-comment').append(data);
-                //append(data);
+                $('.comment').append(data);
+                console.log(data)
                },
 
                //서버에서 html을 리턴해주지 못했다면 
                error : function(data, textStatus, jqXHR){
-                alert("실패 하였다.");
                },
                
            });}

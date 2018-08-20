@@ -18,39 +18,31 @@
   				<tbody style="border-top: 5px solid #444444;">
     				<tr height="100">
 			      		<th scope="row">아이디</th>
-			      		<td>{{ users.user }}</td>
+			      		<td>{{ request.user.username }}</td>
 			    	</tr>
 			    	<tr>
 			      		<th scope="row">이메일 주소</th>
-			     		<td>...</td>
-			    	</tr>
-			    	<tr>
-			      		<th scope="row">이름</th>
-			    		<td>Larry</td>
+			     		<td>{{request.user.user_of.email}}</td>
 			    	</tr>
 			    	<tr>
 			      		<th scope="row">닉네임</th>
-			    		<td>{{ users }}</td>
-			    	</tr>
-			    	<tr>
-			      		<th scope="row">생일</th>
-			    		<td>...</td>
+			    		<td>{{ reuqest.user.nickname }}</td>
 			    	</tr>
 			    	<tr>
 			      		<th scope="row">프로필사진</th>
-			    		<td>{{ photo }}</td>
+			    		<td>{{ request.user.Photo.url }}</td>
 			    	</tr>
 			    	<tr>
 			      		<th scope="row">연락처</th>
-			    		<td>Larry</td>
+			    		<td>{{ request.user.user_of.phone_number}}</td>
 			    	</tr>
 			    	<tr>
 			      		<th scope="row">가입일</th>
-			    		<td>Larry</td>
+			    		<td>{{ request.user.date_joined }}</td>
 			    	</tr>
 			    	<tr>
 			      		<th scope="row">최근 로그인</th>
-			    		<td>Larry</td>
+			    		<td>{{ request.user.last_login }}</td>
 			    	</tr>
 			  	</tbody>
 			</table>

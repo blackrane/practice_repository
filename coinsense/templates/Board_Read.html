@@ -48,9 +48,9 @@ $('#myModal').on('shown.bs.modal', function () {
         <hr style="clear: both;">
 
         <img style="width:60px;height: 60px;float: left;" 
-        {%if post.author.photo %} src="{{ post.author.photo }}"
+        {% if request.user.Photo %} src="{{request.user.Photo.url}}"  
         {% else %} src="{% static 'no-screenshot.jpg' %}"
-        {% endif %}
+        {%endif%}
         >
         <p style="float: left;">&ensp;{{ post.user.nickname }}</p>
         <p style="float: right;">https://coinsense.com{{ request.path }}</p>
@@ -89,27 +89,30 @@ $('#myModal').on('shown.bs.modal', function () {
 
 
 <div>
-    {% for comment in comments %}
+    
     <div class="comment">
+        {% for comment in comments %}
         <div style="float: left;margin-top: 10px;">
-            <img style="width:50px;height: 50px;" src="comment.author.photo.path">
+            <img style="width:50px;height: 50px;" 
+            {% if request.user.Photo %} src="{{request.user.Photo.url}}"  
+            {% else %} src="{% static 'no-screenshot.jpg' %}"
+            {%endif%}
+            >
             <strong>{{ comment.author }}</strong>
-            <div class="date">{{ comment.created_date }}</div>
+            <div class="date">
+                {{ comment.created_date }}
+            </div>
             <p>{{ comment.text|linebreaks }}</p>
-            <div id="ajax-comment"></div>
         </div>
-        
-
         {% if comment.user == users %}
-            <button type="button" class="button" style="margin-left: 580px;margin-top: 50px;" data-toggle="modal" data-target="#exampleModalLong2">
-                삭제
-            </button>
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-              <div class="modal-dialog" role="document">
+        <button type="button" class="button" style="margin-left: 580px;margin-top: 50px;" data-toggle="modal" data-target="#exampleModalLong2">
+            삭제
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -123,25 +126,27 @@ $('#myModal').on('shown.bs.modal', function () {
                         <input type="hidden" name="maple" value="{{ post_list.pk }}">
                         <input class="destroy btn btn-primary" type="submit" value="삭제">
                     </form>
-                    <!--<a href="/first_page/{{ comment.id }}/comment/destroy"><button class="btn btn-primary">삭제</button></a>-->
-                    
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                   </div>
                 </div>
-              </div>
             </div>
+        </div>
         {% endif %}     
-    
-        <hr style="clear:both;width: 800px;margin-left: 0px;">        
+        <hr style="clear:both;width: 800px;margin-left: 0px;">
+        {% empty %}
+        {% endfor %}        
     </div>
-    {% empty %}
+    
         <!--<p>댓글이 없습니다.</p>-->
-    {% endfor %}
+   
 
+    {% if not user.is_authenticated %}
+    {%else%}
     <form method="POST" class="post-form">
         <span style="float: left;padding-left: 0px;">{{ comment_form.text }}</span>
         <input class="commit" style="width:120px;height: 40px;background-color: #F4F4F7;border: 1px solid gray;cursor:pointer;" type="submit" name="{{ post.id }}" href="{% url 'bbs:free_comment' %}"value="등록">
     </form>
+    {%endif%}
 </div>
 
 
@@ -178,38 +183,7 @@ $('#myModal').on('shown.bs.modal', function () {
 
 
 <div style="margin-top: 50px;">
-        <table>
-            <thead>
-                <tr>
-                    <th>글번호</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>작성일</th>
-                    <th>조회</th>
-                    <th>추천</th>
-                </tr>
-            </thead>
-            {% for i in post_first %}
-                <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ i.post }}</td>
-                        <td>{{ i.user }}</td>
-                        <td>{{ i.created_at }}</td>
-                        <td>조회</td>
-                        <td>
-                        {% for j in like %}
-                            {% if j.post.id == i.id%}
-                                *
-                            {% endif %}
-                        {% endfor %}
-                        </td>
-                </tr>
-            {% endfor %}
-            <tbody>
-               
-            </tbody>
-        </table>
-    
+       
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

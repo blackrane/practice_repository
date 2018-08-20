@@ -95,14 +95,20 @@ class BoardReadView(View):
 
     #get 요청일때
     def get(self, *args, **kwargs):
-        post = get_object_or_404(self.model, id= self.kwargs['pk'])
+        pk=self.kwargs['pk']
+        post = get_object_or_404(self.model, id=pk )
+        
+        if not post.author == self.request.user:
+            post.views = post.views+1
+            post.save()
+        
         self.context['post'] = post
         self.context['like_count'] = post.like_count
         self.context['dislike_count'] = post.dislike_count
         self.context['form'] = self.form_class 
         self.context['boardtitle'] = self.title
         self.context['comment_form'] = self.get_comment_form()
-        self.context['comments'] = self.get_comment_model()
+        self.context['comments'] = self.get_comment_model().filter(post=post)
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -183,7 +189,16 @@ class LikeView(View):
     #post 요청일때
     def post(self, *args, **kwargs):
         post = get_object_or_404(self.model, pk=self.request.POST.get('pk', None))
-        # 중간자 모델 Like 를 사용하여, 현재 post와 request.user에 해당하는 Like 인스턴스를 가져온다.
+
+        #check_dislike 릴레이션에 해당 post 필터링 
+        #필터링 결과중 첫 row를 가져온다. 못가져오면 None
+        check_dislike = post.dislike_set.filter(post=post).first()
+        
+        # none이아니라면 즉 비추천을 적용했다면
+        if check_dislike is not None:
+            #아무것도하지말고 리턴
+            return HttpResponse(json.dumps('no'))
+        #none라면 추천 처리
         post_like, post_like_created = post.like_set.get_or_create(user=self.request.user)
         if not post_like_created:
             post_like.delete()
@@ -209,7 +224,16 @@ class DisLikeView(View):
     #post 요청일때
     def post(self, *args, **kwargs):
         post = get_object_or_404(self.model, pk=self.request.POST.get('pk', None))
-        # 중간자 모델 Like 를 사용하여, 현재 post와 request.user에 해당하는 Like 인스턴스를 가져온다.
+        
+        #check_like 릴레이션에 해당 post 필터링 
+        #필터링 결과중 첫 row를 가져온다. 못가져오면 None
+        check_like = post.like_set.filter(post=post).first()
+        
+        # none이아니라면 즉 추천을 적용했다면
+        if check_like is not None:
+            #아무것도하지말고 리턴
+            return HttpResponse(json.dumps('no'))
+        
         post_dislike, post_dislike_created = post.dislike_set.get_or_create(user=self.request.user)
         if not post_dislike_created:
             post_dislike.delete()
@@ -227,7 +251,7 @@ class CommentView(View):
     model = None
     form_class = None
     template_name=None
-    context={}
+    context = {}
     
 
     @method_decorator(login_required(login_url='/'))
@@ -240,14 +264,12 @@ class CommentView(View):
         post = get_object_or_404(self.model, pk=self.request.POST.get('pk',None))
         form = self.form_class(self.request.POST)
         if form.is_valid():
-            print('here')
             com = form.save(commit=False)
             com.author = self.request.user
             com.post = post
             com.save()
             self.context['comment'] = com
             return render(self.request, self.template_name, self.context)
-        
         self.context['form']= form
         return render(self.request, self.template_name, self.context)
 
