@@ -302,4 +302,3 @@ class ForumListView(View):
         self.context['error'] = login_func(self.request)
         self.context['boardtitle'] = self.title
         return render(self.request, self.get_template_name(), self.context)
-    

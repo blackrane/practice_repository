@@ -14,4 +14,5 @@ urlpatterns = [
     path('free/comment/', views.freeComment, name="free_comment"),
     
     path('forum/', views.forumlist, name="forum_list"),
+    path('society/', views.societylist, name="society_list"),
 ]

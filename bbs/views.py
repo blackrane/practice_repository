@@ -64,3 +64,11 @@ forumlist = ForumListView.as_view(
     template_name='Forum_List.html',
     title ="코인별 포럼"
 )
+
+societylist = ForumListView.as_view(
+    #model = ,
+    form_class = LoginForm ,
+    success_url = '/forum/',
+    template_name='Society_List.html',
+    title ="학회게시판"
+)
