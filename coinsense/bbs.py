@@ -6,6 +6,7 @@ from django.views import View
 from django.views.generic import ListView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.urls import reverse
 import json
 
 #App import
@@ -14,9 +15,11 @@ from account.views import login_func
 
 class BoardListView(View):
     model = None
-    form_class = None
+    login_form = None
     success_url= None
     template_name = None
+    create_url = ''
+    read_url=''
     context={}
     title = None
 
@@ -29,8 +32,10 @@ class BoardListView(View):
     #get 요청일때
     def get(self, *args, **kwargs):
         self.context['post_list'] = self.model.objects.all()
-        self.context['form'] = self.form_class()
+        self.context['form'] = self.login_form()
         self.context['boardtitle'] = self.title
+        self.context['url']= reverse(self.create_url)
+        self.context['read_url'] = self.read_url
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -40,7 +45,7 @@ class BoardListView(View):
         self.context['boardtitle'] = self.title
         return render(self.request, self.get_template_name(), self.context)
 
-class BoardCreateview(View):
+class BoardCreateView(View):
     model = None
     form_class = None
     template_name = None

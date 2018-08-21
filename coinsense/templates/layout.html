@@ -92,7 +92,7 @@
 				<ul class="drop-down">
    			    	<li><a href= "{% url 'bbs:free_list' %}" >자유게시판</a></li>
    			    	<li><a href="#">정보공유/팁</a></li>
-   			       	<li><a href="#">시황분석공유</a></li>
+   			       	<li><a href="{% url 'bbs:analysis_list' %}">시황분석공유</a></li>
    			       	<li><a href="#">갤러리</a></li>
    			       	<li><a href="{% url 'bbs:forum_list' %}">코인포럼</a></li>
    			    </ul>
@@ -112,7 +112,7 @@
    			    </ul>
    			</li>
    			
-			<a href="{% url 'account:favorable' %}"><li class="main_list">호재</li></a>
+			<a href=""><li class="main_list">호재</li></a>
 			<a style="margin-left: -5px;" href=""><li class="main_list">ICO Rating</li></a>
 		</ul>
 	</div>
@@ -208,7 +208,7 @@
 					</script>
 					
 					<p style="clear: both;margin-left: 10px;float: left;width:130px;">{{ user }}<br>{{ users.nickname }}</p>
-					<a href="{% url 'account:my_page' pk=user.pk %}"><p style="color:black;margin-top: 24.5px;padding-left:6.5px;width:65px;float: left;font-size: 12px;border: 1px solid black;">회원정보</p></a>
+					<a href="{% url 'account:my_page' %}"><p style="color:black;margin-top: 24.5px;padding-left:6.5px;width:65px;float: left;font-size: 12px;border: 1px solid black;">회원정보</p></a>
 					<a href="{% url 'account:logout' %}"><p style="color:black;margin-top: 26.5px;margin-left: 210px;padding-left:6.5px;width:65px;font-size: 12px;border: 1px solid black;">로그아웃</p></a>
 				</div>				
 				{% endif %}

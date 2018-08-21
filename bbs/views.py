@@ -3,21 +3,28 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 #App 
-from coinsense.bbs import BoardCreateview, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView
+from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView
 from .models import FreeBoard, FreeBoardComment
-from bbs.forms import FreeBoardCreationForm, FreeBoardCommentForm
+
+from bbs.forms import FreeBoardCreationForm, FreeBoardCommentForm, NormalAnalysisCreationForm, NormalAnalysisCommentForm
 from account.forms import LoginForm
 
-# Create your views here.
+# 게시판 필요 View 
+# BoardCreateview, BoardListView, BoardReadView, BoardUpdateView, 
+# BoardDestroyView, LikeView, DisLikeView, CommentView 총 8개
+
+#자유게시판
 freeList = BoardListView.as_view(
     model = FreeBoard,
-    form_class = LoginForm ,
+    login_form = LoginForm ,
     success_url = '/free/',
     template_name='Board_List.html',
+    create_url = 'bbs:free_create',
+    read_url='bbs:free_read',
     title ="자유게시판"
 )
 
-freeCreate = BoardCreateview.as_view(
+freeCreate = BoardCreateView.as_view(
     model = FreeBoard,
     form_class = FreeBoardCreationForm,
     template_name='Board_Create.html',
@@ -41,14 +48,14 @@ freeUpdate = BoardUpdateView.as_view(
     title ="자유게시판 게시글 수정"
 )
 
-freeDetail = BoardDestroyView.as_view()
+freeDestroy = BoardDestroyView.as_view()
 
 freeLike = LikeView.as_view(
-    model=FreeBoard
+    model = FreeBoard
 )
 
 freeDisLike = DisLikeView.as_view(
-    model=FreeBoard
+    model = FreeBoard
 )
 
 freeComment = CommentView.as_view(
@@ -57,6 +64,125 @@ freeComment = CommentView.as_view(
     template_name="Comment.html",
 )
 
+#일반시황분석
+from .models import NormalAnalysis, NormalAnalysisComment
+normalAnalysisList = BoardListView.as_view(
+    model= NormalAnalysis,
+    login_form = LoginForm ,
+    success_url ='/analysis/',
+    template_name = "Board_List.html",
+    create_url = 'bbs:analysis_create',
+    read_url='bbs:analysis_read',
+    title="시황분석공유",
+)
+
+normalAnalysisCreate = BoardCreateView.as_view(
+    model = NormalAnalysis,
+    form_class = NormalAnalysisCreationForm,
+    template_name='Board_Create.html',
+    title ="시황분석 게시글 작성"
+)
+normalAnalysisRead = BoardReadView.as_view(
+    model = NormalAnalysis,
+    comment_model = NormalAnalysisComment,
+    comment_Form_class = NormalAnalysisCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title ="시황분석공유"
+)
+normalAnalysisUpdate = BoardUpdateView.as_view(
+    model = NormalAnalysis,
+    form_class= NormalAnalysisCreationForm,
+    success_url = '/free/',
+    template_name='Board_Create.html',
+    title ="시황분석공유 게시글 수정"
+)
+
+normalAnalysisDestroy = BoardDestroyView.as_view(
+    
+)
+
+normalAnalysisLike = LikeView.as_view(
+    model = NormalAnalysis
+)
+
+normalAnalysisDisLike = DisLikeView.as_view(
+    model = NormalAnalysis
+)
+
+normalAnalysisComment = CommentView.as_view(
+    model = NormalAnalysis,
+    form_class = NormalAnalysisCommentForm,
+    template_name="Comment.html",
+)
+
+
+#갤러리
+galleryList = BoardListView.as_view(
+    model= NormalAnalysis,
+    login_form = LoginForm ,
+    success_url ='/analysis/',
+    template_name = "Board_List.html",
+    create_url = 'bbs:analysis_create',
+    title="시황분석공유",
+)
+galleryCreate = BoardCreateView.as_view(
+
+)
+galleryRead = BoardReadView.as_view(
+
+)
+galleryUpdate = BoardUpdateView.as_view(
+
+)
+
+galleryDestroy = BoardDestroyView.as_view(
+
+)
+
+galleryLike = LikeView.as_view(
+
+)
+
+galleryDisLike = DisLikeView.as_view(
+
+)
+
+galleryComment = CommentView.as_view(
+
+)
+
+#정보/꿀팁
+honeyTipList = BoardListView.as_view(
+
+)
+honeyTipCreate = BoardCreateView.as_view(
+
+)
+honeyTipRead = BoardReadView.as_view(
+
+)
+honeyTipUpdate = BoardUpdateView.as_view(
+
+)
+
+honeyTipDestroy = BoardDestroyView.as_view(
+
+)
+
+honeyTipLike = LikeView.as_view(
+
+)
+
+honeyTipDisLike = DisLikeView.as_view(
+
+)
+
+honeyTipComment = CommentView.as_view(
+
+)
+
+#포럼
 forumlist = ForumListView.as_view(
     #model = ,
     form_class = LoginForm ,
@@ -65,6 +191,36 @@ forumlist = ForumListView.as_view(
     title ="코인별 포럼"
 )
 
+forumList = BoardListView.as_view(
+
+)
+forumCreate = BoardCreateView.as_view(
+
+)
+forumRead = BoardReadView.as_view(
+
+)
+forumUpdate = BoardUpdateView.as_view(
+
+)
+
+forumDestroy = BoardDestroyView.as_view(
+
+)
+
+forumLike = LikeView.as_view(
+
+)
+
+forumDisLike = DisLikeView.as_view(
+
+)
+
+forumComment = CommentView.as_view(
+
+)
+
+#학회 게시판
 societylist = ForumListView.as_view(
     #model = ,
     form_class = LoginForm ,
@@ -72,3 +228,8 @@ societylist = ForumListView.as_view(
     template_name='Society_List.html',
     title ="학회게시판"
 )
+
+#제휴 게시판
+
+#제휴 문의 게시판
+

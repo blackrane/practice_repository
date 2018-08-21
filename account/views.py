@@ -50,3 +50,15 @@ def signup(request,context={}):
 def myPage(request):
     context={}
     return render(request, 'account/my_page.html',context)
+
+def myWrite(request):
+    if request.user.code == 'Z0':
+        a = request.user.freeboard_set
+    print(a)
+    a=0
+    context={'a':a}
+    return render(request, 'account/my_page.html',context)
+
+def myComments(request):
+    context={}
+    return render(request, 'account/my_page.html',context)

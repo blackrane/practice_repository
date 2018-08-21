@@ -11,7 +11,7 @@
             {% if not request.user.is_authenticated %}
                 <a style="color: #383838;border: 1px solid #383838;padding-left: 10px;padding-right: 10px;" onclick="return confirm('로그인후 이용해주시기바랍니다.')">    <b>글쓰기</b></a>
             {% else %}
-                <a style="color: #383838;border: 1px solid #383838;padding-left: 10px;padding-right: 10px;" href="{% url 'bbs:free_create' %}"><b>글쓰기</b></a>
+                <a style="color: #383838;border: 1px solid #383838;padding-left: 10px;padding-right: 10px;" href="{{url}}"><b>글쓰기</b></a>
             {% endif %}
         </div>
     </div>
@@ -53,7 +53,7 @@
             {% for post in post_list %}
                 <tr>
                         <td style="">{{ post.id }}</td>
-                        <td style=""><a href="{%url 'bbs:free_read' post.id %}" style="display: inline-block; white-space: nowrap; overflow: hidden;text-overflow: ellipsis; width:305px;text-overflow:clip;margin-left: -10px;margin-right:10px;text-decoration: none;color:black;">{{ post.title }}</a></td>
+                        <td style=""><a href="{%url read_url post.id %}" style="display: inline-block; white-space: nowrap; overflow: hidden;text-overflow: ellipsis; width:305px;text-overflow:clip;margin-left: -10px;margin-right:10px;text-decoration: none;color:black;">{{ post.title }}</a></td>
                         <td style="">{{ post.author }}</td>
                         <td>{{ post.updated_at.year }}.{{ post.updated_at.month }}.{{ post.updated_at.day }}</td>
                         <td style="">{{post.views}}</td>
