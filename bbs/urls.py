@@ -27,6 +27,19 @@ urlpatterns += [
     path('analysis/comment/', views.normalAnalysisComment, name="analysis_comment"),            #댓글
 ]
 
+#꿀팁 게시판
+
+urlpatterns += [
+    path('honeytip/', views.honeyTipList, name="honeytip_list"),                          #목록
+    path('honeytip/create/', views.honeyTipCreate , name="honeytip_create"),              #쓰기
+    path('honeytip/<int:pk>/', views.honeyTipRead , name="honeytip_read"),                #읽기
+    path('honeytip/edit/<int:pk>/', views.honeyTipUpdate, name="honeytip_update"),        #수정
+    path('honeytip/destroy/<int:pk>/', views.honeyTipDestroy, name="honeytip_destroy"),   #삭제
+    path('honeytip/like/', views.honeyTipLike, name="honeytip_like"),                     #추천
+    path('honeytip/dislike/', views.honeyTipDisLike, name="honeytip_dislike"),            #비추천
+    path('honeytip/comment/', views.honeyTipComment, name="honeytip_comment"),            #댓글
+]
+
 #포럼게시판 주소
 urlpatterns += [
     path('forum/', views.forumlist, name="forum_list"),

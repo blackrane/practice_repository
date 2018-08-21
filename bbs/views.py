@@ -161,37 +161,67 @@ galleryDisLike = DisLikeView.as_view(
 galleryComment = CommentView.as_view(
 
 )
-
+##################################################################################
 #정보/꿀팁
+from .models import HoneyTip,HoneyTipComment
+from .forms import HoneyTipCommentForm, HoneyTipCreationForm
+
 honeyTipList = BoardListView.as_view(
-
+    model= HoneyTip,
+    login_form = LoginForm ,
+    success_url ='/honeytip/',
+    template_name = "Board_List.html",
+    create_url = 'bbs:honeytip_create',
+    read_url='bbs:honeytip_read',
+    title="꿀팁 게시판",
 )
-honeyTipCreate = BoardCreateView.as_view(
 
+honeyTipCreate = BoardCreateView.as_view(
+    model = HoneyTip,
+    form_class = HoneyTipCreationForm,
+    template_name='Board_Create.html',
+    title ="꿀팁 작성"
 )
 honeyTipRead = BoardReadView.as_view(
-
+    model = HoneyTip,
+    comment_model = HoneyTipComment,
+    comment_Form_class = HoneyTipCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title ="꿀팁",
+    like_url='bbs:honeytip_like',
+    dislike_url='bbs:honeytip_dislike',
+    update_url='bbs:honeytip_update',
+    destroy_url= 'bbs:honeytip_destroy',
+    comment_url= 'bbs:honeytip_comment',
 )
 honeyTipUpdate = BoardUpdateView.as_view(
-
+    model = HoneyTip,
+    form_class= HoneyTipCreationForm,
+    success_url = '/honeytip/',
+    template_name='Board_Create.html',
+    title ="꿀팁 수정",
 )
 
 honeyTipDestroy = BoardDestroyView.as_view(
-
+    
 )
 
 honeyTipLike = LikeView.as_view(
-
+    model = HoneyTip
 )
 
 honeyTipDisLike = DisLikeView.as_view(
-
+    model = HoneyTip
 )
 
 honeyTipComment = CommentView.as_view(
-
+    model = HoneyTip,
+    form_class = HoneyTipCommentForm,
+    template_name="Comment.html",
 )
 
+####################################################################
 #포럼
 forumlist = ForumListView.as_view(
     #model = ,
