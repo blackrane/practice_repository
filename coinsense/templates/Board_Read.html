@@ -144,7 +144,7 @@ $('#myModal').on('shown.bs.modal', function () {
     {%else%}
     <form method="POST" class="post-form">
         <span style="float: left;padding-left: 0px;">{{ comment_form.text }}</span>
-        <input class="commit" style="width:120px;height: 40px;background-color: #F4F4F7;border: 1px solid gray;cursor:pointer;" type="submit" name="{{ post.id }}" href="comment_url"value="등록">
+        <input class="commit" style="width:120px;height: 40px;background-color: #F4F4F7;border: 1px solid gray;cursor:pointer;" type="submit" name="{{ post.id }}" href="{{comment_url}}"value="등록">
     </form>
     {%endif%}
 </div>

@@ -97,8 +97,8 @@ normalAnalysisRead = BoardReadView.as_view(
     like_url='bbs:analysis_like',
     dislike_url='bbs:analysis_dislike',
     update_url='bbs:analysis_update',
-    destroy_url='bbs:analysis_destroy',
-    comment_url='bbs:analysis_comment',
+    destroy_url= 'bbs:analysis_destroy',
+    comment_url= 'bbs:analysis_comment',
 )
 normalAnalysisUpdate = BoardUpdateView.as_view(
     model = NormalAnalysis,
