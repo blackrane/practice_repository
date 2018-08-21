@@ -11,7 +11,7 @@ urlpatterns = [
     path('free/destroy/<int:pk>/', views.freeDetail, name="free_destroy"),
     path('free/like/', views.freeLike, name="free_like"),
     path('free/dislike/', views.freeDisLike, name="free_dislike"),
-    
     path('free/comment/', views.freeComment, name="free_comment"),
-
+    
+    path('forum/', views.forumlist, name="forum_list"),
 ]

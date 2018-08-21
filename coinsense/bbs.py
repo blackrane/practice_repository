@@ -274,3 +274,32 @@ class CommentView(View):
         return render(self.request, self.template_name, self.context)
 
    
+
+class ForumListView(View):
+    model = None
+    form_class = None
+    success_url= None
+    template_name = None
+    context={}
+    title = None
+
+    def get_success_url(self):
+        return self.success_url
+    
+    def get_template_name(self):
+        return self.template_name
+    
+    #get 요청일때
+    def get(self, *args, **kwargs):
+        #self.context['post_list'] = self.model.objects.all()
+        self.context['form'] = self.form_class()
+        self.context['boardtitle'] = self.title
+        return render(self.request, self.get_template_name(), self.context)
+
+    #post 요청일때
+    def post(self, *args, **kwargs):
+        #self.context['post_list'] = self.model.objects.all()
+        self.context['error'] = login_func(self.request)
+        self.context['boardtitle'] = self.title
+        return render(self.request, self.get_template_name(), self.context)
+    

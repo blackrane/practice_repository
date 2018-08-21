@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 #App 
-from coinsense.bbs import BoardCreateview, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView
+from coinsense.bbs import BoardCreateview, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView
 from .models import FreeBoard, FreeBoardComment
 from bbs.forms import FreeBoardCreationForm, FreeBoardCommentForm
 from account.forms import LoginForm
@@ -57,3 +57,10 @@ freeComment = CommentView.as_view(
     template_name="Comment.html",
 )
 
+forumlist = ForumListView.as_view(
+    #model = ,
+    form_class = LoginForm ,
+    success_url = '/forum/',
+    template_name='Forum_List.html',
+    title ="코인별 포럼"
+)
