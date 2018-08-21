@@ -2,11 +2,11 @@ from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 from django_summernote import fields as summer_fields
 
 from django import forms
-from .models import FreeBoard, FreeBoardComment , NormalAnalysis, NormalAnalysisComment, HoneyTip, HoneyTipComment
+from . import models
 
 class FreeBoardCreationForm(forms.ModelForm):
     class Meta:
-        model = FreeBoard
+        model = models.FreeBoard
         fields = ['title','summer_field']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
@@ -15,7 +15,7 @@ class FreeBoardCreationForm(forms.ModelForm):
 
 class FreeBoardCommentForm(forms.ModelForm):
     class Meta:
-        model = FreeBoardComment
+        model = models.FreeBoardComment
         fields = ['text']
         widgets={
         'text': forms.TextInput(attrs={
@@ -28,7 +28,7 @@ class FreeBoardCommentForm(forms.ModelForm):
 # 시황분석폼
 class NormalAnalysisCreationForm(forms.ModelForm):
     class Meta:
-        model = NormalAnalysis
+        model = models.NormalAnalysis
         fields = ['title','summer_field']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
@@ -37,7 +37,7 @@ class NormalAnalysisCreationForm(forms.ModelForm):
 
 class NormalAnalysisCommentForm(forms.ModelForm):
     class Meta:
-        model = NormalAnalysisComment
+        model = models.NormalAnalysisComment
         fields = ['text']
         widgets={
         'text': forms.TextInput(attrs={
@@ -52,7 +52,7 @@ class NormalAnalysisCommentForm(forms.ModelForm):
 
 class HoneyTipCreationForm(forms.ModelForm):
     class Meta:
-        model = HoneyTip
+        model = models.HoneyTip
         fields = ['title','summer_field']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
@@ -61,7 +61,7 @@ class HoneyTipCreationForm(forms.ModelForm):
 
 class HoneyTipCommentForm(forms.ModelForm):
     class Meta:
-        model = HoneyTipComment
+        model = models.HoneyTipComment
         fields = ['text']
         widgets={
         'text': forms.TextInput(attrs={
@@ -72,7 +72,27 @@ class HoneyTipCommentForm(forms.ModelForm):
         }
 
 ################################################################################################################################
-# 시황분석폼
+# 비트포럼 폼
+class ForumBitCoinCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.ForumBitCoin
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
+
+class ForumBitCoinCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.ForumBitCoinComment
+        fields = ['text']
+        widgets={
+        'text': forms.TextInput(attrs={
+        'class':"form-controlcomment-Table",
+        'style':'width:670px;height:40px;margin-right:10px;',
+        'placeholder':'댓글을 입력해주세요.',
+            })
+        }
 
 ################################################################################################################################
 # 시황분석폼

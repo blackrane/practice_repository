@@ -22,6 +22,16 @@ class BoardListView(View):
     read_url=''
     context={}
     title = None
+    permission = None
+
+    def get_permission(self):
+        if self.permission is None:
+            return True
+        elif self.request.user.code == self.permission:
+            return True
+        else:
+            return False
+        
 
     def get_success_url(self):
         return self.success_url
@@ -36,6 +46,7 @@ class BoardListView(View):
         self.context['boardtitle'] = self.title
         self.context['url']= reverse(self.create_url)
         self.context['read_url'] = self.read_url
+        self.context['permission'] = self.get_permission()
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -43,6 +54,7 @@ class BoardListView(View):
         self.context['post_list'] = self.model.objects.all()
         self.context['error'] = login_func(self.request)
         self.context['boardtitle'] = self.title
+        self.context['permission'] = self.get_permission()
         return render(self.request, self.get_template_name(), self.context)
 
 class BoardCreateView(View):
@@ -277,7 +289,6 @@ class CommentView(View):
 
     #post 요청일때
     def post(self, *args, **kwargs):
-        
         post = get_object_or_404(self.model, pk=self.request.POST.get('pk',None))
         form = self.form_class(self.request.POST)
         if form.is_valid():

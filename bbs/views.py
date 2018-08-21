@@ -4,9 +4,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 #App 
 from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView
-from .models import FreeBoard, FreeBoardComment
-
-from bbs.forms import FreeBoardCreationForm, FreeBoardCommentForm, NormalAnalysisCreationForm, NormalAnalysisCommentForm
+from . import models
+from . import forms
 from account.forms import LoginForm
 
 # 게시판 필요 View 
@@ -15,7 +14,7 @@ from account.forms import LoginForm
 
 #자유게시판
 freeList = BoardListView.as_view(
-    model = FreeBoard,
+    model = models.FreeBoard,
     login_form = LoginForm ,
     success_url = '/free/',
     template_name='Board_List.html',
@@ -25,16 +24,16 @@ freeList = BoardListView.as_view(
 )
 
 freeCreate = BoardCreateView.as_view(
-    model = FreeBoard,
-    form_class = FreeBoardCreationForm,
+    model = models.FreeBoard,
+    form_class = forms.FreeBoardCreationForm,
     template_name='Board_Create.html',
     title ="자유게시판 게시글 작성"
 )
 
 freeRead = BoardReadView.as_view(
-    model = FreeBoard,
-    comment_model = FreeBoardComment,
-    comment_Form_class = FreeBoardCommentForm,
+    model = models.FreeBoard,
+    comment_model = models.FreeBoardComment,
+    comment_Form_class =  forms.FreeBoardCommentForm,
     form_class = LoginForm,
     template_name='Board_Read.html',
     title ="자유게시판",
@@ -46,8 +45,8 @@ freeRead = BoardReadView.as_view(
 )
 
 freeUpdate = BoardUpdateView.as_view(
-    model = FreeBoard,
-    form_class= FreeBoardCreationForm,
+    model = models.FreeBoard,
+    form_class= forms.FreeBoardCreationForm,
     success_url = '/free/',
     template_name='Board_Create.html',
     title ="자유게시판 게시글 수정"
@@ -56,23 +55,22 @@ freeUpdate = BoardUpdateView.as_view(
 freeDestroy = BoardDestroyView.as_view()
 
 freeLike = LikeView.as_view(
-    model = FreeBoard
+    model = models.FreeBoard
 )
 
 freeDisLike = DisLikeView.as_view(
-    model = FreeBoard
+    model = models.FreeBoard
 )
 
 freeComment = CommentView.as_view(
-    model = FreeBoard,
-    form_class = FreeBoardCommentForm,
+    model = models.FreeBoard,
+    form_class = forms.FreeBoardCommentForm,
     template_name="Comment.html",
 )
 
 #일반시황분석
-from .models import NormalAnalysis, NormalAnalysisComment
 normalAnalysisList = BoardListView.as_view(
-    model= NormalAnalysis,
+    model= models.NormalAnalysis,
     login_form = LoginForm ,
     success_url ='/analysis/',
     template_name = "Board_List.html",
@@ -82,15 +80,15 @@ normalAnalysisList = BoardListView.as_view(
 )
 
 normalAnalysisCreate = BoardCreateView.as_view(
-    model = NormalAnalysis,
-    form_class = NormalAnalysisCreationForm,
+    model = models.NormalAnalysis,
+    form_class = forms.NormalAnalysisCreationForm,
     template_name='Board_Create.html',
     title ="시황분석 게시글 작성"
 )
 normalAnalysisRead = BoardReadView.as_view(
-    model = NormalAnalysis,
-    comment_model = NormalAnalysisComment,
-    comment_Form_class = NormalAnalysisCommentForm,
+    model = models.NormalAnalysis,
+    comment_model = models.NormalAnalysisComment,
+    comment_Form_class = forms.NormalAnalysisCommentForm,
     form_class = LoginForm,
     template_name='Board_Read.html',
     title ="시황분석공유",
@@ -101,8 +99,8 @@ normalAnalysisRead = BoardReadView.as_view(
     comment_url= 'bbs:analysis_comment',
 )
 normalAnalysisUpdate = BoardUpdateView.as_view(
-    model = NormalAnalysis,
-    form_class= NormalAnalysisCreationForm,
+    model = models.NormalAnalysis,
+    form_class= forms.NormalAnalysisCreationForm,
     success_url = '/free/',
     template_name='Board_Create.html',
     title ="시황분석공유 게시글 수정",
@@ -113,23 +111,23 @@ normalAnalysisDestroy = BoardDestroyView.as_view(
 )
 
 normalAnalysisLike = LikeView.as_view(
-    model = NormalAnalysis
+    model = models.NormalAnalysis
 )
 
 normalAnalysisDisLike = DisLikeView.as_view(
-    model = NormalAnalysis
+    model = models.NormalAnalysis
 )
 
 normalAnalysisComment = CommentView.as_view(
-    model = NormalAnalysis,
-    form_class = NormalAnalysisCommentForm,
+    model = models.NormalAnalysis,
+    form_class = forms.NormalAnalysisCommentForm,
     template_name="Comment.html",
 )
 
 
 #갤러리
 galleryList = BoardListView.as_view(
-    model= NormalAnalysis,
+    model= models.NormalAnalysis,
     login_form = LoginForm ,
     success_url ='/analysis/',
     template_name = "Board_List.html",
@@ -163,11 +161,9 @@ galleryComment = CommentView.as_view(
 )
 ##################################################################################
 #정보/꿀팁
-from .models import HoneyTip,HoneyTipComment
-from .forms import HoneyTipCommentForm, HoneyTipCreationForm
 
 honeyTipList = BoardListView.as_view(
-    model= HoneyTip,
+    model= models.HoneyTip,
     login_form = LoginForm ,
     success_url ='/honeytip/',
     template_name = "Board_List.html",
@@ -177,15 +173,15 @@ honeyTipList = BoardListView.as_view(
 )
 
 honeyTipCreate = BoardCreateView.as_view(
-    model = HoneyTip,
-    form_class = HoneyTipCreationForm,
+    model = models.HoneyTip,
+    form_class = forms.HoneyTipCreationForm,
     template_name='Board_Create.html',
     title ="꿀팁 작성"
 )
 honeyTipRead = BoardReadView.as_view(
-    model = HoneyTip,
-    comment_model = HoneyTipComment,
-    comment_Form_class = HoneyTipCommentForm,
+    model = models.HoneyTip,
+    comment_model = models.HoneyTipComment,
+    comment_Form_class = forms.HoneyTipCommentForm,
     form_class = LoginForm,
     template_name='Board_Read.html',
     title ="꿀팁",
@@ -196,8 +192,8 @@ honeyTipRead = BoardReadView.as_view(
     comment_url= 'bbs:honeytip_comment',
 )
 honeyTipUpdate = BoardUpdateView.as_view(
-    model = HoneyTip,
-    form_class= HoneyTipCreationForm,
+    model = models.HoneyTip,
+    form_class= forms.HoneyTipCreationForm,
     success_url = '/honeytip/',
     template_name='Board_Create.html',
     title ="꿀팁 수정",
@@ -208,61 +204,86 @@ honeyTipDestroy = BoardDestroyView.as_view(
 )
 
 honeyTipLike = LikeView.as_view(
-    model = HoneyTip
+    model = models.HoneyTip
 )
 
 honeyTipDisLike = DisLikeView.as_view(
-    model = HoneyTip
+    model = models.HoneyTip
 )
 
 honeyTipComment = CommentView.as_view(
-    model = HoneyTip,
-    form_class = HoneyTipCommentForm,
+    model = models.HoneyTip,
+    form_class = forms.HoneyTipCommentForm,
     template_name="Comment.html",
 )
 
 ####################################################################
 #포럼
 forumlist = ForumListView.as_view(
-    #model = ,
     form_class = LoginForm ,
     success_url = '/forum/',
     template_name='Forum_List.html',
     title ="코인별 포럼"
 )
-
-forumList = BoardListView.as_view(
-
-)
-forumCreate = BoardCreateView.as_view(
-
-)
-forumRead = BoardReadView.as_view(
-
-)
-forumUpdate = BoardUpdateView.as_view(
-
+#####################################################################
+# 비트코인 포럼
+forumBitCoinList = BoardListView.as_view(
+    model= models.ForumBitCoin,
+    login_form = LoginForm ,
+    success_url ='/forum/bitcoin/',
+    template_name = "Board_List.html",
+    create_url = 'bbs:forumbitcoin_create',
+    read_url='bbs:forumbitcoin_read',
+    title="비트코인 포럼",
 )
 
-forumDestroy = BoardDestroyView.as_view(
-
+forumBitCoinCreate = BoardCreateView.as_view(
+    model = models.ForumBitCoin,
+    form_class = forms.ForumBitCoinCreationForm,
+    template_name='Board_Create.html',
+    title="비트코인 포럼",
 )
 
-forumLike = LikeView.as_view(
-
+forumBitCoinRead = BoardReadView.as_view(
+    model = models.ForumBitCoin,
+    comment_model = models.ForumBitCoinComment,
+    comment_Form_class = forms.ForumBitCoinCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title="비트코인 포럼",
+    like_url='bbs:forumbitcoin_like',
+    dislike_url='bbs:forumbitcoin_dislike',
+    update_url='bbs:forumbitcoin_update',
+    destroy_url= 'bbs:forumbitcoin_destroy',
+    comment_url= 'bbs:forumbitcoin_comment',
 )
 
-forumDisLike = DisLikeView.as_view(
-
+forumBitCoinUpdate = BoardUpdateView.as_view(
+    model = models.ForumBitCoin,
+    form_class= forms.ForumBitCoinCreationForm,
+    success_url = '/forum/bitcoin/',
+    template_name='Board_Create.html',
+    title="비트코인 포럼",
+)
+forumBitCoinDestroy = BoardDestroyView.as_view(
+    
+)
+forumBitCoinLike = LikeView.as_view(
+    model = models.ForumBitCoin
 )
 
-forumComment = CommentView.as_view(
+forumBitCoinDisLike = DisLikeView.as_view(
+    model = models.ForumBitCoin
+)
 
+forumBitCoinComment = CommentView.as_view(
+    model = models.ForumBitCoin,
+    form_class = forms.ForumBitCoinCommentForm,
+    template_name="Comment.html",
 )
 
 #학회 게시판
 societylist = ForumListView.as_view(
-    #model = ,
     form_class = LoginForm ,
     success_url = '/forum/',
     template_name='Society_List.html',

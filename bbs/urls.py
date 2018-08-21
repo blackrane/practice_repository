@@ -45,6 +45,18 @@ urlpatterns += [
     path('forum/', views.forumlist, name="forum_list"),
 ]
 
+ #비트코인
+urlpatterns += [
+    path('forum/bitcoin/', views.forumBitCoinList, name="forumbitcoin_list"),                          #목록
+    path('forum/bitcoin/create/', views.forumBitCoinCreate , name="forumbitcoin_create"),              #쓰기
+    path('forum/bitcoin/<int:pk>/', views.forumBitCoinRead , name="forumbitcoin_read"),                #읽기
+    path('forum/bitcoin/edit/<int:pk>/', views.forumBitCoinUpdate, name="forumbitcoin_update"),        #수정
+    path('forum/bitcoin/destroy/<int:pk>/', views.forumBitCoinDestroy, name="forumbitcoin_destroy"),   #삭제
+    path('forum/bitcoin/like/', views.forumBitCoinLike, name="forumbitcoin_like"),                     #추천
+    path('forum/bitcoin/dislike/', views.forumBitCoinDisLike, name="forumbitcoin_dislike"),            #비추천
+    path('forum/bitcoin/comment/', views.forumBitCoinComment, name="forumbitcoin_comment"),            #댓글
+]
+
 #학회 게시판 주소
 urlpatterns += [
     path('society/', views.societylist, name="society_list"),
