@@ -97,12 +97,12 @@ class NormalAnalysisComment(models.Model):
 
 class NormalAnalysisLike(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    post = models.ForeignKey(NormalAnalysis, on_delete=models.CASCADE)
+    post = models.ForeignKey(NormalAnalysis, on_delete=models.CASCADE ,related_name='like_set')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class NormalAnalysisDisLike(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    post = models.ForeignKey(NormalAnalysis, on_delete=models.CASCADE)
+    post = models.ForeignKey(NormalAnalysis, on_delete=models.CASCADE, related_name='dislike_set')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

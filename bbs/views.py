@@ -37,7 +37,12 @@ freeRead = BoardReadView.as_view(
     comment_Form_class = FreeBoardCommentForm,
     form_class = LoginForm,
     template_name='Board_Read.html',
-    title ="자유게시판"
+    title ="자유게시판",
+    like_url='bbs:free_like',
+    dislike_url='bbs:free_dislike',
+    update_url='bbs:free_update',
+    destroy_url='bbs:free_destroy',
+    comment_url='bbs:free_comment',
 )
 
 freeUpdate = BoardUpdateView.as_view(
@@ -88,14 +93,19 @@ normalAnalysisRead = BoardReadView.as_view(
     comment_Form_class = NormalAnalysisCommentForm,
     form_class = LoginForm,
     template_name='Board_Read.html',
-    title ="시황분석공유"
+    title ="시황분석공유",
+    like_url='bbs:analysis_like',
+    dislike_url='bbs:analysis_dislike',
+    update_url='bbs:analysis_update',
+    destroy_url='bbs:analysis_destroy',
+    comment_url='bbs:analysis_comment',
 )
 normalAnalysisUpdate = BoardUpdateView.as_view(
     model = NormalAnalysis,
     form_class= NormalAnalysisCreationForm,
     success_url = '/free/',
     template_name='Board_Create.html',
-    title ="시황분석공유 게시글 수정"
+    title ="시황분석공유 게시글 수정",
 )
 
 normalAnalysisDestroy = BoardDestroyView.as_view(

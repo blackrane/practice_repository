@@ -39,7 +39,7 @@ $('#myModal').on('shown.bs.modal', function () {
     <div class="free_board_sub">
         <h6 class="board_title">{{ post.title }}</h6>
         {% if post.author == request.user %}
-            <a href="{% url 'bbs:free_update' post.id %}"><button class="button">수정</button></a>
+            <a href="{% url update_url post.id %}"><button class="button">수정</button></a>
             <!--모달을 띄운다-->
             <button type="button" class="button" data-toggle="modal" data-target="#exampleModalLong">
                 삭제
@@ -63,13 +63,13 @@ $('#myModal').on('shown.bs.modal', function () {
             
             <!--<input type="submit" id="like" value="좋아요">-->
             <form style="float:left;margin-right: 10px;" action="" method="post" >
-                <input class="like" style="width:60px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{% url 'bbs:free_like'%}" value="추천 {{like_count}}">
+                <input class="like" style="width:60px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{like_url}}" value="추천 {{like_count}}">
             </form>
             <!--//end 좋아요-->
 
             <!--싫어요-->
             <form style="float:left;margin-right: 10px;" action="" method="post" >
-                <input class="dislike" style="width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{% url 'bbs:free_dislike'%}" value="비추천 {{dislike_count}}">
+                <input class="dislike" style="width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{dislike_url}}" value="비추천 {{dislike_count}}">
             </form>
             <!--//end 싫어요-->
 
@@ -121,7 +121,7 @@ $('#myModal').on('shown.bs.modal', function () {
                       댓글을 삭제하시겠습니까?
                   </div>
                   <div class="modal-footer">
-                    <form action="/first_page/{{ comment.id }}/comment/destroy" method="post">
+                    <form action="" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="maple" value="{{ post_list.pk }}">
                         <input class="destroy btn btn-primary" type="submit" value="삭제">
@@ -144,7 +144,7 @@ $('#myModal').on('shown.bs.modal', function () {
     {%else%}
     <form method="POST" class="post-form">
         <span style="float: left;padding-left: 0px;">{{ comment_form.text }}</span>
-        <input class="commit" style="width:120px;height: 40px;background-color: #F4F4F7;border: 1px solid gray;cursor:pointer;" type="submit" name="{{ post.id }}" href="{% url 'bbs:free_comment' %}"value="등록">
+        <input class="commit" style="width:120px;height: 40px;background-color: #F4F4F7;border: 1px solid gray;cursor:pointer;" type="submit" name="{{ post.id }}" href="comment_url"value="등록">
     </form>
     {%endif%}
 </div>

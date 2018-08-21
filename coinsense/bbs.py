@@ -88,6 +88,11 @@ class BoardReadView(View):
     template_name = None #템플릿 
     context={}
     title = None #게시판이름
+    like_url=''
+    dislike_url=''
+    update_url=''
+    destroy_url=''
+    comment_url=''
 
     def get_comment_form(self):
         return self.comment_Form_class
@@ -114,6 +119,13 @@ class BoardReadView(View):
         self.context['boardtitle'] = self.title
         self.context['comment_form'] = self.get_comment_form()
         self.context['comments'] = self.get_comment_model().filter(post=post)
+
+        #접근주소 가변처리
+        self.context['like_url'] =  reverse(self.like_url)
+        self.context['dislike_url'] = reverse(self.dislike_url)
+        self.context['update_url'] = self.update_url
+        self.context['destroy_url'] = self.destroy_url
+        self.context['comment_url'] = reverse(self.comment_url)
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -285,7 +297,7 @@ class ForumListView(View):
     form_class = None
     success_url= None
     template_name = None
-    context={}
+    context = {}
     title = None
 
     def get_success_url(self):

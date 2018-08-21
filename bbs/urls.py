@@ -3,6 +3,7 @@ from . import views
 
 app_name='bbs'
 
+#자유게시판 주소
 urlpatterns = [
     path('free/', views.freeList, name="free_list"),
     path('free/create/', views.freeCreate , name="free_create"),
@@ -12,17 +13,26 @@ urlpatterns = [
     path('free/like/', views.freeLike, name="free_like"),
     path('free/dislike/', views.freeDisLike, name="free_dislike"),
     path('free/comment/', views.freeComment, name="free_comment"),
-    path('forum/', views.forumlist, name="forum_list"),
-    path('society/', views.societylist, name="society_list"),
 ]
 
+#시황분석 게시판 주소
 urlpatterns += [
-    path('analysis/', views.normalAnalysisList, name="analysis_list"),                
-    path('analysis/create/', views.normalAnalysisCreate , name="analysis_create"),
-    path('analysis/<int:pk>/', views.normalAnalysisRead , name="analysis_read"),
-    path('analysis/edit/<int:pk>/', views.normalAnalysisUpdate, name="analysis_update"),
-    path('analysis/destroy/<int:pk>/', views.normalAnalysisDestroy, name="analysis_destroy"),
-    path('analysis/like/', views.normalAnalysisLike, name="analysis_like"),
-    path('analysis/dislike/', views.normalAnalysisDisLike, name="analysis_dislike"),
-    path('analysis/comment/', views.normalAnalysisComment, name="analysis_comment"),
+    path('analysis/', views.normalAnalysisList, name="analysis_list"),                          #목록
+    path('analysis/create/', views.normalAnalysisCreate , name="analysis_create"),              #쓰기
+    path('analysis/<int:pk>/', views.normalAnalysisRead , name="analysis_read"),                #읽기
+    path('analysis/edit/<int:pk>/', views.normalAnalysisUpdate, name="analysis_update"),        #수정
+    path('analysis/destroy/<int:pk>/', views.normalAnalysisDestroy, name="analysis_destroy"),   #삭제
+    path('analysis/like/', views.normalAnalysisLike, name="analysis_like"),                     #추천
+    path('analysis/dislike/', views.normalAnalysisDisLike, name="analysis_dislike"),            #비추천
+    path('analysis/comment/', views.normalAnalysisComment, name="analysis_comment"),            #댓글
+]
+
+#포럼게시판 주소
+urlpatterns += [
+    path('forum/', views.forumlist, name="forum_list"),
+]
+
+#학회 게시판 주소
+urlpatterns += [
+    path('society/', views.societylist, name="society_list"),
 ]
