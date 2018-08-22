@@ -1,13 +1,10 @@
 from django.shortcuts import render
-
-from account.views import login_func
 from account.forms import LoginForm
 
 from coinsense import bbs
 from . import models
 from . import forms
 
-# Create your views here.
 #갤러리
 marketBoardList = bbs.BoardListView.as_view(
     model= models.MarketBoard,
@@ -62,5 +59,62 @@ marketBoardDisLike = bbs.DisLikeView.as_view(
 marketBoardComment = bbs.CommentView.as_view(
     model = models.MarketBoard,
     form_class = forms.MarketBoardCommentForm,
+    template_name="Comment.html",
+)
+
+#이벤트
+eventList = bbs.BoardListView.as_view(
+    model= models.Event,
+    login_form = LoginForm ,
+    success_url ='/event/',
+    template_name = "Board_List.html",
+    create_url = 'bk:event_create',
+    read_url='bk:event_read',
+    title="판매 게시판",
+    permission = 'BK',
+)
+
+eventCreate = bbs.BoardCreateView.as_view(
+    model = models.Event,
+    form_class = forms.EventCreationForm,
+    template_name='Board_Create.html',
+    title ="판매게시글 작성"
+)
+eventRead = bbs.BoardReadView.as_view(
+    model = models.Event,
+    comment_model = models.EventComment,
+    comment_Form_class = forms.EventCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title ="판매게시판",
+    like_url='bk:event_like',
+    dislike_url='bk:event_dislike',
+    update_url='bk:event_update',
+    destroy_url= 'bk:event_destroy',
+    comment_url= 'bk:event_comment',
+)
+
+eventUpdate = bbs.BoardUpdateView.as_view(
+    model = models.Event,
+    form_class= forms.EventCreationForm,
+    template_name='Board_Create.html',
+    title ="갤러리 수정",
+)
+
+eventDestroy = bbs.BoardDestroyView.as_view(
+    
+)
+
+eventLike = bbs.LikeView.as_view(
+    model = models.Event
+)
+
+eventDisLike = bbs.DisLikeView.as_view(
+    model = models.Event
+)
+
+eventComment = bbs.CommentView.as_view(
+    model = models.Event,
+    form_class = forms.EventCommentForm,
     template_name="Comment.html",
 )
