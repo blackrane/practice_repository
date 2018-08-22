@@ -1,4 +1,5 @@
 #django import
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
@@ -27,11 +28,9 @@ class BoardListView(View):
     def get_permission(self):
         if self.permission is None:
             return True
-        elif self.request.user.code == self.permission:
+        if self.request.user.code == self.permission:
             return True
-        else:
-            return False
-        
+        return False
 
     def get_success_url(self):
         return self.success_url
@@ -57,12 +56,22 @@ class BoardListView(View):
         self.context['permission'] = self.get_permission()
         return render(self.request, self.get_template_name(), self.context)
 
-class BoardCreateView(View):
+class BoardCreateView(UserPassesTestMixin, View):
     model = None
     form_class = None
     template_name = None
     context={}
     title = None
+    pass_condition = None
+
+    #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
+    #조건 선택시 해당 조건의 유저만 들어갈수있다.
+    def test_func(self):
+        if self.pass_condition is None:
+            return True
+        if self.request.user.code == self.pass_condition:
+            return True
+        return False
 
     @method_decorator(login_required(login_url='/free/'))
     def dispatch(self, *args, **kwargs):
@@ -88,11 +97,11 @@ class BoardCreateView(View):
             post = form.save(commit=False)
             post.author = self.request.user
             post.save()
-            return redirect(post.get_absolute_url())
+            return redirect(post)
         return render(self.request, self.get_template_name(), self.context)
 
 #게시글 디테일 뷰
-class BoardReadView(View):
+class BoardReadView( View):
     model = None #게시글 모델
     comment_model = None # 댓글 모델
     form_class = None #로그인 폼
@@ -148,13 +157,21 @@ class BoardReadView(View):
         return render(self.request, self.get_template_name(), self.context)
 
 #게시글 수정 뷰
-class BoardUpdateView(View):
+class BoardUpdateView(UserPassesTestMixin, View):
     model = None
     form_class = None
     success_url= None
     template_name = None
     title = None
     context={}
+
+    #작성자아니면 못들어온다.
+    def test_func(self):
+        post = get_object_or_404(self.model, id=self.kwargs['pk'])
+        if self.request.user == post.author:
+            return True
+        return False
+
     def get_object(self):
         pk = self.kwargs['pk']
         return get_object_or_404(self.model, id=pk)
@@ -199,11 +216,16 @@ class BoardUpdateView(View):
             post = form.save(commit=False)
             post.author = self.request.user
             post.save()
-            return redirect(self.get_success_url())
+            return redirect(post)
         return render(self.request, self.get_template_name(), self.get_context_data(form=form))
 
-class BoardDestroyView(View):
-    pass
+class BoardDestroyView(UserPassesTestMixin, View):
+    #작성자아니면 못들어온다.
+    def test_func(self):
+        post = get_object_or_404(self.model, id=self.kwargs['pk'])
+        if self.request.user == post.author:
+            return True
+        return False
 
 
 #좋아요 ajax

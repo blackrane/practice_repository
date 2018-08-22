@@ -221,6 +221,7 @@ class ForumBitCoinDisLike(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+<<<<<<< HEAD
 #######################################################################################################################################
 #호재
 class Favorable(models.Model):
@@ -242,5 +243,58 @@ class Favorable(models.Model):
 class Favorable_Like(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     post = models.ForeignKey(Favorable, on_delete=models.CASCADE ,related_name='like_set')
+=======
+
+###############################################################################################################################
+#  ForumBitCoin
+class Gallery(summer_model.Attachment):
+    author = models.ForeignKey(get_user_model() ,on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss')
+    title = models.CharField(verbose_name="title",max_length=40)
+    summer_field = summer_fields.SummernoteTextField(default='')
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)
+    views = models.IntegerField(null=False, blank=False, default=0) #조회수
+    like_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='Glike_user_set',
+                                           through='galleryLike') # post.like_set 으로 접근 가능
+    dislike_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='GCdislike_user_set',
+                                           through='galleryDisLike') # post.like_set 으로 접근 가능
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def like_count(self):
+        return self.like_user_set.count()
+        
+    @property
+    def dislike_count(self):
+        return self.dislike_user_set.count()
+
+    def get_absolute_url(self):
+        return reverse('bbs:gallery_read', args=[self.id])
+
+class GalleryComment(models.Model):
+    post = models.ForeignKey(Gallery, verbose_name="HoneyTip Comment", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
+    author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
+    text = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
+
+class GalleryLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(Gallery, on_delete=models.CASCADE ,related_name='like_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class GalleryDisLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(Gallery, on_delete=models.CASCADE, related_name='dislike_set')
+>>>>>>> 5a4324f35e5a06a5871a83862a28af71e397792a
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

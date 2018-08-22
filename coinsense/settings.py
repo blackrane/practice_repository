@@ -41,10 +41,13 @@ INSTALLED_APPS = [
     'bbs',
     'django_summernote',
     'el_pagination',
+    'bk_bbs',
 ]
 
 #추가설정
 AUTH_USER_MODEL = 'account.User'
+
+AUTH_ANONYMOUS_MODEL = 'bk_bbs.module.CustomAnonymousUser'
 
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'coinsense','static'),
@@ -68,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'custom_anonymous.middleware.AuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'coinsense.urls'
