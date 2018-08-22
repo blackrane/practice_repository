@@ -100,9 +100,9 @@
    			</li>
 			<li class="main_list drop-down-mom">CS게시판
 				<ul class="drop-down">
-   			    	<li><a href="">코인분석</a></li>
-   			    	<li><a href="#">시황분석</a></li>
-   			       	<li><a href="#">동영상컨텐츠</a></li>
+   			    	<li><a href="{% url 'bk:coinanalysis_list' %}">코인분석</a></li>
+   			    	<li><a href="{% url 'bk:analysis_list' %}">시황분석</a></li>
+   			       	<li><a href="{% url 'bk:video_list' %}">동영상컨텐츠</a></li>
    			    </ul>
    			</li>
 			<li class="main_list drop-down-mom">뉴스/칼럼

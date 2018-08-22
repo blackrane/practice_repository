@@ -195,7 +195,7 @@ class Analysis(summer_model.Attachment):
         return self.dislike_user_set.count()
 
     def get_absolute_url(self):
-        return reverse('bk:alysis_read', args=[self.id])
+        return reverse('bk:analysis_read', args=[self.id])
 
 class AnalysisComment(models.Model):
     post = models.ForeignKey(Analysis, verbose_name="Analysis", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
@@ -215,5 +215,59 @@ class AnalysisLike(models.Model):
 class AnalysisDisLike(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     post = models.ForeignKey(Analysis, on_delete=models.CASCADE, related_name='dislike_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+#############################################################################################
+# 동영상 컨텐츠 모델
+class Video(summer_model.Attachment):
+    author = models.ForeignKey(get_user_model() ,on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss')
+    title = models.CharField(verbose_name="title",max_length=40)
+    summer_field = summer_fields.SummernoteTextField(default='')
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)
+    views = models.IntegerField(null=False, blank=False, default=0) #조회수
+    like_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='Vike_user_set',
+                                           through='VideoLike') # post.like_set 으로 접근 가능
+    dislike_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='Vislike_user_set',
+                                           through='VideoDisLike') # post.like_set 으로 접근 가능
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def like_count(self):
+        return self.like_user_set.count()
+        
+    @property
+    def dislike_count(self):
+        return self.dislike_user_set.count()
+
+    def get_absolute_url(self):
+        return reverse('bk:video_read', args=[self.id])
+
+class VideoComment(models.Model):
+    post = models.ForeignKey(Video, verbose_name="Video", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
+    author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
+    text = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
+
+class VideoLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(Video, on_delete=models.CASCADE ,related_name='like_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class VideoDisLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='dislike_set')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

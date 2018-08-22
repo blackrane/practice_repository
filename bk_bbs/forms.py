@@ -46,3 +46,70 @@ class EventCommentForm(forms.ModelForm):
         'placeholder':'댓글을 입력해주세요.',
             })
         }
+
+###############################################################################
+# CoinAnalysis 폼
+class CoinAnalysisCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.CoinAnalysis
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
+
+class CoinAnalysisCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.CoinAnalysisComment
+        fields = ['text']
+        widgets={
+        'text': forms.TextInput(attrs={
+        'class':"form-controlcomment-Table",
+        'style':'width:670px;height:40px;margin-right:10px;',
+        'placeholder':'댓글을 입력해주세요.',
+            })
+        }
+###############################################################################
+# 시황분석폼
+class AnalysisCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.Analysis
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
+
+class AnalysisCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.AnalysisComment
+        fields = ['text']
+        widgets={
+        'text': forms.TextInput(attrs={
+        'class':"form-controlcomment-Table",
+        'style':'width:670px;height:40px;margin-right:10px;',
+        'placeholder':'댓글을 입력해주세요.',
+            })
+        }
+###############################################################################
+# 동영상폼
+class VideoCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.Video
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
+
+class VideoCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.VideoComment
+        fields = ['text']
+        widgets={
+        'text': forms.TextInput(attrs={
+        'class':"form-controlcomment-Table",
+        'style':'width:670px;height:40px;margin-right:10px;',
+        'placeholder':'댓글을 입력해주세요.',
+            })
+        }

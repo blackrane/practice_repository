@@ -120,3 +120,177 @@ eventComment = bbs.CommentView.as_view(
     form_class = forms.EventCommentForm,
     template_name="Comment.html",
 )
+
+#코인분석 
+coinAnalysisList = bbs.BoardListView.as_view(
+    model= models.CoinAnalysis,
+    login_form = LoginForm ,
+    success_url ='/coinanalysis/',
+    template_name = "Board_List.html",
+    create_url = 'bk:coinanalysis_create',
+    read_url='bk:coinanalysis_read',
+    title="코인분석 게시판",
+    permission = 'BK',
+)
+
+coinAnalysisCreate = bbs.BoardCreateView.as_view(
+    model = models.CoinAnalysis,
+    form_class = forms.CoinAnalysisCreationForm,
+    template_name='Board_Create.html',
+    title ="코인분석 작성",
+    pass_condition="BK",
+)
+coinAnalysisRead = bbs.BoardReadView.as_view(
+    model = models.CoinAnalysis,
+    comment_model = models.CoinAnalysisComment,
+    comment_Form_class = forms.CoinAnalysisCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title ="코인분석",
+    like_url='bk:coinanalysis_like',
+    dislike_url='bk:coinanalysis_dislike',
+    update_url='bk:coinanalysis_update',
+    destroy_url= 'bk:coinanalysis_destroy',
+    comment_url= 'bk:coinanalysis_comment',
+)
+
+coinAnalysisUpdate = bbs.BoardUpdateView.as_view(
+    model = models.CoinAnalysis,
+    form_class= forms.CoinAnalysisCreationForm,
+    template_name='Board_Create.html',
+    title ="코인분석 수정",
+)
+
+coinAnalysisDestroy = bbs.BoardDestroyView.as_view(
+    
+)
+
+coinAnalysisLike = bbs.LikeView.as_view(
+    model = models.CoinAnalysis
+)
+
+coinAnalysisDisLike = bbs.DisLikeView.as_view(
+    model = models.CoinAnalysis
+)
+
+coinAnalysisComment = bbs.CommentView.as_view(
+    model = models.CoinAnalysis,
+    form_class = forms.CoinAnalysisCommentForm,
+    template_name="Comment.html",
+)
+
+#시황분석
+analysisList = bbs.BoardListView.as_view(
+    model= models.Analysis,
+    login_form = LoginForm ,
+    success_url ='/analysis/',
+    template_name = "Board_List.html",
+    create_url = 'bk:analysis_create',
+    read_url='bk:analysis_read',
+    title="시황분석 게시판",
+    permission = 'BK',
+)
+
+analysisCreate = bbs.BoardCreateView.as_view(
+    model = models.Analysis,
+    form_class = forms.AnalysisCreationForm,
+    template_name='Board_Create.html',
+    title ="시황분석 작성",
+    pass_condition="BK",
+)
+analysisRead = bbs.BoardReadView.as_view(
+    model = models.Analysis,
+    comment_model = models.AnalysisComment,
+    comment_Form_class = forms.AnalysisCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title ="시황분석",
+    like_url='bk:analysis_like',
+    dislike_url='bk:analysis_dislike',
+    update_url='bk:analysis_update',
+    destroy_url= 'bk:analysis_destroy',
+    comment_url= 'bk:analysis_comment',
+)
+
+analysisUpdate = bbs.BoardUpdateView.as_view(
+    model = models.Analysis,
+    form_class= forms.AnalysisCreationForm,
+    template_name='Board_Create.html',
+    title ="시황분석 수정",
+)
+
+analysisDestroy = bbs.BoardDestroyView.as_view(
+    
+)
+
+analysisLike = bbs.LikeView.as_view(
+    model = models.Analysis
+)
+
+analysisDisLike = bbs.DisLikeView.as_view(
+    model = models.Analysis
+)
+
+analysisComment = bbs.CommentView.as_view(
+    model = models.Analysis,
+    form_class = forms.AnalysisCommentForm,
+    template_name="Comment.html",
+)
+
+#비디오컨텐츠
+videoList = bbs.BoardListView.as_view(
+    model= models.Video,
+    login_form = LoginForm ,
+    success_url ='/Video/',
+    template_name = "Board_List.html",
+    create_url = 'bk:video_create',
+    read_url='bk:video_read',
+    title="비디오컨텐츠 게시판",
+    permission = 'BK',
+)
+
+videoCreate = bbs.BoardCreateView.as_view(
+    model = models.Video,
+    form_class = forms.VideoCreationForm,
+    template_name='Board_Create.html',
+    title ="비디오컨텐츠 작성",
+    pass_condition="BK",
+)
+videoRead = bbs.BoardReadView.as_view(
+    model = models.Video,
+    comment_model = models.VideoComment,
+    comment_Form_class = forms.VideoCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title ="비디오컨텐츠",
+    like_url='bk:video_like',
+    dislike_url='bk:video_dislike',
+    update_url='bk:video_update',
+    destroy_url= 'bk:video_destroy',
+    comment_url= 'bk:video_comment',
+)
+
+videoUpdate = bbs.BoardUpdateView.as_view(
+    model = models.Video,
+    form_class= forms.VideoCreationForm,
+    template_name='Board_Create.html',
+    title ="비디오컨텐츠 수정",
+)
+
+videoDestroy = bbs.BoardDestroyView.as_view(
+    
+)
+
+videoLike = bbs.LikeView.as_view(
+    model = models.Video
+)
+
+videoDisLike = bbs.DisLikeView.as_view(
+    model = models.Video
+)
+
+videoComment = bbs.CommentView.as_view(
+    model = models.Video,
+    form_class = forms.VideoCommentForm,
+    template_name="Comment.html",
+)
