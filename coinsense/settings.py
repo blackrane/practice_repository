@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'bbs',
     'django_summernote',
     'el_pagination',
+    'bk_bbs',
 ]
 
 #추가설정

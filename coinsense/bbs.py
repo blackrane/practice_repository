@@ -86,7 +86,7 @@ class BoardCreateView(View):
             post = form.save(commit=False)
             post.author = self.request.user
             post.save()
-            return redirect(post.get_absolute_url())
+            return redirect(post)
         return render(self.request, self.get_template_name(), self.context)
 
 #게시글 디테일 뷰
@@ -197,7 +197,7 @@ class BoardUpdateView(View):
             post = form.save(commit=False)
             post.author = self.request.user
             post.save()
-            return redirect(post.get_absolute_url())
+            return redirect(post)
         return render(self.request, self.get_template_name(), self.get_context_data(form=form))
 
 class BoardDestroyView(View):
