@@ -61,3 +61,15 @@ urlpatterns += [
     path('video/dislike/', views.videoDisLike, name="video_dislike"),            #비추천
     path('video/comment/', views.videoComment, name="video_comment"),            #댓글
 ]
+
+#뉴스 게시판
+urlpatterns += [
+    path('news/', views.newsList, name="news_list"),                          #목록
+    path('news/create/', views.newsCreate , name="news_create"),              #쓰기
+    path('news/<int:pk>/', views.newsRead , name="news_read"),                #읽기
+    path('news/edit/<int:pk>/', views.newsUpdate, name="news_update"),        #수정
+    path('news/destroy/<int:pk>/', views.newsDestroy, name="news_destroy"),   #삭제
+    path('news/like/', views.newsLike, name="news_like"),                     #추천
+    path('news/dislike/', views.newsDisLike, name="news_dislike"),            #비추천
+    path('news/comment/', views.newsComment, name="news_comment"),            #댓글
+]
