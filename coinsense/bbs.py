@@ -8,6 +8,8 @@ from django.views.generic import ListView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
+from django.core.paginator import Paginator, PageNotAnInteger , EmptyPage
+from django.db.models import Q
 import json
 
 #App import
@@ -38,14 +40,40 @@ class BoardListView(View):
     def get_template_name(self):
         return self.template_name
 
-    #get 요청일때
-    def get(self, *args, **kwargs):
+    def context_init(self):
         self.context['post_list'] = self.model.objects.all()
         self.context['form'] = self.login_form()
         self.context['boardtitle'] = self.title
         self.context['url']= reverse(self.create_url)
         self.context['read_url'] = self.read_url
         self.context['permission'] = self.get_permission()
+
+    def get_serach(self):
+        search = self.request.GET.get('search',None) #검색 가져오기
+        #검색소스
+        if search is not None: #검색이 있다면 
+            self.context['post_list'] = self.context['post_list'].filter(
+                title__contains=search) #필터해서 적용
+    
+    def get_pagination(self):
+         #페이지 네이션
+        paginator = Paginator(self.context['post_list'], 3) #15개씩 묶어 페이지 생성 선언
+
+        page = self.request.GET.get('page',1 )
+        try:
+            paginator = paginator.page(page)
+        except PageNotAnInteger:
+            paginator = paginator.page(1)
+        except EmptyPage:
+            paginator = paginator.page(paginator.num_pages)
+        self.context['post_list'] = paginator
+
+    #get 요청일때
+    def get(self, *args, **kwargs):
+        self.context_init()
+        self.get_serach()
+        self.get_pagination()
+        print(type(self.context['post_list']))
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때

@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
 import json
+from django.db.models import Q
+
 #App 
 from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView
 from . import models
@@ -321,13 +323,20 @@ societylist = ForumListView.as_view(
 
 #호재 게시판 
 def favorable(request):
+    search = request.GET.get('search', None) #검색
+  
     favorable = models.Favorable.objects.all()
     form = LoginForm()
+    if search:
+        favorable = favorable.filter(
+            Q(title__icontains=search) | Q(content__icontains=search) # Q 객체를 사용해서 검색한다. # title,context 칼럼에 대소문자를 구분하지 않고 단어가 포함되어있는지 (icontains) 검사 
+            ).distinct() #중복을 제거한다.
 
-    return render(request, 'Favorable.html',{
+    context= {
         'favorable':favorable,
         'form':form,
-        })
+    }
+    return render(request, 'Favorable.html',context)
 
 def favorableLike(request):
     post = get_object_or_404(models.Favorable, pk=request.POST.get('pk',None))
