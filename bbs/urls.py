@@ -28,7 +28,6 @@ urlpatterns += [
 ]
 
 #꿀팁 게시판
-
 urlpatterns += [
     path('honeytip/', views.honeyTipList, name="honeytip_list"),                          #목록
     path('honeytip/create/', views.honeyTipCreate , name="honeytip_create"),              #쓰기
@@ -40,6 +39,17 @@ urlpatterns += [
     path('honeytip/comment/', views.honeyTipComment, name="honeytip_comment"),            #댓글
 ]
 
+#갤러리 게시판
+urlpatterns += [
+    path('gallery/', views.galleryList, name="gallery_list"),                          #목록
+    path('gallery/create/', views.galleryCreate , name="gallery_create"),              #쓰기
+    path('gallery/<int:pk>/', views.galleryRead , name="gallery_read"),                #읽기
+    path('gallery/edit/<int:pk>/', views.galleryUpdate, name="gallery_update"),        #수정
+    path('gallery/destroy/<int:pk>/', views.galleryDestroy, name="gallery_destroy"),   #삭제
+    path('gallery/like/', views.galleryLike, name="gallery_like"),                     #추천
+    path('gallery/dislike/', views.galleryDisLike, name="gallery_dislike"),            #비추천
+    path('gallery/comment/', views.galleryComment, name="gallery_comment"),            #댓글
+]
 #포럼게시판 주소
 urlpatterns += [
     path('forum/', views.forumlist, name="forum_list"),

@@ -27,11 +27,9 @@ class BoardListView(View):
     def get_permission(self):
         if self.permission is None:
             return True
-        elif self.request.user.code == self.permission:
+        if self.request.user.code == self.permission:
             return True
-        else:
-            return False
-        
+        return False
 
     def get_success_url(self):
         return self.success_url
@@ -199,7 +197,7 @@ class BoardUpdateView(View):
             post = form.save(commit=False)
             post.author = self.request.user
             post.save()
-            return redirect(self.get_success_url())
+            return redirect(post.get_absolute_url())
         return render(self.request, self.get_template_name(), self.get_context_data(form=form))
 
 class BoardDestroyView(View):

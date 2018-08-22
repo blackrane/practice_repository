@@ -127,38 +127,60 @@ normalAnalysisComment = CommentView.as_view(
 
 #갤러리
 galleryList = BoardListView.as_view(
-    model= models.NormalAnalysis,
+    model= models.Gallery,
     login_form = LoginForm ,
-    success_url ='/analysis/',
+    success_url ='/gallery/',
     template_name = "Board_List.html",
-    create_url = 'bbs:analysis_create',
-    title="시황분석공유",
+    create_url = 'bbs:gallery_create',
+    read_url='bbs:gallery_read',
+    title="갤러리",
 )
-galleryCreate = BoardCreateView.as_view(
 
+galleryCreate = BoardCreateView.as_view(
+    model = models.Gallery,
+    form_class = forms.GalleryCreationForm,
+    template_name='Board_Create.html',
+    title ="갤러리 게시글 작성"
 )
 galleryRead = BoardReadView.as_view(
-
+    model = models.Gallery,
+    comment_model = models.GalleryComment,
+    comment_Form_class = forms.GalleryCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title ="갤러리",
+    like_url='bbs:gallery_like',
+    dislike_url='bbs:gallery_dislike',
+    update_url='bbs:gallery_update',
+    destroy_url= 'bbs:gallery_destroy',
+    comment_url= 'bbs:gallery_comment',
 )
 galleryUpdate = BoardUpdateView.as_view(
-
+    model = models.Gallery,
+    form_class= forms.GalleryCreationForm,
+    success_url = '/gallery/',
+    template_name='Board_Create.html',
+    title ="갤러리 수정",
 )
 
 galleryDestroy = BoardDestroyView.as_view(
-
+    
 )
 
 galleryLike = LikeView.as_view(
-
+    model = models.Gallery
 )
 
 galleryDisLike = DisLikeView.as_view(
-
+    model = models.Gallery
 )
 
 galleryComment = CommentView.as_view(
-
+    model = models.Gallery,
+    form_class = forms.GalleryCommentForm,
+    template_name="Comment.html",
 )
+
 ##################################################################################
 #정보/꿀팁
 
