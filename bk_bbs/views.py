@@ -21,7 +21,8 @@ marketBoardCreate = bbs.BoardCreateView.as_view(
     model = models.MarketBoard,
     form_class = forms.MarketBoardCreationForm,
     template_name='Board_Create.html',
-    title ="판매게시글 작성"
+    title ="판매게시글 작성",
+    pass_condition="BK",
 )
 marketBoardRead = bbs.BoardReadView.as_view(
     model = models.MarketBoard,
@@ -78,7 +79,8 @@ eventCreate = bbs.BoardCreateView.as_view(
     model = models.Event,
     form_class = forms.EventCreationForm,
     template_name='Board_Create.html',
-    title ="판매게시글 작성"
+    title ="판매게시글 작성",
+    pass_condition="BK",
 )
 eventRead = bbs.BoardReadView.as_view(
     model = models.Event,

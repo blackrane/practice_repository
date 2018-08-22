@@ -14,7 +14,6 @@ urlpatterns = [
     path('market/comment/', views.marketBoardComment, name="market_comment"),            #댓글
 ]
 
-
 #이벤트 게시판
 urlpatterns += [
     path('event/', views.eventList, name="event_list"),                          #목록
