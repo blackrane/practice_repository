@@ -337,7 +337,7 @@ def favorable(request):
         'form':form,
     }
     return render(request, 'Favorable.html',context)
-
+#호재 좋아요
 def favorableLike(request):
     post = get_object_or_404(models.Favorable, pk=request.POST.get('pk',None))
     post_like, post_like_created = post.like_set.get_or_create(user=request.user)
@@ -352,3 +352,14 @@ def favorableLike(request):
         'message':message
     }
     return HttpResponse(json.dumps(context))
+
+#ICO 게시판 
+ico_rating_list = BoardListView.as_view(
+    model = models.FreeBoard, #수정
+    login_form = LoginForm ,
+    success_url = '/ico_rating/',
+    template_name='Ico_rating_list.html',
+    create_url = 'bbs:free_create',#수정
+    read_url='bbs:free_read', #수정
+    title ="ICO RATING"
+)

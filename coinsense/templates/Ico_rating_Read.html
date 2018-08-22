@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div id="free_board" class="table" style="padding-top: 10px;margin-bottom: 20px;">
+    <div style="clear:both;padding-top: 10px;margin-bottom: 20px;">
+        <div style="float: left; width:730px;">
+            <h5><b>ICO게시판</b></h5>
+        </div>
+    </div>
+
+    <div style="clear: both;">
+        <form style="float: left;margin-right: 120px;" action="" method="">
+            <input id="search_favor" type="text" placeholder="ICO명을 검색하세요" name="search">
+            <input id="search_favor_button" type="submit" value="검색">
+        </form>
+        <a style="color: #383838;border: 1px solid #383838;padding-left: 10px;padding-right: 10px;margin-left: 10px;" href="{{url}}"><b>글쓰기</b></a>
+    </div>
+
+    <div style="clear: both;width:800px;" id="free_board_sub">
+        
+    </div>        
+</div>
+
+{% endblock %}

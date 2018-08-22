@@ -17,7 +17,7 @@
         <table>
             <thead class="thead-light">
                 <tr>
-                    <th style="width:75px;">글번호</th>
+                    <th style="width:100px;">글번호</th>
                     <th style="width:370px;">제목</th>
                     <th style="width:170px;">작성자</th>
                     <th style="width:75px;">작성일</th>
@@ -70,7 +70,7 @@
                       {% if post_list.has_previous %}
                       <li>
                         <a style="color:black" href="?page={{ post_list.previous_page_number }}" aria-label="Previous">
-                          <<
+                          이전&ensp;
                         </a>
                       </li>
                       {% else %}
@@ -80,14 +80,14 @@
                       {% for i in post_list.paginator.page_range %}
                       <!--현재페이지-->
                         {% if post_list.number == i %}
-                          <li style="color:black" class="active"><a href="#">{{i}}</a></li>
+                          <li class="active" style="font-size: 20px;line-height: 25px;"><a style="color:black" href="#"><b>&ensp;{{i}}&ensp;</b></a></li>
                         {% else %}
-                          <li><a style="color:black" href="?page={{i}}">{{i}}</a></li>
+                          <li><a style="color:black" href="?page={{i}}">&ensp;{{i}}&ensp;</a></li>
                         {% endif %}
                       {% endfor %}
                       
                       {% if post_list.has_next %}
-                        <li><a  style="color:black" href="?page={{ post_list.next_page_number }}" aria-label="Next">>></i></a></li>
+                        <li><a  style="color:black" href="?page={{ post_list.next_page_number }}" aria-label="Next">&ensp;다음</i></a></li>
                       {% else %}  
               
                       {% endif %}

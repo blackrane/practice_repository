@@ -77,3 +77,8 @@ urlpatterns += [
     path('favorable/', views.favorable, name="favorable"),
     path('favorable/like/', views.favorableLike, name="favorable_like")
 ]
+
+#ICO_RATING
+urlpatterns += [
+    path('ico_rating/', views.ico_rating_list, name="ico_rating_list"),
+]
