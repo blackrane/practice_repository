@@ -250,6 +250,7 @@ forumlist = ForumListView.as_view(
     template_name='Forum_List.html',
     title ="코인별 포럼"
 )
+
 #####################################################################
 # 비트코인 포럼
 forumBitCoinList = BoardListView.as_view(
@@ -315,12 +316,68 @@ societylist = ForumListView.as_view(
     title ="학회게시판"
 )
 
+#####################################################################
+# 비트코인 포럼
+usercolumnList = BoardListView.as_view(
+    model= models.UserColumn,
+    login_form = LoginForm ,
+    success_url ='/forum/bitcoin/',
+    template_name = "Board_List.html",
+    create_url = 'bbs:usercolumn_create',
+    read_url='bbs:usercolumn_read',
+    title="유저칼럼",
+)
+
+usercolumnCreate = BoardCreateView.as_view(
+    model = models.UserColumn,
+    form_class = forms.UserColumnCreationForm,
+    template_name='Board_Create.html',
+    title="유저칼럼",
+)
+
+usercolumnRead = BoardReadView.as_view(
+    model = models.UserColumn,
+    comment_model = models.UserColumnComment,
+    comment_Form_class = forms.UserColumnCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title="유저칼럼",
+    like_url='bbs:usercolumn_like',
+    dislike_url='bbs:usercolumn_dislike',
+    update_url='bbs:usercolumn_update',
+    destroy_url= 'bbs:usercolumn_destroy',
+    comment_url= 'bbs:usercolumn_comment',
+)
+
+usercolumnUpdate = BoardUpdateView.as_view(
+    model = models.UserColumn,
+    form_class= forms.UserColumnCreationForm,
+    success_url = '/forum/bitcoin/',
+    template_name='Board_Create.html',
+    title="유저칼럼",
+)
+usercolumnDestroy = BoardDestroyView.as_view(
+    
+)
+usercolumnLike = LikeView.as_view(
+    model = models.UserColumn
+)
+
+usercolumnDisLike = DisLikeView.as_view(
+    model = models.UserColumn
+)
+
+usercolumnComment = CommentView.as_view(
+    model = models.UserColumn,
+    form_class = forms.UserColumnCommentForm,
+    template_name="Comment.html",
+)
+
 #제휴 게시판
 
 #제휴 문의 게시판
 
 ###################################################
-
 #호재 게시판 
 def favorable(request):
     search = request.GET.get('search', None) #검색
@@ -352,3 +409,4 @@ def favorableLike(request):
         'message':message
     }
     return HttpResponse(json.dumps(context))
+

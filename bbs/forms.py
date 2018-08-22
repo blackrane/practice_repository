@@ -118,8 +118,28 @@ class GalleryCommentForm(forms.ModelForm):
             })
         }
 ################################################################################################################################
-# 시황분석폼
+# 유저컬럼폼
 
+class UserColumnCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.UserColumn
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
+
+class UserColumnCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.UserColumnComment
+        fields = ['text']
+        widgets={
+        'text': forms.TextInput(attrs={
+        'class':"form-controlcomment-Table",
+        'style':'width:670px;height:40px;margin-right:10px;',
+        'placeholder':'댓글을 입력해주세요.',
+            })
+        }
 ################################################################################################################################
 # 시황분석폼
 

@@ -57,7 +57,7 @@ class BoardListView(View):
     
     def get_pagination(self):
          #페이지 네이션
-        paginator = Paginator(self.context['post_list'], 3) #15개씩 묶어 페이지 생성 선언
+        paginator = Paginator(self.context['post_list'], 3) # n개씩 묶어 페이지 생성 선언
 
         page = self.request.GET.get('page',1 )
         try:
@@ -73,7 +73,6 @@ class BoardListView(View):
         self.context_init()
         self.get_serach()
         self.get_pagination()
-        print(type(self.context['post_list']))
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때

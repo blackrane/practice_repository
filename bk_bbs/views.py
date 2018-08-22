@@ -237,6 +237,7 @@ analysisComment = bbs.CommentView.as_view(
     template_name="Comment.html",
 )
 
+#####################################################################
 #비디오컨텐츠
 videoList = bbs.BoardListView.as_view(
     model= models.Video,
@@ -292,5 +293,64 @@ videoDisLike = bbs.DisLikeView.as_view(
 videoComment = bbs.CommentView.as_view(
     model = models.Video,
     form_class = forms.VideoCommentForm,
+    template_name="Comment.html",
+)
+##############################################################
+# 뉴스게시판
+
+newsList = bbs.BoardListView.as_view(
+    model= models.News,
+    login_form = LoginForm ,
+    success_url ='/news/',
+    template_name = "Board_List.html",
+    create_url = 'bk:news_create',
+    read_url='bk:news_read',
+    title="뉴스 게시판",
+    permission = 'BK',
+)
+
+newsCreate = bbs.BoardCreateView.as_view(
+    model = models.News,
+    form_class = forms.NewsCreationForm,
+    template_name='Board_Create.html',
+    title ="뉴스 작성",
+    pass_condition="BK",
+)
+newsRead = bbs.BoardReadView.as_view(
+    model = models.News,
+    comment_model = models.NewsComment,
+    comment_Form_class = forms.NewsCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title ="뉴스",
+    like_url='bk:news_like',
+    dislike_url='bk:news_dislike',
+    update_url='bk:news_update',
+    destroy_url= 'bk:news_destroy',
+    comment_url= 'bk:news_comment',
+)
+
+newsUpdate = bbs.BoardUpdateView.as_view(
+    model = models.News,
+    form_class= forms.NewsCreationForm,
+    template_name='Board_Create.html',
+    title ="뉴스",
+)
+
+newsDestroy = bbs.BoardDestroyView.as_view(
+    
+)
+
+newsLike = bbs.LikeView.as_view(
+    model = models.News
+)
+
+newsDisLike = bbs.DisLikeView.as_view(
+    model = models.News
+)
+
+newsComment = bbs.CommentView.as_view(
+    model = models.News,
+    form_class = forms.NewsCommentForm,
     template_name="Comment.html",
 )

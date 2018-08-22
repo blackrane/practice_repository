@@ -67,6 +67,19 @@ urlpatterns += [
     path('forum/bitcoin/comment/', views.forumBitCoinComment, name="forumbitcoin_comment"),            #댓글
 ]
 
+ #유저컬럼
+urlpatterns += [
+    path('column/bitcoin/', views.usercolumnList, name="usercolumn_list"),                          #목록
+    path('column/bitcoin/create/', views.usercolumnCreate , name="usercolumn_create"),              #쓰기
+    path('column/bitcoin/<int:pk>/', views.usercolumnRead , name="usercolumn_read"),                #읽기
+    path('column/bitcoin/edit/<int:pk>/', views.usercolumnUpdate, name="usercolumn_update"),        #수정
+    path('column/bitcoin/destroy/<int:pk>/', views.usercolumnDestroy, name="usercolumn_destroy"),   #삭제
+    path('column/bitcoin/like/', views.usercolumnLike, name="usercolumn_like"),                     #추천
+    path('column/bitcoin/dislike/', views.usercolumnDisLike, name="usercolumn_dislike"),            #비추천
+    path('column/bitcoin/comment/', views.usercolumnComment, name="usercolumn_comment"),            #댓글
+]
+
+
 #학회 게시판 주소
 urlpatterns += [
     path('society/', views.societylist, name="society_list"),
