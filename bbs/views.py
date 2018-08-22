@@ -7,6 +7,7 @@ from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUp
 from . import models
 from . import forms
 from account.forms import LoginForm
+from .models import Favorable
 
 # 게시판 필요 View 
 # BoardCreateview, BoardListView, BoardReadView, BoardUpdateView, 
@@ -294,3 +295,14 @@ societylist = ForumListView.as_view(
 
 #제휴 문의 게시판
 
+###################################################
+
+#호재 게시판 
+def favorable(request):
+    favorable = Favorable.objects.all()
+    form = LoginForm()
+
+    return render(request, 'Favorable.html',{
+        'favorable':favorable,
+        'form':form,
+        })

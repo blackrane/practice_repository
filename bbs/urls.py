@@ -28,7 +28,6 @@ urlpatterns += [
 ]
 
 #꿀팁 게시판
-
 urlpatterns += [
     path('honeytip/', views.honeyTipList, name="honeytip_list"),                          #목록
     path('honeytip/create/', views.honeyTipCreate , name="honeytip_create"),              #쓰기
@@ -60,4 +59,9 @@ urlpatterns += [
 #학회 게시판 주소
 urlpatterns += [
     path('society/', views.societylist, name="society_list"),
+]
+
+#호재게시판
+urlpatterns += [
+    path('favorable/', views.favorable, name="favorable"),
 ]

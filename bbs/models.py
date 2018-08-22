@@ -220,3 +220,27 @@ class ForumBitCoinDisLike(models.Model):
     post = models.ForeignKey(ForumBitCoin, on_delete=models.CASCADE, related_name='dislike_set')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+#######################################################################################################################################
+#호재
+class Favorable(models.Model):
+    title = models.CharField(verbose_name="title",max_length=20)
+    content = models.CharField(verbose_name="content",max_length=20)
+    photo = models.ImageField(blank=True)
+    date = models.DateTimeField()
+    like_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='Favorable_like_user_set',
+                                           through='Favorable_Like') # post.like_set 으로 접근 가능
+    @property
+    def like_count(self):
+        return self.like_user_set.count()
+
+    def __str__(self):
+        return self.title
+
+class Favorable_Like(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(Favorable, on_delete=models.CASCADE ,related_name='like_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

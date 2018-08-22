@@ -61,7 +61,6 @@ $('#myModal').on('shown.bs.modal', function () {
         <br>
         <div style="display: table; margin: 0 auto;width:200px;margin-bottom: 20px;">
             
-            <!--<input type="submit" id="like" value="좋아요">-->
             <form style="float:left;margin-right: 10px;" action="" method="post" >
                 <input class="like" style="width:60px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{like_url}}" value="추천 {{like_count}}">
             </form>
@@ -78,7 +77,6 @@ $('#myModal').on('shown.bs.modal', function () {
                 {% csrf_token %}
                 <input type="hidden" name="like" value="{{ post_list.pk }}">
                 <input type="hidden" name="like_post" value="{{ post_list.post }}">
-                <!--<input type="submit" id="like" value="좋아요">-->
                 <input style="width:45px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" id="like" value="신고">
             </form>
             <!--//end신고-->
