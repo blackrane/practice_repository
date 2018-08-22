@@ -221,7 +221,6 @@ class ForumBitCoinDisLike(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-<<<<<<< HEAD
 #######################################################################################################################################
 #호재
 class Favorable(models.Model):
@@ -243,7 +242,7 @@ class Favorable(models.Model):
 class Favorable_Like(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     post = models.ForeignKey(Favorable, on_delete=models.CASCADE ,related_name='like_set')
-=======
+
 
 ###############################################################################################################################
 #  ForumBitCoin
@@ -295,6 +294,5 @@ class GalleryLike(models.Model):
 class GalleryDisLike(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     post = models.ForeignKey(Gallery, on_delete=models.CASCADE, related_name='dislike_set')
->>>>>>> 5a4324f35e5a06a5871a83862a28af71e397792a
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
