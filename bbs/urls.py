@@ -75,4 +75,5 @@ urlpatterns += [
 #호재게시판
 urlpatterns += [
     path('favorable/', views.favorable, name="favorable"),
+    path('favorable/like/', views.favorableLike, name="favorable_like")
 ]

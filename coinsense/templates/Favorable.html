@@ -39,10 +39,15 @@
                 <table style="width:100%;">
                     <tr style="border: 2px solid #dcdddd;height: 10px;">
                         <th style="line-height: 50px;border: 2px solid #dcdddd;width:200px;text-align: center;">{{favor.date|date:"Y M d"}}({{favor.date|date:"D"}})</th>
-                        <td style="line-height: 20px;width: 500px;"><img style="float:left;width:45px;height: 45px;margin-right: 3px;" src="{{ favor.photo.url }}"><b>{{favor.title}}</b><br>{{favor.content}}</td>
+                        <td style="line-height: 20px;width: 500px;">
+                            <img style="float:left;width:45px;height: 45px;margin-right: 3px;" 
+                            {% if favor.photo %} src="{{favor.photo.url}}"  
+                            {% else %} src="{% static 'no-screenshot.jpg' %}"
+                            {%endif%} >
+                            <b>{{favor.title}}</b><br>{{favor.content}}</td>
                         <td style="padding-top: 25px;width: 100px;">
                             <form style="float:left;margin-right: 10px;" action="" method="post" >
-                                <input class="like" style="width:60px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{like_url}}" value="좋아요 {{like_count}}">
+                                <input class="like" style="width:60px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{favor.id}}" href="{%url 'bbs:favorable_like'%}" value="좋아요 {{like_count}}">
                             </form>
                         </td>
                     </tr>

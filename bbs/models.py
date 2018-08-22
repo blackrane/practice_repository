@@ -241,7 +241,9 @@ class Favorable(models.Model):
 
 class Favorable_Like(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    post = models.ForeignKey(Favorable, on_delete=models.CASCADE ,related_name='like_set')
+    post = models.ForeignKey(Favorable, on_delete=models.CASCADE , related_name='like_set')
+    created_at = models.DateTimeField(auto_now_add=True)    #필수요소
+    updated_at = models.DateTimeField(auto_now=True)        #필수요소
 
 
 ###############################################################################################################################

@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+import json
 #App 
 from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView
 from . import models
 from . import forms
 from account.forms import LoginForm
-from .models import Favorable
 
 # 게시판 필요 View 
 # BoardCreateview, BoardListView, BoardReadView, BoardUpdateView, 
@@ -321,10 +321,25 @@ societylist = ForumListView.as_view(
 
 #호재 게시판 
 def favorable(request):
-    favorable = Favorable.objects.all()
+    favorable = models.Favorable.objects.all()
     form = LoginForm()
 
     return render(request, 'Favorable.html',{
         'favorable':favorable,
         'form':form,
         })
+
+def favorableLike(request):
+    post = get_object_or_404(models.Favorable, pk=request.POST.get('pk',None))
+    post_like, post_like_created = post.like_set.get_or_create(user=request.user)
+    
+    if not post_like_created:
+        post_like.delete()
+        message = "like_del"
+    else:
+        message = "like"
+    context={
+        'like_count':post.like_count,
+        'message':message
+    }
+    return HttpResponse(json.dumps(context))

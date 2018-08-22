@@ -61,8 +61,9 @@
 	<header>
 		<div id="top_menu">
 			<li><a href="#" style="color:black;" id="favorite" title="즐겨찾기 등록">즐겨찾기 추가</a></li>
-			
+			{% if not user.is_authenticated %}
 			<li id="top-menu-sub"><a href="{% url 'account:signup' %}">회원가입</a></li>
+			{% endif %}
 		</div>
 
 		<a style="color:black;float: left;clear: both;" href="/"><h1>CoinSense</h1></a>
