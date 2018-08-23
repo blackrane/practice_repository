@@ -165,4 +165,37 @@ class SuspendRequestCreationForm(forms.ModelForm):
 
 
 ################################################################################################################################
-# 시황분석폼
+# 서울대학교 폼
+
+class SeoulUnvCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.SeoulUnv
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
+
+class SeoulUnvCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.SeoulUnvComment
+        fields = ['text']
+        widgets={
+        'text': forms.TextInput(attrs={
+        'class':"form-controlcomment-Table",
+        'style':'width:670px;height:40px;margin-right:10px;',
+        'placeholder':'댓글을 입력해주세요.',
+            })
+        }
+
+class SeoulUnvSocietyRequestForm(forms.ModelForm):
+    class Meta:
+        model = models.SeoulUnvSocietyRequest
+        fields = ['username','unv_number','department']
+        widgets={
+        'text': forms.TextInput(attrs={
+        'class':"input_first_title",
+        'style':'width:670px;height:40px;margin-right:10px;',
+        'placeholder':'댓글을 입력해주세요.',
+            })
+        }

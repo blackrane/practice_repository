@@ -47,7 +47,7 @@ def get_ranking():
     ranking = board[:5]
     return ranking
 
-class BoardListView(View):
+class BoardListView(UserPassesTestMixin,View):
     model = None
     login_form = None
     success_url= None
@@ -58,6 +58,19 @@ class BoardListView(View):
     title = None
     permission = None
     notice_model = models.Notice
+    access_permission=None
+    approval_url= None
+
+    #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
+    #조건 선택시 해당 조건의 유저만 들어갈수있다.
+    def test_func(self):
+        if self.access_permission is None:
+            return True
+        if self.request.user.code == "BK":
+            return True
+        if self.request.user.code == self.access_permission:
+            return True
+        return False
 
     def get_permission(self):
         #아무 권한 부여 안하면 모두에게 개방
@@ -86,6 +99,7 @@ class BoardListView(View):
         self.context['permission'] = self.get_permission()
         self.context['notice'] = self.notice_model.objects.all()
         self.context['ranking_list']= get_ranking()
+        self.context['approval_list']= reverse(self.approval_url)
 
     def get_serach(self):
         search = self.request.GET.get('search',None) #검색 가져오기
@@ -437,3 +451,31 @@ class ForumListView(View):
         self.context['notice'] = self.notice_model.objects.all()
         
         return render(self.request, self.get_template_name(), self.context)
+
+#댓글생성
+class SocietyApprovalView(UserPassesTestMixin,View):
+    model = None
+    template_name=None
+    context = {}
+    access_permission=None
+
+    #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
+    #조건 선택시 해당 조건의 유저만 들어갈수있다.
+    def test_func(self):
+        if self.access_permission is None:
+            return True
+        if self.request.user.code == "BK":
+            return True
+        if self.request.user.code == self.access_permission:
+            return True
+        return False
+
+    @method_decorator(login_required(login_url='/'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    #post 요청일때
+    def post(self, *args, **kwargs):
+        user_list = self.model.objects.all()
+        self.context['user_list'] = user_list
+        return render(self.request, self.template_name, self.context)

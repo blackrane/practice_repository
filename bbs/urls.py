@@ -84,6 +84,18 @@ urlpatterns += [
 urlpatterns += [
     path('society/', views.societylist, name="society_list"),
 ]
+ #서울대학 학회 게시판
+urlpatterns += [
+    path('society/seoulunv/', views.seoulUnvList, name="seoulunv_list"),                          #목록
+    path('society/seoulunv/create/', views.seoulUnvCreate , name="seoulunv_create"),              #쓰기
+    path('society/seoulunv/<int:pk>/', views.seoulUnvRead , name="seoulunv_read"),                #읽기
+    path('society/seoulunv/edit/<int:pk>/', views.seoulUnvUpdate, name="seoulunv_update"),        #수정
+    path('society/seoulunv/destroy/<int:pk>/', views.seoulUnvDestroy, name="seoulunv_destroy"),   #삭제
+    path('society/seoulunv/like/', views.seoulUnvLike, name="seoulunv_like"),                     #추천
+    path('society/seoulunv/dislike/', views.seoulUnvDisLike, name="seoulunv_dislike"),            #비추천
+    path('society/seoulunv/comment/', views.seoulUnvComment, name="seoulunv_comment"),            #댓글
+    path('society/seoulunv/approval/', views.seoulUnvApproval, name="seoulunv_approval_list"),    #승인목록
+]
 
 #호재게시판
 urlpatterns += [

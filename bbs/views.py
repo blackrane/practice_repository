@@ -6,7 +6,7 @@ import json
 from django.db.models import Q
 
 #App 
-from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView
+from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView, SocietyApprovalView
 from . import models
 from . import forms
 from account.forms import LoginForm
@@ -315,7 +315,80 @@ societylist = ForumListView.as_view(
     template_name='Society_List.html',
     title ="학회게시판"
 )
+#####################################################
+#서울대학교
 
+seoulUnvList = BoardListView.as_view(
+    model= models.SeoulUnv,
+    login_form = LoginForm ,
+    success_url ='/forum/bitcoin/',
+    template_name = "society_board_list.html",
+    create_url = 'bbs:seoulunv_create',
+    read_url='bbs:seoulunv_read',
+    approval_url='bbs:seoulunv_approval_list',
+    title="서울대 학회게시판",
+    permission="S0",
+)
+
+seoulUnvCreate = BoardCreateView.as_view(
+    model = models.SeoulUnv,
+    form_class = forms.SeoulUnvCreationForm,
+    template_name='Board_Create.html',
+    title="게시글 작성",
+)
+
+seoulUnvRead = BoardReadView.as_view(
+    model = models.SeoulUnv,
+    comment_model = models.SeoulUnvComment,
+    comment_Form_class = forms.SeoulUnvCommentForm,
+    form_class = LoginForm,
+    template_name='Board_Read.html',
+    title="서울대 학회",
+    like_url='bbs:seoulunv_like',
+    dislike_url='bbs:seoulunv_dislike',
+    update_url='bbs:seoulunv_update',
+    destroy_url= 'bbs:seoulunv_destroy',
+    comment_url= 'bbs:seoulunv_comment',
+)
+
+seoulUnvUpdate = BoardUpdateView.as_view(
+    model = models.SeoulUnv,
+    form_class= forms.SeoulUnvCreationForm,
+    success_url = '/forum/bitcoin/',
+    template_name='Board_Create.html',
+    title="게시글 수정",
+)
+seoulUnvDestroy = BoardDestroyView.as_view(
+    
+)
+seoulUnvLike = LikeView.as_view(
+    model = models.SeoulUnv
+)
+
+seoulUnvDisLike = DisLikeView.as_view(
+    model = models.SeoulUnv
+)
+
+seoulUnvComment = CommentView.as_view(
+    model = models.SeoulUnv,
+    form_class = forms.SeoulUnvCommentForm,
+    template_name="Comment.html",
+)
+
+seoulUnvApproval = SocietyApprovalView.as_view(
+    model = models.SeoulUnvSocietyRequest,
+    template_name="bbs/society_request_list.html",
+    access_permission="A0"
+)
+
+###################################################
+#제휴문의 생성
+withCreate = BoardCreateView.as_view(
+    model = models.With,
+    form_class = forms.WithCreationForm,
+    template_name='Board_Create.html',
+    title="제휴문의",
+)
 #####################################################################
 # 비트코인 포럼
 usercolumnList = BoardListView.as_view(
@@ -448,3 +521,4 @@ def Notice(request, pk):
         'notice':notice
     }
     return render(request,'Notice.html',context)
+

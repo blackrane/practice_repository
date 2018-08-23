@@ -391,3 +391,63 @@ class Notice(summer_model.Attachment):
         return self.title
 
 
+###############################################################################################################################
+#  ForumBitCoin
+class SeoulUnv(summer_model.Attachment):
+    author = models.ForeignKey(get_user_model() ,on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss')
+    title = models.CharField(verbose_name="title",max_length=40)
+    summer_field = summer_fields.SummernoteTextField(default='')
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)
+    views = models.IntegerField(null=False, blank=False, default=0) #조회수
+    like_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='snuvClike_user_set',
+                                           through='SeoulUnvLike') # post.like_set 으로 접근 가능
+    dislike_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='sunvdislike_user_set',
+                                           through='SeoulUnvDisLike') # post.like_set 으로 접근 가능
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def like_count(self):
+        return self.like_user_set.count()
+        
+    @property
+    def dislike_count(self):
+        return self.dislike_user_set.count()
+
+    def get_absolute_url(self):
+        return reverse('bbs:seoulunv_read', args=[self.id])
+
+class SeoulUnvComment(models.Model):
+    post = models.ForeignKey(SeoulUnv, verbose_name="HoneyTip Comment", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
+    author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
+    text = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
+
+class SeoulUnvLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(SeoulUnv, on_delete=models.CASCADE ,related_name='like_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class SeoulUnvDisLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(SeoulUnv, on_delete=models.CASCADE, related_name='dislike_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+### 학회승인요청목록
+class SeoulUnvSocietyRequest(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    username = models.CharField('이름',max_length=30)
+    unv_number = models.IntegerField('학번')
+    department = models.CharField('학과',max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
