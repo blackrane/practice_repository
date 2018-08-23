@@ -458,3 +458,19 @@ class SuspendRequestDisLike(models.Model):
     post = models.ForeignKey(SuspendRequest, on_delete=models.CASCADE, related_name='dislike_set')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+#공지사항
+class Notice(summer_model.Attachment):
+    author = models.ForeignKey(get_user_model() ,on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss')
+    title = models.CharField(verbose_name="title",max_length=40)
+    summer_field = summer_fields.SummernoteTextField(default='')
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)
+    views = models.IntegerField(null=False, blank=False, default=0) #조회수
+
+    def __str__(self):
+        return self.title
+
+

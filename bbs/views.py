@@ -23,7 +23,7 @@ freeList = BoardListView.as_view(
     template_name='Board_List.html',
     create_url = 'bbs:free_create',
     read_url='bbs:free_read',
-    title ="자유게시판"
+    title ="자유게시판",
 )
 
 freeCreate = BoardCreateView.as_view(
@@ -450,3 +450,12 @@ ico_rating_list = BoardListView.as_view(
     title ="ICO RATING"
 )
 
+#공지사항
+def Notice(request, pk):
+    post = get_object_or_404(models.Notice, pk=pk)
+    notice = models.Notice.objects.all()
+    context={
+        'post':post,
+        'notice':notice
+    }
+    return render(request,'Notice.html',context)

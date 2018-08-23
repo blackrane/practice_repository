@@ -219,7 +219,7 @@
         		    공지사항
         		    <div id="notice_sub">
         		        {% for i in notice %}
-        		        	<p style="">{{ i.title }}</p>
+        		        	<a style="color:black;" href="{% url 'bbs:notice' pk=i.id %}">&ensp;{{ i.title|truncatechars:23 }}</a>
         		        {% endfor %}
         		    </div>
         		</div>
@@ -236,7 +236,10 @@
         		    <b>공지사항</b>
         		    <div id="notice_sub">
         		        {% for i in notice %}
-        		        	<p>{{ i.title }}</p>
+        		        	{% if forloop.counter < 5 %}
+        		        	<a style="color:black;" href="{% url 'bbs:notice' pk=i.id %}">&ensp;{{ i.title|truncatechars:23 }}<br></a>
+        		        	{% else %}
+        		        	{% endif %}
         		        {% endfor %}
         		    </div>
         		</div>

@@ -105,3 +105,8 @@ urlpatterns += [
 urlpatterns += [
     path('sucess/<int:select>/', views.sucessPage, name='succes_page')
 ]
+
+#공지사항
+urlpatterns += [
+    path('notice/<int:pk>', views.Notice, name="notice"),
+]

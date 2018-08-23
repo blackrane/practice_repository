@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, get_user_model, authenticate, update_session_auth_hash
 from django.utils import timezone
-
+from bbs import models
 #app
 from .forms import LoginForm, UserCreationForm
 from bbs.models import FreeBoard
@@ -27,6 +27,7 @@ def index(request,context={}):
     form = LoginForm()
     context['form'] = form
     context['post_list'] = FreeBoard.objects.all().order_by('-id')
+    context['notice'] = models.Notice.objects.all()
     return render(request, 'account/index.html', context)
 
 def signup(request,context={}):
@@ -49,6 +50,7 @@ def signup(request,context={}):
 
 def myPage(request):
     context={}
+    context['notice'] = models.Notice.objects.all()
     return render(request, 'account/my_page.html',context)
 
 def myWrite(request):
@@ -57,8 +59,10 @@ def myWrite(request):
     print(a)
     a=0
     context={'a':a}
+    context['notice'] = models.Notice.objects.all()
     return render(request, 'account/my_page.html',context)
 
 def myComments(request):
     context={}
+    context['notice'] = models.Notice.objects.all()
     return render(request, 'account/my_page.html',context)
