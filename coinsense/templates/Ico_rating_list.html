@@ -1,6 +1,28 @@
 {% extends "layout.html" %}
 {% load static %}
 
+{% block script%}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $('#opinion_id_1').click(function(){
+            $('#opinion_id_1').attr('class','opinion_underline opinion');
+            $('#opinion_id_2').attr('class','opinion');
+            $('#opinion_id_3').attr('class','opinion');           
+        });
+        $('#opinion_id_2').click(function(){
+            $('#opinion_id_2').attr('class','opinion_underline opinion');
+            $('#opinion_id_1').attr('class','opinion');
+            $('#opinion_id_3').attr('class','opinion');           
+        });
+        $('#opinion_id_3').click(function(){
+            $('#opinion_id_3').attr('class','opinion_underline opinion');
+            $('#opinion_id_1').attr('class','opinion');
+            $('#opinion_id_2').attr('class','opinion');           
+        });
+    </script>
+
+{% endblock script %}
+
 {% block content %}
 
 <div id="free_board" class="table" style="padding-top: 10px;margin-bottom: 20px;">
@@ -24,17 +46,64 @@
                 </p>
             </div>
         </div>
-        <div class="opinion">
-                <a href="">BK의견</a>
+        <div class="opinion opinion_underline" id="opinion_id_1">
+                <p>BK의견</p>
         </div>
-        <div class="opinion">
-                <a href="">칼럼니스트의견</a>
+        <div class="opinion" id="opinion_id_2">
+                <p>칼럼니스트의견</p>
         </div>
-        <div class="opinion">
-                <a href="">자유의견</a>
+        <div class="opinion" id="opinion_id_3">
+                <p>자유의견</p>
         </div>
-        
-
+        <div style="clear: both;width:800px;margin-top: 100px;">
+            <div style="clear: both;width:800px;margin-top: -10px;padding: 10px 10px 10px 10px;" id="free_board_sub">
+                <div>
+                    <p>bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다bk의견입니다</p>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both;width:800px;margin-top: 100px;">
+            <div style="clear: both;width:800px;margin-top: -10px;padding: 10px 10px 10px 10px;" id="free_board_sub">
+                <div class="comment">
+                    <h3>일반인 자유의견의 경우 아래와같이 댓글로가며 BK는 댓글에 답을 달 수 있다</h3>
+                    <div style="float: left;margin-top: 10px;">
+                        <img style="width:50px;height: 50px;" src="{% static 'no-screenshot.jpg' %}">
+                        <strong>작성자입니다</strong>
+                        <div class="date">
+                            2018-08-23 17:18
+                        </div>
+                        <p>댓글내용입니다 <a href="" style="color:gray;">답변달기</a></p>
+                    </div>
+                    
+                    <button type="button" class="button" style="margin-left: 530px;margin-top: 50px;" data-toggle="modal" data-target="#exampleModalLong2">
+                        삭제
+                    </button>
+                    
+                    
+                </div>
+                <hr style="clear: both;">
+            </div>
+            <div style="clear: both;width:800px;margin-top: -10px;padding: 10px 10px 10px 10px;" id="free_board_sub">
+                <div class="comment">
+                    
+                    <div style="float: left;margin-top: 10px;">
+                        <img style="width:50px;height: 50px;" src="{% static 'no-screenshot.jpg' %}">
+                        <strong>작성자입니다</strong>
+                        <div class="date">
+                            2018-08-23 17:18
+                        </div>
+                        <p>댓글내용입니다 <a href="" style="color:gray;">답변달기</a></p>
+                    </div>
+                    
+                    <button type="button" class="button" style="margin-left: 530px;margin-top: 50px;" data-toggle="modal" data-target="#exampleModalLong2">
+                        삭제
+                    </button>
+                    
+                    
+                </div>
+                <hr style="clear: both;">
+            </div>
+        </div>
     </div>        
 </div>
 

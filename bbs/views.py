@@ -410,7 +410,6 @@ def favorableLike(request):
     }
     return HttpResponse(json.dumps(context))
 
-<<<<<<< HEAD
 #ICO 게시판 
 ico_rating_list = BoardListView.as_view(
     model = models.FreeBoard, #수정
@@ -421,5 +420,4 @@ ico_rating_list = BoardListView.as_view(
     read_url='bbs:free_read', #수정
     title ="ICO RATING"
 )
-=======
->>>>>>> eb94144272fb4a4210ae05024a4e41d8895f3d43
+

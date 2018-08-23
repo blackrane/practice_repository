@@ -59,16 +59,16 @@ $('#myModal').on('shown.bs.modal', function () {
         <br>
         <br>
         <br>
-        <div style="display: table; margin: 0 auto;width:200px;margin-bottom: 20px;">
+        <div style="display: table; margin: 0 auto;width:300px;margin-bottom: 20px;">
             
-            <form style="float:left;margin-right: 10px;" action="" method="post" >
-                <input class="like" style="width:60px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{like_url}}" value="추천 {{like_count}}">
+            <form style="float:left;margin-right: 10px;margin-left: 50px;" action="" method="post" >
+                <input class="like" style="cursor: pointer;width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{like_url}}" value="추천 {{like_count}}">
             </form>
             <!--//end 좋아요-->
 
             <!--싫어요-->
             <form style="float:left;margin-right: 10px;" action="" method="post" >
-                <input class="dislike" style="width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{dislike_url}}" value="비추천 {{dislike_count}}">
+                <input class="dislike" style="cursor: pointer;width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{dislike_url}}" value="비추천 {{dislike_count}}">
             </form>
             <!--//end 싫어요-->
 
@@ -77,7 +77,7 @@ $('#myModal').on('shown.bs.modal', function () {
                 {% csrf_token %}
                 <input type="hidden" name="like" value="{{ post_list.pk }}">
                 <input type="hidden" name="like_post" value="{{ post_list.post }}">
-                <input style="width:45px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" id="like" value="신고">
+                <input style="cursor: pointer;width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" id="like" value="신고">
             </form>
             <!--//end신고-->
 

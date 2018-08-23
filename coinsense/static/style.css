@@ -407,11 +407,10 @@ footer>ul>li{
 	width: 263px;
 	text-align: center;
 	padding-bottom: 10px;
-}
-.opinion:hover{
-	border-bottom: 5px solid #0A82FF;
+	cursor: pointer;
+
 }
 
-.opinion>a{
-	color:black;
+.opinion_underline{
+	border-bottom: 5px solid #0A82FF;
 }
