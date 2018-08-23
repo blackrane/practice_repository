@@ -19,7 +19,7 @@
 			  		<tr>
 			    		<td style="" id="table_1"><a style="display: inline-block; white-space: nowrap; overflow: hidden;text-overflow: ellipsis; width:480px;text-overflow:clip;margin-left: 10px;margin-right:10px;text-decoration: none;color:black;" href="{% url 'bbs:free_read' pk=post.pk %}">{{post.title}}</a></td>
 			    		<td id="table_2">{{post.author}}</td>
-			    		<td>{{ post.updated_at.year }}-{{ post.updated_at.month }}-{{ post.updated_at.day }} {{ post.updated_at.hour }}:{{post.updated_at.minute}} </td>
+			    		<td>{{ post.updated_at|date:"c"|slice:":10" }} {{ post.updated_at|date:"c"|slice:"11:16" }}</td>
 			    	</tr>
 			    	{% endfor %}
 			  	</tbody>

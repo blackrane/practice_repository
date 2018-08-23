@@ -12,11 +12,22 @@ $('#myModal').on('shown.bs.modal', function () {
 <div class="free_board" style="padding-top: 10px;margin-bottom: 20px;">
     <h5><b>공지사항</b></h5>
     <div class="free_board_sub">
+<<<<<<< Updated upstream
         <h6 class="board_title">{{ post.title }}</h6>
+=======
+        <h6 class="board_title"><b>{{ post.title }}</b></h6>
+        {% if post.author == request.user %}
+            <a href="{% url update_url post.id %}"><button class="button">수정</button></a>
+            <!--모달을 띄운다-->
+            <button type="button" class="button" data-toggle="modal" data-target="#exampleModalLong">
+                삭제
+            </button>
+        {% endif %}
+>>>>>>> Stashed changes
         <hr style="clear: both;margin-top: 50px;">
 
         <img style="width:60px;height: 60px;float: left;" src="{% static 'bk.png' %}">
-        <p style="float: left;">&ensp;BlacKrane Team</p>
+        <p style="float: left;line-height: 50px;">&ensp;&ensp;<b>BlacKrane Team</b></p>
         <p style="float: right;">https://coinsense.com{{ request.path }}</p>
         <br>
         

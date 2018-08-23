@@ -330,24 +330,45 @@ footer>ul>li{
 	background-color: #F4F4F7;
 	border: 1px solid black;
 }
-
+/************회원정보*************/
 .my_page_sub_div2{
 	clear: both;
+}
+.my_page_sub_div2>table>tbody>tr{
+	height: 40px;
+	border-bottom: 2px solid #444444;
 }
 .my_page_sub_div2>table>tbody>tr>th{
 	width : 100px;
 	text-align: center;
-	background-color: #FBFBEF;
 }
 .my_page_sub_div2>table>tbody>tr>td{
 	width : 700px;
 	text-align: center;
 }
-
-.my_page_sub_div2>table>tbody>tr{
+/************저장한 글 보기****************/
+.my_page_sub_div3>table>tbody>tr{
 	height: 40px;
 	border-bottom: 2px solid #444444;
 }
+.my_page_sub_div3>table>thead>tr{
+	text-align: center;
+}
+.my_page_sub_div3>table>thead>tr>th{
+	font-size: 19px;
+}
+.my_page_sub_div3>table>tbody>tr>th{
+	width : 500px;
+	text-align: center;
+}
+.my_page_sub_div3>table>tbody>tr>td{
+	width : 700px;
+	text-align: center;
+}
+.my_page_sub_div3{
+	clear: both;
+}
+/*************************************/
 .my_page_button{
 	margin-left: 432px;
 }
@@ -357,6 +378,14 @@ footer>ul>li{
 	padding-right : 10px;
 	color: black;
 	border: 1px solid black;
+}
+.my_page_list_select{
+	font-size: 17px;
+	border-bottom: 4px solid #FFF;
+	font-weight: bold;
+}
+.my_page_list{
+	cursor: pointer;
 }
 
 /* 게시글 작성 페이지 */

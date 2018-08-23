@@ -1,24 +1,22 @@
 
 {% extends "layout.html" %}
-
 {% load static%}
 
-{% block content %}
 
+{% block content %}
 	<div class="my_page_div" style="width:800px;height: 600px;margin-top: 330px;">
 		<div class="my_page_sub_div1">
-			<li>&nbsp;&nbsp;<a href="{% url 'account:my_page'%}">회원정보 보기</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
-			<li><a href="">글 저장함 보기</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
-			<li><a href="">쪽지함 보기</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
-			<li><a href="">로그인 기록</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
-			<li><a href=""> 내 알림 목록</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
-			<li><a href=""> 작성 글 보기</a>&nbsp;&nbsp;|&nbsp;&nbsp;</li>
-			<li><a href=""> 작성 댓글 보기</a></li>
+			<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="my_page_list my_page_list_select">회원정보 보기</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
+			<li><span class="my_page_list">글 저장함 보기</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
+			<li><span class="my_page_list">쪽지함 보기</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
+			<li><span class="my_page_list"> 내 알림 목록</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
+			<li><span class="my_page_list"> 작성 글 보기</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
+			<li><span class="my_page_list"> 작성 댓글 보기</span></li>
 		</div>
 		<div style="margin-top: 20px;" class="my_page_sub_div2">
 			<h3>회원정보</h3>
-			<table class="table-striped" style="margin-bottom: 20px;">
-  				<tbody style="border-top: 5px solid #444444;">
+			<table class="table-striped" style="margin-bottom: 20px;margin-top: 20px;">
+  				<tbody style="border-top: 5px solid #444444;border-bottom: 5px solid #444444;">
     				<tr height="100">
 			      		<th scope="row">아이디</th>
 			      		<td>{{ request.user.username }}</td>
@@ -51,7 +49,7 @@
 			    	</tr>
 			    	<tr>
 			      		<th scope="row">나의 한마디</th>
-			    		<td>{{ request.user.last_login }}</td>
+			    		<td>{{ request.user.in_short }}</td>
 			    	</tr>
 			  	</tbody>
 			</table>
@@ -60,7 +58,8 @@
 				<a href="">비밀번호 변경</a>
 				<a href="">탈퇴</a>
 			</div>
-			
 		</div>
+
+		
 	</div>
 {% endblock %}
