@@ -28,8 +28,13 @@ class BoardListView(View):
     permission = None
 
     def get_permission(self):
+        #아무 권한 부여 안하면 모두에게 개방
         if self.permission is None:
             return True
+        #BK이면 모두 접근할수 있음
+        if self.reuqest.user.code =="BK":
+            return True
+        #그외 권한설정
         if self.request.user.code == self.permission:
             return True
         return False
@@ -57,8 +62,7 @@ class BoardListView(View):
     
     def get_pagination(self):
          #페이지 네이션
-
-        paginator = Paginator(self.context['post_list'], 1) #15개씩 묶어 페이지 생성 선언3
+        paginator = Paginator(self.context['post_list'], 1) #15개씩 묶어 페이지 생성 선언
 
         page = self.request.GET.get('page',1 )
         try:
@@ -101,7 +105,7 @@ class BoardCreateView(UserPassesTestMixin, View):
             return True
         return False
 
-    @method_decorator(login_required(login_url='/free/'))
+    @method_decorator(login_required(login_url='/'))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
@@ -112,7 +116,6 @@ class BoardCreateView(UserPassesTestMixin, View):
         return self.template_name
 
     #get 요청일때
-    
     def get(self, *args, **kwargs):
         self.context['form'] = self.form_class()
         self.context['boardtitle'] = self.title
@@ -379,4 +382,82 @@ class ForumListView(View):
         #self.context['post_list'] = self.model.objects.all()
         self.context['error'] = login_func(self.request)
         self.context['boardtitle'] = self.title
+        return render(self.request, self.get_template_name(), self.context)
+
+
+class BkListView(UserPassesTestMixin,View):
+    model = None
+    login_form = None
+    success_url= None
+    template_name = None
+    create_url = ''
+    read_url=''
+    context={}
+    title = None
+    permission = None
+
+    def test_func(self):
+        if self.request.user.code == "BK":
+            return True
+        return False
+
+    def get_permission(self):
+        #아무 권한 부여 안하면 모두에게 개방
+        if self.permission is None:
+            return True
+        #BK이면 모두 접근할수 있음
+        if self.reuqest.user.code =="BK":
+            return True
+        #그외 권한설정
+        if self.request.user.code == self.permission:
+            return True
+        return False
+
+    def get_success_url(self):
+        return self.success_url
+    
+    def get_template_name(self):
+        return self.template_name
+
+    def context_init(self):
+        self.context['post_list'] = self.model.objects.all()
+        self.context['form'] = self.login_form()
+        self.context['boardtitle'] = self.title
+        self.context['url']= reverse(self.create_url)
+        self.context['read_url'] = self.read_url
+        self.context['permission'] = self.get_permission()
+
+    def get_serach(self):
+        search = self.request.GET.get('search',None) #검색 가져오기
+        #검색소스
+        if search is not None: #검색이 있다면 
+            self.context['post_list'] = self.context['post_list'].filter(
+                title__contains=search) #필터해서 적용
+    
+    def get_pagination(self):
+         #페이지 네이션
+        paginator = Paginator(self.context['post_list'], 1) #15개씩 묶어 페이지 생성 선언
+
+        page = self.request.GET.get('page',1 )
+        try:
+            paginator = paginator.page(page)
+        except PageNotAnInteger:
+            paginator = paginator.page(1)
+        except EmptyPage:
+            paginator = paginator.page(paginator.num_pages)
+        self.context['post_list'] = paginator
+
+    #get 요청일때
+    def get(self, *args, **kwargs):
+        self.context_init()
+        self.get_serach()
+        self.get_pagination()
+        return render(self.request, self.get_template_name(), self.context)
+
+    #post 요청일때
+    def post(self, *args, **kwargs):
+        self.context['post_list'] = self.model.objects.all()
+        self.context['error'] = login_func(self.request)
+        self.context['boardtitle'] = self.title
+        self.context['permission'] = self.get_permission()
         return render(self.request, self.get_template_name(), self.context)

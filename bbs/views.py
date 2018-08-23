@@ -373,9 +373,37 @@ usercolumnComment = CommentView.as_view(
     template_name="Comment.html",
 )
 
-#제휴 게시판
+###################################################
+#제휴문의 생성
+withCreate = BoardCreateView.as_view(
+    model = models.With,
+    form_class = forms.WithCreationForm,
+    template_name='Board_Create.html',
+    title="제휴문의",
+)
 
-#제휴 문의 게시판
+###################################################
+#게재중단 생성
+suspendrequestCreate = BoardCreateView.as_view(
+    model = models.SuspendRequest,
+    form_class = forms.SuspendRequestCreationForm,
+    template_name='Board_Create.html',
+    title="게재중단 요청",
+)
+
+###################################################
+# 성공 페이지
+def sucessPage(request, select):
+    context={'message':'','sub_message':''}
+
+    #제휴문의
+    if select ==1:
+        context['message'] = '소중한 제안 감사드립니다.'
+    elif select == 2:
+        context['message'] = '소중한 신고 감사드립니다.'
+        context['sub_message'] ='(단. 허위신고시 제재를 받을수 있습니다.)'
+    return render(request, 'SucessPage.html', context)
+
 
 ###################################################
 #호재 게시판 
@@ -394,6 +422,7 @@ def favorable(request):
         'form':form,
     }
     return render(request, 'Favorable.html',context)
+
 #호재 좋아요
 def favorableLike(request):
     post = get_object_or_404(models.Favorable, pk=request.POST.get('pk',None))

@@ -95,3 +95,13 @@ urlpatterns += [
 urlpatterns += [
     path('ico_rating/', views.ico_rating_list, name="ico_rating_list"),
 ]
+
+#하단 제휴/게재중단 요청
+urlpatterns += [
+    path('with/', views.withCreate, name="with_create"),
+    path('sr/', views.suspendrequestCreate, name="sr_create"),
+]
+
+urlpatterns += [
+    path('sucess/<int:select>/', views.sucessPage, name='succes_page')
+]

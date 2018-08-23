@@ -210,7 +210,7 @@
 					
 					<p style="clear: both;margin-left: 10px;float: left;width:130px;">{{ user }}<br>{{ users.nickname }}</p>
 					<a href="{% url 'account:my_page' %}"><p style="color:black;margin-top: 24.5px;padding-left:6.5px;width:65px;float: left;font-size: 12px;border: 1px solid black;">회원정보</p></a>
-					<a href="{% url 'account:logout' %}"><p style="color:black;margin-top: 26.5px;margin-left: 210px;padding-left:6.5px;width:65px;font-size: 12px;border: 1px solid black;">로그아웃</p></a>
+					<p style="color:black;margin-top: 26.5px;margin-left: 210px;padding-left:6.5px;width:65px;font-size: 12px;border: 1px solid black;"><a style="color:black"href="{% url 'account:logout' %}">로그아웃</a></p>
 				</div>				
 				{% endif %}
 				<!--비 로그인 -->
@@ -255,8 +255,8 @@
 <footer>
 	<hr>
 	<ul>
-		<li>제휴문의</li>
-		<li id="maple">게재중단요청</li>
+		<li ><a  style="color:black"href="{% url 'bbs:with_create' %}">제휴문의</a></li>
+		<li id="maple"><a style="color:black" href="{% url 'bbs:sr_create' %}">게재중단요청</a></li>
 	</ul>
 	<hr id="hr_bottom">
 	<p>E_mail : info@blackrane.com</p>

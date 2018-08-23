@@ -140,11 +140,29 @@ class UserColumnCommentForm(forms.ModelForm):
         'placeholder':'댓글을 입력해주세요.',
             })
         }
+        
 ################################################################################################################################
-# 시황분석폼
+# 제휴문의 생성 폼
+class WithCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.With
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
 
 ################################################################################################################################
-# 시황분석폼
+# 게재중단 생성 폼
+class SuspendRequestCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.SuspendRequest
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
+
 
 ################################################################################################################################
 # 시황분석폼

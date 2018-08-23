@@ -273,7 +273,7 @@ class VideoDisLike(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 #############################################################################################
-# 
+# 뉴스모델
 class News(summer_model.Attachment):
     author = models.ForeignKey(get_user_model() ,on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss')
     title = models.CharField(verbose_name="title",max_length=40)

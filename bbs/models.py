@@ -352,3 +352,109 @@ class UserColumnDisLike(models.Model):
     post = models.ForeignKey(UserColumn, on_delete=models.CASCADE, related_name='dislike_set')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+###############################################################################################################################
+#  제휴문의 
+class With(summer_model.Attachment):
+    author = models.ForeignKey(get_user_model() ,on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss')
+    title = models.CharField(verbose_name="title",max_length=40)
+    summer_field = summer_fields.SummernoteTextField(default='')
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)
+    views = models.IntegerField(null=False, blank=False, default=0) #조회수
+    like_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='Wlike_user_set',
+                                           through='WithLike') # post.like_set 으로 접근 가능
+    dislike_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='Wdislike_user_set',
+                                           through='WithDisLike') # post.like_set 으로 접근 가능
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def like_count(self):
+        return self.like_user_set.count()
+        
+    @property
+    def dislike_count(self):
+        return self.dislike_user_set.count()
+
+    def get_absolute_url(self):
+        return reverse('bbs:succes_page', args=[1])
+
+class WithComment(models.Model):
+    post = models.ForeignKey(With, verbose_name="Comment", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
+    author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
+    text = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
+
+class WithLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(With, on_delete=models.CASCADE ,related_name='like_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class WithDisLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(With, on_delete=models.CASCADE, related_name='dislike_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+###############################################################################################################################
+#  게재중단요청 
+class SuspendRequest(summer_model.Attachment):
+    author = models.ForeignKey(get_user_model() ,on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss')
+    title = models.CharField(verbose_name="title",max_length=40)
+    summer_field = summer_fields.SummernoteTextField(default='')
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)
+    views = models.IntegerField(null=False, blank=False, default=0) #조회수
+    like_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='SRlike_user_set',
+                                           through='SuspendRequestLike') # post.like_set 으로 접근 가능
+    dislike_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='SRdislike_user_set',
+                                           through='SuspendRequestDisLike') # post.like_set 으로 접근 가능
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def like_count(self):
+        return self.like_user_set.count()
+        
+    @property
+    def dislike_count(self):
+        return self.dislike_user_set.count()
+
+    def get_absolute_url(self):
+        return reverse('bbs:succes_page', args=[2])
+
+class SuspendRequestComment(models.Model):
+    post = models.ForeignKey(SuspendRequest, verbose_name="Comment", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
+    author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
+    text = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text
+
+class SuspendRequestLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(SuspendRequest, on_delete=models.CASCADE ,related_name='like_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class SuspendRequestDisLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(SuspendRequest, on_delete=models.CASCADE, related_name='dislike_set')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
