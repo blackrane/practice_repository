@@ -12,10 +12,40 @@ from django.core.paginator import Paginator, PageNotAnInteger , EmptyPage
 from django.db.models import Q
 import json
 from bbs import models
-
+from bk_bbs import models as bk_models
 #App import
 from account.forms import LoginForm
 from account.views import login_func
+
+#합치기 위해
+from itertools import chain
+from operator import attrgetter
+
+#모든 게시글 합침
+def get_board():
+    board = models.FreeBoard.objects.all()          #자유게시판
+    na = models.NormalAnalysis.objects.all()        #시황분석
+    ht = models.HoneyTip.objects.all()              #꿀팁
+    fb = models.ForumBitCoin.objects.all()          #포럼 비트코인
+    gb = models.Gallery.objects.all()               #갤러리
+    uc = models.UserColumn.objects.all()            #유저칼럼
+    
+    mk = bk_models.MarketBoard.objects.all()        #판매게시판
+    ev = bk_models.Event.objects.all()              #이벤트게시판
+    ca = bk_models.CoinAnalysis.objects.all()       #bk코인분석
+    ab = bk_models.Analysis.objects.all()           #bk시황분석
+    vb = bk_models.Video.objects.all()              #동영상게시판
+    nb = bk_models.News.objects.all()               #뉴스게시판
+    ic = bk_models.ICORating.objects.all()          #ico게시판
+
+    all_board = sorted(chain(board, na,ht,fb,gb,uc,mk,ev,ca,ab,vb,nb,ic), key=attrgetter('views'), reverse=True)
+    return all_board
+
+#조회수 5위 게시글
+def get_ranking():
+    board = get_board()
+    ranking = board[:5]
+    return ranking
 
 class BoardListView(View):
     model = None
@@ -34,7 +64,7 @@ class BoardListView(View):
         if self.permission is None:
             return True
         #BK이면 모두 접근할수 있음
-        if self.reuqest.user.code =="BK":
+        if self.request.user.code =="BK":
             return True
         #그외 권한설정
         if self.request.user.code == self.permission:
@@ -55,6 +85,7 @@ class BoardListView(View):
         self.context['read_url'] = self.read_url
         self.context['permission'] = self.get_permission()
         self.context['notice'] = self.notice_model.objects.all()
+        self.context['ranking_list']= get_ranking()
 
     def get_serach(self):
         search = self.request.GET.get('search',None) #검색 가져오기
@@ -65,7 +96,7 @@ class BoardListView(View):
     
     def get_pagination(self):
          #페이지 네이션
-        paginator = Paginator(self.context['post_list'], 1) #15개씩 묶어 페이지 생성 선언
+        paginator = Paginator(self.context['post_list'], 2) #15개씩 묶어 페이지 생성 선언
 
         page = self.request.GET.get('page',1 )
         try:
@@ -81,6 +112,7 @@ class BoardListView(View):
         self.context_init()
         self.get_serach()
         self.get_pagination()
+
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -99,15 +131,17 @@ class BoardCreateView(UserPassesTestMixin, View):
     template_name = None
     context={}
     title = None
-    pass_condition = None
+    access_permission = None
     notice_model = models.Notice
 
     #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
     #조건 선택시 해당 조건의 유저만 들어갈수있다.
     def test_func(self):
-        if self.pass_condition is None:
+        if self.access_permission is None:
             return True
-        if self.request.user.code == self.pass_condition:
+        if self.request.user.code == "BK":
+            return True
+        if self.request.user.code == self.access_permission:
             return True
         return False
 
@@ -126,6 +160,7 @@ class BoardCreateView(UserPassesTestMixin, View):
         self.context['form'] = self.form_class()
         self.context['boardtitle'] = self.title
         self.context['notice'] = self.notice_model.objects.all()
+        self.context['ranking_list']= get_ranking()
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -187,6 +222,7 @@ class BoardReadView(View):
         self.context['update_url'] = self.update_url
         self.context['destroy_url'] = self.destroy_url
         self.context['comment_url'] = reverse(self.comment_url)
+        self.context['ranking_list']= get_ranking()
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -250,6 +286,7 @@ class BoardUpdateView(UserPassesTestMixin, View):
         self.context['boardtitle']=self.title
         self.context['form'] = self.form_class(**form_kwargs)
         self.context['notice'] = self.notice_model.objects.all()
+        self.context['ranking_list']= get_ranking()
         return render(self.request, self.get_template_name(), self.context)
     
     #post 요청일때
@@ -389,6 +426,7 @@ class ForumListView(View):
         self.context['form'] = self.form_class()
         self.context['boardtitle'] = self.title
         self.context['notice'] = self.notice_model.objects.all()
+        self.context['ranking']= get_ranking()
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -397,82 +435,5 @@ class ForumListView(View):
         self.context['error'] = login_func(self.request)
         self.context['boardtitle'] = self.title
         self.context['notice'] = self.notice_model.objects.all()
-        return render(self.request, self.get_template_name(), self.context)
-
-
-class BkListView(UserPassesTestMixin,View):
-    model = None
-    login_form = None
-    success_url= None
-    template_name = None
-    create_url = ''
-    read_url=''
-    context={}
-    title = None
-    permission = None
-
-    def test_func(self):
-        if self.request.user.code == "BK":
-            return True
-        return False
-
-    def get_permission(self):
-        #아무 권한 부여 안하면 모두에게 개방
-        if self.permission is None:
-            return True
-        #BK이면 모두 접근할수 있음
-        if self.reuqest.user.code =="BK":
-            return True
-        #그외 권한설정
-        if self.request.user.code == self.permission:
-            return True
-        return False
-
-    def get_success_url(self):
-        return self.success_url
-    
-    def get_template_name(self):
-        return self.template_name
-
-    def context_init(self):
-        self.context['post_list'] = self.model.objects.all()
-        self.context['form'] = self.login_form()
-        self.context['boardtitle'] = self.title
-        self.context['url']= reverse(self.create_url)
-        self.context['read_url'] = self.read_url
-        self.context['permission'] = self.get_permission()
-
-    def get_serach(self):
-        search = self.request.GET.get('search',None) #검색 가져오기
-        #검색소스
-        if search is not None: #검색이 있다면 
-            self.context['post_list'] = self.context['post_list'].filter(
-                title__contains=search) #필터해서 적용
-    
-    def get_pagination(self):
-         #페이지 네이션
-        paginator = Paginator(self.context['post_list'], 1) #15개씩 묶어 페이지 생성 선언
-
-        page = self.request.GET.get('page',1 )
-        try:
-            paginator = paginator.page(page)
-        except PageNotAnInteger:
-            paginator = paginator.page(1)
-        except EmptyPage:
-            paginator = paginator.page(paginator.num_pages)
-        self.context['post_list'] = paginator
-
-    #get 요청일때
-    def get(self, *args, **kwargs):
-        self.context_init()
-        self.get_serach()
-        self.get_pagination()
-        return render(self.request, self.get_template_name(), self.context)
-
-    #post 요청일때
-    def post(self, *args, **kwargs):
-        self.context['post_list'] = self.model.objects.all()
-        self.context['error'] = login_func(self.request)
-        self.context['boardtitle'] = self.title
-        self.context['permission'] = self.get_permission()
+        
         return render(self.request, self.get_template_name(), self.context)

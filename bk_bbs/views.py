@@ -22,7 +22,7 @@ marketBoardCreate = bbs.BoardCreateView.as_view(
     form_class = forms.MarketBoardCreationForm,
     template_name='Board_Create.html',
     title ="판매게시글 작성",
-    pass_condition="BK",
+    access_permission="BK",
 )
 marketBoardRead = bbs.BoardReadView.as_view(
     model = models.MarketBoard,
@@ -80,7 +80,7 @@ eventCreate = bbs.BoardCreateView.as_view(
     form_class = forms.EventCreationForm,
     template_name='Board_Create.html',
     title ="판매게시글 작성",
-    pass_condition="BK",
+    access_permission="BK",
 )
 eventRead = bbs.BoardReadView.as_view(
     model = models.Event,
@@ -138,7 +138,7 @@ coinAnalysisCreate = bbs.BoardCreateView.as_view(
     form_class = forms.CoinAnalysisCreationForm,
     template_name='Board_Create.html',
     title ="코인분석 작성",
-    pass_condition="BK",
+    access_permission="BK",
 )
 coinAnalysisRead = bbs.BoardReadView.as_view(
     model = models.CoinAnalysis,
@@ -196,7 +196,7 @@ analysisCreate = bbs.BoardCreateView.as_view(
     form_class = forms.AnalysisCreationForm,
     template_name='Board_Create.html',
     title ="시황분석 작성",
-    pass_condition="BK",
+    access_permission="BK",
 )
 analysisRead = bbs.BoardReadView.as_view(
     model = models.Analysis,
@@ -255,7 +255,7 @@ videoCreate = bbs.BoardCreateView.as_view(
     form_class = forms.VideoCreationForm,
     template_name='Board_Create.html',
     title ="비디오컨텐츠 작성",
-    pass_condition="BK",
+    access_permission="BK",
 )
 videoRead = bbs.BoardReadView.as_view(
     model = models.Video,
@@ -314,7 +314,7 @@ newsCreate = bbs.BoardCreateView.as_view(
     form_class = forms.NewsCreationForm,
     template_name='Board_Create.html',
     title ="뉴스 작성",
-    pass_condition="BK",
+    access_permission="BK",
 )
 newsRead = bbs.BoardReadView.as_view(
     model = models.News,
@@ -352,5 +352,67 @@ newsDisLike = bbs.DisLikeView.as_view(
 newsComment = bbs.CommentView.as_view(
     model = models.News,
     form_class = forms.NewsCommentForm,
+    template_name="Comment.html",
+)
+
+#####################################################################
+#ICOrating 게시판
+
+#ICO 게시판 
+icoRatingList = bbs.BoardListView.as_view(
+    model = models.ICORating, #수정
+    login_form = LoginForm ,
+    success_url = '/ico_rating/',
+    template_name='ico_rating_list.html',
+    create_url = 'bk:icoRating_create',#수정
+    read_url='bk:icoRating_read', #수정
+    title ="ICO RATING",
+    permission="BK"
+)
+
+icoRatingCreate = bbs.BoardCreateView.as_view(
+    model = models.ICORating,
+    form_class = forms.ICORatingCreationForm,
+    template_name='Board_Create.html',
+    title ="뉴스 작성",
+    access_permission="BK",
+)
+
+icoRatingRead = bbs.BoardReadView.as_view(
+    model = models.ICORating,
+    comment_model = models.ICORatingComment,
+    comment_Form_class = forms.ICORatingCommentForm,
+    form_class = LoginForm,
+    template_name='Ico_rating_read.html',
+    title ="뉴스",
+    like_url='bk:icoRating_like',
+    dislike_url='bk:icoRating_dislike',
+    update_url='bk:icoRating_update',
+    destroy_url= 'bk:icoRating_destroy',
+    comment_url= 'bk:icoRating_comment',
+)
+
+icoRatingUpdate = bbs.BoardUpdateView.as_view(
+    model = models.ICORating,
+    form_class= forms.ICORatingCreationForm,
+    template_name='Board_Create.html',
+    title ="뉴스",
+)
+
+icoRatingDestroy = bbs.BoardDestroyView.as_view(
+    
+)
+
+icoRatingLike = bbs.LikeView.as_view(
+    model = models.ICORating
+)
+
+icoRatingDisLike = bbs.DisLikeView.as_view(
+    model = models.ICORating
+)
+
+icoRatingComment = bbs.CommentView.as_view(
+    model = models.ICORating,
+    form_class = forms.ICORatingCommentForm,
     template_name="Comment.html",
 )

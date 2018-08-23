@@ -73,3 +73,15 @@ urlpatterns += [
     path('news/dislike/', views.newsDisLike, name="news_dislike"),            #비추천
     path('news/comment/', views.newsComment, name="news_comment"),            #댓글
 ]
+
+#ICO_RATING
+urlpatterns += [
+    path('icoRating/', views.icoRatingList, name="icoRating_list"),                          #목록
+    path('icoRating/create/', views.icoRatingCreate , name="icoRating_create"),              #쓰기
+    path('icoRating/<int:pk>/', views.icoRatingRead , name="icoRating_read"),                #읽기
+    path('icoRating/edit/<int:pk>/', views.icoRatingUpdate, name="icoRating_update"),        #수정
+    path('icoRating/destroy/<int:pk>/', views.icoRatingDestroy, name="icoRating_destroy"),   #삭제
+    path('icoRating/like/', views.icoRatingLike, name="icoRating_like"),                     #추천
+    path('icoRating/dislike/', views.icoRatingDisLike, name="icoRating_dislike"),            #비추천
+    path('icoRating/comment/', views.icoRatingComment, name="icoRating_comment"),            #댓글
+]

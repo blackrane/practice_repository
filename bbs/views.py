@@ -439,17 +439,6 @@ def favorableLike(request):
     }
     return HttpResponse(json.dumps(context))
 
-#ICO 게시판 
-ico_rating_list = BoardListView.as_view(
-    model = models.FreeBoard, #수정
-    login_form = LoginForm ,
-    success_url = '/ico_rating/',
-    template_name='Ico_rating_list.html',
-    create_url = 'bbs:free_create',#수정
-    read_url='bbs:free_read', #수정
-    title ="ICO RATING"
-)
-
 #공지사항
 def Notice(request, pk):
     post = get_object_or_404(models.Notice, pk=pk)

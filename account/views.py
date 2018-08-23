@@ -4,8 +4,10 @@ from django.contrib.auth import login, get_user_model, authenticate, update_sess
 from django.utils import timezone
 from bbs import models
 #app
+
 from .forms import LoginForm, UserCreationForm
 from bbs.models import FreeBoard
+
 
 def login_func(request):
     username = request.POST['username']
@@ -20,6 +22,7 @@ def login_func(request):
     else:
         return '아이디/비밀번호가 틀렸습니다.'
 
+from coinsense import bbs
 def index(request,context={}):
     if request.method == "POST":        
         form = LoginForm(request.POST)
@@ -28,6 +31,7 @@ def index(request,context={}):
     context['form'] = form
     context['post_list'] = FreeBoard.objects.all().order_by('-id')
     context['notice'] = models.Notice.objects.all()
+    context['ranking_list']= bbs.get_ranking()
     return render(request, 'account/index.html', context)
 
 def signup(request,context={}):
@@ -51,6 +55,7 @@ def signup(request,context={}):
 def myPage(request):
     context={}
     context['notice'] = models.Notice.objects.all()
+    context['ranking_list']= bbs.get_ranking()
     return render(request, 'account/my_page.html',context)
 
 def myWrite(request):

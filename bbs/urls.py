@@ -91,10 +91,6 @@ urlpatterns += [
     path('favorable/like/', views.favorableLike, name="favorable_like")
 ]
 
-#ICO_RATING
-urlpatterns += [
-    path('ico_rating/', views.ico_rating_list, name="ico_rating_list"),
-]
 
 #하단 제휴/게재중단 요청
 urlpatterns += [
@@ -102,11 +98,13 @@ urlpatterns += [
     path('sr/', views.suspendrequestCreate, name="sr_create"),
 ]
 
-urlpatterns += [
-    path('sucess/<int:select>/', views.sucessPage, name='succes_page')
-]
 
 #공지사항
 urlpatterns += [
     path('notice/<int:pk>', views.Notice, name="notice"),
+]
+
+#성공 여부 
+urlpatterns += [
+    path('sucess/<int:select>/', views.sucessPage, name='succes_page')
 ]

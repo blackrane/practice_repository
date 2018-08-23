@@ -197,10 +197,11 @@ h1{
 }
 
 #best_sub{
+	padding-top : 5px;
+	padding-left : 5px;
 	float: right;
 	margin-top: 10px; 
 	width: 300px;
-	height: 155px;
 	border: 1px solid #dcdddd;
 }
 

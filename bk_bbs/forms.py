@@ -136,3 +136,39 @@ class NewsCommentForm(forms.ModelForm):
         'placeholder':'댓글을 입력해주세요.',
             })
         }
+
+
+###############################################################################
+# ICO Rating 폼
+class ICORatingCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.ICORating
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
+
+class ICORatingCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.ICORatingComment
+        fields = ['text']
+        widgets={
+        'text': forms.TextInput(attrs={
+        'class':"form-controlcomment-Table",
+        'style':'width:670px;height:40px;margin-right:10px;',
+        'placeholder':'댓글을 입력해주세요.',
+            })
+        }
+
+class ICORatingBkCommentForm(forms.ModelForm):
+    class Meta:
+        model = models.ICORatingBkComment
+        fields = ['text']
+        widgets={
+        'text': forms.TextInput(attrs={
+        'class':"form-controlcomment-Table",
+        'style':'width:670px;height:40px;margin-right:10px;',
+        'placeholder':'댓글을 입력해주세요.',
+            })
+        }
