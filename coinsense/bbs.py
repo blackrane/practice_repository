@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.core.paginator import Paginator, PageNotAnInteger , EmptyPage
 from django.db.models import Q
 import json
+from bbs import models
 
 #App import
 from account.forms import LoginForm
@@ -26,6 +27,7 @@ class BoardListView(View):
     context={}
     title = None
     permission = None
+    notice_model = models.Notice
 
     def get_permission(self):
         if self.permission is None:
@@ -47,6 +49,7 @@ class BoardListView(View):
         self.context['url']= reverse(self.create_url)
         self.context['read_url'] = self.read_url
         self.context['permission'] = self.get_permission()
+        self.context['notice'] = self.notice_model.objects.all()
 
     def get_serach(self):
         search = self.request.GET.get('search',None) #검색 가져오기
@@ -82,7 +85,9 @@ class BoardListView(View):
         self.context['error'] = login_func(self.request)
         self.context['boardtitle'] = self.title
         self.context['permission'] = self.get_permission()
+        self.context['notice'] = self.notice_model.objects.all()
         return render(self.request, self.get_template_name(), self.context)
+
 
 class BoardCreateView(UserPassesTestMixin, View):
     model = None
@@ -91,6 +96,7 @@ class BoardCreateView(UserPassesTestMixin, View):
     context={}
     title = None
     pass_condition = None
+    notice_model = models.Notice
 
     #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
     #조건 선택시 해당 조건의 유저만 들어갈수있다.
@@ -116,6 +122,7 @@ class BoardCreateView(UserPassesTestMixin, View):
     def get(self, *args, **kwargs):
         self.context['form'] = self.form_class()
         self.context['boardtitle'] = self.title
+        self.context['notice'] = self.notice_model.objects.all()
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -129,7 +136,7 @@ class BoardCreateView(UserPassesTestMixin, View):
         return render(self.request, self.get_template_name(), self.context)
 
 #게시글 디테일 뷰
-class BoardReadView( View):
+class BoardReadView(View):
     model = None #게시글 모델
     comment_model = None # 댓글 모델
     form_class = None #로그인 폼
@@ -142,6 +149,7 @@ class BoardReadView( View):
     update_url=''
     destroy_url=''
     comment_url=''
+    notice_model = models.Notice
 
     def get_comment_form(self):
         return self.comment_Form_class
@@ -168,6 +176,7 @@ class BoardReadView( View):
         self.context['boardtitle'] = self.title
         self.context['comment_form'] = self.get_comment_form()
         self.context['comments'] = self.get_comment_model().filter(post=post)
+        self.context['notice'] = self.notice_model.objects.all()
 
         #접근주소 가변처리
         self.context['like_url'] =  reverse(self.like_url)
@@ -182,6 +191,7 @@ class BoardReadView( View):
         self.context['post'] = get_object_or_404(self.model, id= self.kwargs['pk'])
         self.context['error'] = login_func(self.request)
         self.context['boardtitle'] = self.title
+        self.context['notice'] = self.notice_model.objects.all()
         return render(self.request, self.get_template_name(), self.context)
 
 #게시글 수정 뷰
@@ -192,6 +202,7 @@ class BoardUpdateView(UserPassesTestMixin, View):
     template_name = None
     title = None
     context={}
+    notice_model = models.Notice
 
     #작성자아니면 못들어온다.
     def test_func(self):
@@ -235,6 +246,7 @@ class BoardUpdateView(UserPassesTestMixin, View):
         }
         self.context['boardtitle']=self.title
         self.context['form'] = self.form_class(**form_kwargs)
+        self.context['notice'] = self.notice_model.objects.all()
         return render(self.request, self.get_template_name(), self.context)
     
     #post 요청일때
@@ -360,6 +372,7 @@ class ForumListView(View):
     template_name = None
     context = {}
     title = None
+    notice_model = models.Notice
 
     def get_success_url(self):
         return self.success_url
@@ -372,6 +385,7 @@ class ForumListView(View):
         #self.context['post_list'] = self.model.objects.all()
         self.context['form'] = self.form_class()
         self.context['boardtitle'] = self.title
+        self.context['notice'] = self.notice_model.objects.all()
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -379,4 +393,5 @@ class ForumListView(View):
         #self.context['post_list'] = self.model.objects.all()
         self.context['error'] = login_func(self.request)
         self.context['boardtitle'] = self.title
+        self.context['notice'] = self.notice_model.objects.all()
         return render(self.request, self.get_template_name(), self.context)

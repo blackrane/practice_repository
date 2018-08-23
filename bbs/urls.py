@@ -95,3 +95,8 @@ urlpatterns += [
 urlpatterns += [
     path('ico_rating/', views.ico_rating_list, name="ico_rating_list"),
 ]
+
+#공지사항
+urlpatterns += [
+    path('notice/<int:pk>', views.Notice, name="notice"),
+]
