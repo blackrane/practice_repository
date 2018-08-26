@@ -48,7 +48,7 @@ $('#myModal').on('shown.bs.modal', function () {
         <hr style="clear: both;">
 
         <img style="width:60px;height: 60px;float: left;" 
-        {% if request.user.Photo %} src="{{request.user.Photo.url}}"  
+        {% if post.user.Photo %} src="{{post.user.Photo.url}}"  
         {% else %} src="{% static 'no-screenshot.jpg' %}"
         {%endif%}
         >

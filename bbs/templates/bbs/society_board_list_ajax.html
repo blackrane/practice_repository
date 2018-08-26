@@ -2,25 +2,25 @@
     <table>
         <thead class="thead-light">
             <tr>
-                <th style="width:150px;">닉네임</th>
-                <th style="width:200px;">이름</th>
-                <th style="width:215px;">학과</th>
-                <th style="width:100px;">학번</th>
-                <th style="width:100px;">승인</th>
-                <th style="width:100px;">거절</th>
+                <th style="width:100px;">글번호</th>
+                <th style="width:370px;">제목</th>
+                <th style="width:170px;">작성자</th>
+                <th style="width:75px;">작성일</th>
+                <th style="width:75px;">조회</th>
+                <th style="width:75px;">추천</th>
             </tr>
         </thead>
         
         <!-- 공지사항 -->
-        <tbody>
+        <tbody>       
         {% for user in user_list %}
         <tr>
-            <td style="">{{ user.user.nickname }}</td>
-            <td style="">{{ user.username }}</a></td>
-            <td style="">{{ user.department }}</td>
-            <td>{{user.unv_number}}</td>
-            <td style=""><a class="accept" style="color:black" href="{% url accept_url %}" name="{{user.user.pk}}">승인</a></td>
-            <td style=""><a class="reject" style="color:black" href="{% url reject_url %}" name="{{user.user.pk}}">거절</a></td>
+            <td style="">{{ user.id }}</td>
+            <td style=""><a href="{%url read_url user.id %}" style="display: inline-block; white-space: nowrap; overflow: hidden;text-overflow: ellipsis; width:305px;text-overflow:clip;margin-left: -10px;margin-right:10px;text-decoration: none;color:black;">{{ user.title }}</a></td>
+            <td style="">{{ user.title }}</td>
+            <td>{{user.author}}</td>
+            <td style="">{{user.department}}</td>
+            <td style="">{{ user.created_at.year}}.{{ user.created_at.month}}.{{ user.created_at.day}}</td>
         </tr>
         {% endfor %}
         </tbody>
@@ -44,12 +44,12 @@
             {% if user_list.number == i %}
                 <li class="active" style="font-size: 20px;line-height: 25px;"><a style="color:black" href="#"><b>&ensp;{{i}}&ensp;</b></a></li>
             {% else %}
-                <li><a class="page_choice" style="color:black" href="?page={{i}}">&ensp;{{i}}&ensp;</a></li>
+                <li><a  class="page_choice" style="color:black" href="?page={{i}}">&ensp;{{i}}&ensp;</a></li>
             {% endif %}
             {% endfor %}
                   
             {% if user_list.has_next %}
-                <li><a class="next_page" style="color:black" href="?page={{ user_list.next_page_number }}" aria-label="Next">&ensp;다음</i></a></li>
+                <li><a  class="next_page" style="color:black" href="?page={{ user_list.next_page_number }}" aria-label="Next">&ensp;다음</i></a></li>
             {% else %}  
             {% endif %}
             </ul><!--/.pagination-->

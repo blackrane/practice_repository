@@ -91,7 +91,7 @@ class BoardListView(UserPassesTestMixin,View):
         return self.template_name
 
     def context_init(self):
-        self.context['post_list'] = self.model.objects.all()
+        self.context['post_list'] = self.model.objects.all().order_by('id')
         self.context['form'] = self.login_form()
         self.context['boardtitle'] = self.title
         self.context['url']= reverse(self.create_url)
@@ -99,7 +99,8 @@ class BoardListView(UserPassesTestMixin,View):
         self.context['permission'] = self.get_permission()
         self.context['notice'] = self.notice_model.objects.all()
         self.context['ranking_list']= get_ranking()
-        self.context['approval_list']= reverse(self.approval_url)
+        if self.approval_url is not None:
+            self.context['approval_list']= reverse(self.approval_url)
 
     def get_serach(self):
         search = self.request.GET.get('search',None) #검색 가져오기
@@ -119,6 +120,7 @@ class BoardListView(UserPassesTestMixin,View):
             paginator = paginator.page(1)
         except EmptyPage:
             paginator = paginator.page(paginator.num_pages)
+
         self.context['post_list'] = paginator
 
     #get 요청일때
@@ -126,7 +128,6 @@ class BoardListView(UserPassesTestMixin,View):
         self.context_init()
         self.get_serach()
         self.get_pagination()
-
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -452,12 +453,15 @@ class ForumListView(View):
         
         return render(self.request, self.get_template_name(), self.context)
 
-#댓글생성
+#승인목록/게시글 조회 ajax View
 class SocietyApprovalView(UserPassesTestMixin,View):
-    model = None
-    template_name=None
-    context = {}
-    access_permission=None
+    model = None                    #승인 릴레이션
+    template_name=None              #템플릿
+    context = {}                    #프론트로 넘겨줄 데이터
+    access_permission=None          #접근권한
+    accept_url = None               #수락 url
+    reject_url = None               #거절 url
+    read_url = None                 #게시글 조회때 사용하는 읽기 url
 
     #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
     #조건 선택시 해당 조건의 유저만 들어갈수있다.
@@ -470,12 +474,173 @@ class SocietyApprovalView(UserPassesTestMixin,View):
             return True
         return False
 
+    def get_pagination(self):
+         #페이지 네이션
+        paginator = Paginator(self.context['user_list'], 2) #15개씩 묶어 페이지 생성 선언
+
+        page = self.request.GET.get('page',1 )
+        try:
+            paginator = paginator.page(page)
+        except PageNotAnInteger:
+            paginator = paginator.page(1)
+        except EmptyPage:
+            paginator = paginator.page(paginator.num_pages)
+            
+        self.context['user_list'] = paginator
+
     @method_decorator(login_required(login_url='/'))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
+    def get(self, *args, **kwargs):
+        user_list = self.model.objects.all().order_by('id')
+        self.context['user_list'] = user_list
+        self.get_pagination()
+        if self.read_url is not None:
+            self.context['read_url'] = self.read_url
+
+        self.context['accept_url'] = self.accept_url
+        self.context['reject_url'] = self.reject_url
+
+        return render(self.request, self.template_name, self.context)
+
+    #post 요청일때
+    def post(self, *args, **kwargs):
+        user_list = self.model.objects.all().order_by('id')
+        self.context['user_list'] = user_list
+        self.get_pagination()
+        if self.read_url is not None:
+            self.context['read_url'] = self.read_url
+
+        self.context['accept_url'] = self.accept_url
+        self.context['reject_url'] = self.reject_url
+        return render(self.request, self.template_name, self.context)
+
+
+#승인 ajax
+class SocietyAcceptView(UserPassesTestMixin,View):
+    model = None
+    template_name=None
+    context = {}
+    access_permission=None
+    accept_url = None
+    reject_url = None
+    code = 'Z0'
+    #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
+    #조건 선택시 해당 조건의 유저만 들어갈수있다.
+    def test_func(self):
+        if self.access_permission is None:
+            return True
+        if self.request.user.code == "BK":
+            return True
+        if self.request.user.code == self.access_permission:
+            return True
+        return False
+
+    def get_pagination(self):
+         #페이지 네이션
+        paginator = Paginator(self.context['user_list'], 2) #15개씩 묶어 페이지 생성 선언
+
+        page = self.request.GET.get('page',1 )
+        try:
+            paginator = paginator.page(page)
+        except PageNotAnInteger:
+            paginator = paginator.page(1)
+        except EmptyPage:
+            paginator = paginator.page(paginator.num_pages)
+            
+        self.context['user_list'] = paginator
+
+    @method_decorator(login_required(login_url='/'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, *args, **kwargs):
+        user_list = self.model.objects.all().order_by('id')
+        self.context['user_list'] = user_list
+        self.get_pagination()
+        self.context['accept_url'] = self.accept_url
+        self.context['reject_url'] = self.reject_url
+        return render(self.request, self.template_name, self.context)
+
     #post 요청일때
     def post(self, *args, **kwargs):
         user_list = self.model.objects.all()
+        pk = self.request.POST.get('pk',None)
+        if pk is not None:
+            user= user_list.filter(user=pk).first()
+            if user is not None:
+                user.user.code= self.code
+                user.user.save()
+                user.delete()
+                
+
+        user_list = self.model.objects.all().order_by('id')
         self.context['user_list'] = user_list
+        self.get_pagination()
+        self.context['accept_url'] = self.accept_url
+        self.context['reject_url'] = self.reject_url
+        return render(self.request, self.template_name, self.context)
+
+#승인 거절 ajax
+class SocietyRejectView(UserPassesTestMixin,View):
+    model = None
+    template_name=None
+    context = {}
+    access_permission=None
+    accept_url = None
+    reject_url = None
+    code = 'Z0'
+    
+    #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
+    #조건 선택시 해당 조건의 유저만 들어갈수있다.
+    def test_func(self):
+        if self.access_permission is None:
+            return True
+        if self.request.user.code == "BK":
+            return True
+        if self.request.user.code == self.access_permission:
+            return True
+        return False
+
+    def get_pagination(self):
+         #페이지 네이션
+        paginator = Paginator(self.context['user_list'], 2) #15개씩 묶어 페이지 생성 선언
+
+        page = self.request.GET.get('page',1 )
+        try:
+            paginator = paginator.page(page)
+        except PageNotAnInteger:
+            paginator = paginator.page(1)
+        except EmptyPage:
+            paginator = paginator.page(paginator.num_pages)
+            
+        self.context['user_list'] = paginator
+
+    @method_decorator(login_required(login_url='/'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, *args, **kwargs):
+        user_list = self.model.objects.all().order_by('id')
+        self.context['user_list'] = user_list
+        self.get_pagination()
+        self.context['accept_url'] = self.accept_url
+        self.context['reject_url'] = self.reject_url
+        return render(self.request, self.template_name, self.context)
+
+    #post 요청일때
+    def post(self, *args, **kwargs):
+        user_list = self.model.objects.all()
+        pk = self.request.POST.get('pk',None)
+        if pk is not None:
+            user= user_list.filter(user=pk).first()
+            if user is not None:
+                user.delete()
+
+        user_list = self.model.objects.all().order_by('id')
+        self.context['user_list'] = user_list
+        self.get_pagination()
+        self.context['accept_url'] = self.accept_url
+        self.context['reject_url'] = self.reject_url
         return render(self.request, self.template_name, self.context)

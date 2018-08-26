@@ -422,6 +422,10 @@ class SeoulUnv(summer_model.Attachment):
 
     def get_absolute_url(self):
         return reverse('bbs:seoulunv_read', args=[self.id])
+    
+    @property
+    def get_code(self):
+        return 'A00'
 
 class SeoulUnvComment(models.Model):
     post = models.ForeignKey(SeoulUnv, verbose_name="HoneyTip Comment", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 

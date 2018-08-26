@@ -6,7 +6,7 @@ import json
 from django.db.models import Q
 
 #App 
-from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView, SocietyApprovalView
+from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView, SocietyApprovalView,SocietyAcceptView, SocietyRejectView
 from . import models
 from . import forms
 from account.forms import LoginForm
@@ -327,7 +327,7 @@ seoulUnvList = BoardListView.as_view(
     read_url='bbs:seoulunv_read',
     approval_url='bbs:seoulunv_approval_list',
     title="서울대 학회게시판",
-    permission="S0",
+    permission="A0",
 )
 
 seoulUnvCreate = BoardCreateView.as_view(
@@ -375,11 +375,42 @@ seoulUnvComment = CommentView.as_view(
     template_name="Comment.html",
 )
 
+#승인목록 ajax
 seoulUnvApproval = SocietyApprovalView.as_view(
     model = models.SeoulUnvSocietyRequest,
     template_name="bbs/society_request_list.html",
-    access_permission="A0"
+    accept_url='bbs:seoulunv_approval_accept',
+    reject_url='bbs:seoulunv_approval_reject',
+    access_permission="A00"
 )
+
+#승인수락 ajax
+seoulUnvAjaxAccept = SocietyAcceptView.as_view(
+    model = models.SeoulUnvSocietyRequest,
+    template_name = "bbs/society_request_list.html",
+    access_permission='A00',
+    accept_url='bbs:seoulunv_approval_accept',
+    reject_url='bbs:seoulunv_approval_reject',
+    code="A0",
+)
+
+#승인거절 ajax
+seoulUnvAjaxReject = SocietyRejectView.as_view(
+    model = models.SeoulUnvSocietyRequest,
+    template_name = "bbs/society_request_list.html",
+    access_permission='A00',
+    accept_url='bbs:seoulunv_approval_accept',
+    reject_url='bbs:seoulunv_approval_reject',
+)
+
+#게시글 목록 ajax
+seoulUnvAjaxList = SocietyApprovalView.as_view(
+    model = models.SeoulUnv,
+    template_name="bbs/society_board_list_ajax.html",
+    access_permission="A0",
+    read_url = 'bbs:seoulunv_read',
+)
+
 
 ###################################################
 #제휴문의 생성

@@ -86,15 +86,19 @@ urlpatterns += [
 ]
  #서울대학 학회 게시판
 urlpatterns += [
-    path('society/seoulunv/', views.seoulUnvList, name="seoulunv_list"),                          #목록
-    path('society/seoulunv/create/', views.seoulUnvCreate , name="seoulunv_create"),              #쓰기
-    path('society/seoulunv/<int:pk>/', views.seoulUnvRead , name="seoulunv_read"),                #읽기
-    path('society/seoulunv/edit/<int:pk>/', views.seoulUnvUpdate, name="seoulunv_update"),        #수정
-    path('society/seoulunv/destroy/<int:pk>/', views.seoulUnvDestroy, name="seoulunv_destroy"),   #삭제
-    path('society/seoulunv/like/', views.seoulUnvLike, name="seoulunv_like"),                     #추천
-    path('society/seoulunv/dislike/', views.seoulUnvDisLike, name="seoulunv_dislike"),            #비추천
-    path('society/seoulunv/comment/', views.seoulUnvComment, name="seoulunv_comment"),            #댓글
-    path('society/seoulunv/approval/', views.seoulUnvApproval, name="seoulunv_approval_list"),    #승인목록
+    path('society/seoulunv/', views.seoulUnvList, name="seoulunv_list"),                            #목록
+    path('society/seoulunv/create/', views.seoulUnvCreate , name="seoulunv_create"),                #쓰기
+    path('society/seoulunv/<int:pk>/', views.seoulUnvRead , name="seoulunv_read"),                  #읽기
+    path('society/seoulunv/edit/<int:pk>/', views.seoulUnvUpdate, name="seoulunv_update"),          #수정
+    path('society/seoulunv/destroy/<int:pk>/', views.seoulUnvDestroy, name="seoulunv_destroy"),     #삭제
+    path('society/seoulunv/like/', views.seoulUnvLike, name="seoulunv_like"),                       #추천
+    path('society/seoulunv/dislike/', views.seoulUnvDisLike, name="seoulunv_dislike"),              #비추천
+    path('society/seoulunv/comment/', views.seoulUnvComment, name="seoulunv_comment"),              #댓글
+
+    path('society/seoulunv/approval/', views.seoulUnvApproval, name="seoulunv_approval_list"),              #승인목록
+    path('society/seoulunv/approval/accept', views.seoulUnvAjaxAccept, name="seoulunv_approval_accept"),      #승인허가
+    path('society/seoulunv/approval/reject', views.seoulUnvAjaxReject, name="seoulunv_approval_reject"),      #승인허가
+    path('society/seoulunv/list/', views.seoulUnvAjaxList, name="seoulunv_list_ajax"),                      #게시글목록ajax
 ]
 
 #호재게시판
