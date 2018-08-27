@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views import View
-from django.views.generic import ListView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
@@ -57,9 +56,20 @@ class BoardListView(UserPassesTestMixin,View):
     context={}
     title = None
     permission = None
-    notice_model = models.Notice
-    access_permission=None
-    approval_url= None
+    notice_model = models.Notice    #공지사항
+    access_permission=None          #접근권한전용
+    approval_url= None              #학회전용 승인 url
+    check_model = None              #학회 승인 비지블 on/off
+
+    def get_check_model(self):
+        if self.check_model is not None: #체크모델이 들어왔다면
+            user = self.check_model.objects.filter(user=self.request.user).first() #유저가 학회에 신청했는지 확인한다.
+            print(user)
+            if user is not None:                                              #결과 None이 아니라면 객체가 있으므로 보여주면안됨
+                self.context['check_r'] = False                               #결과 None이 맞다면 객체가 없으므로 보여줘야함
+            else:
+                self.context['check_r'] = True
+        return None
 
     #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
     #조건 선택시 해당 조건의 유저만 들어갈수있다.
@@ -128,6 +138,7 @@ class BoardListView(UserPassesTestMixin,View):
         self.context_init()
         self.get_serach()
         self.get_pagination()
+        self.get_check_model()
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -643,4 +654,65 @@ class SocietyRejectView(UserPassesTestMixin,View):
         self.get_pagination()
         self.context['accept_url'] = self.accept_url
         self.context['reject_url'] = self.reject_url
+        return render(self.request, self.template_name, self.context)
+
+from django.contrib.auth import get_user_model
+#승인 거절 ajax
+class SocietyRequestView(UserPassesTestMixin,View):
+    model = None
+    template_name=None
+    context = {}
+    form = None
+    redirect_url= ''
+    access_permission=None
+    code = 'Z0'
+    
+    #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
+    #조건 선택시 해당 조건의 유저만 들어갈수있다.
+    def test_func(self):
+        if self.access_permission is None:
+            return True
+        if self.request.user.code == "BK":
+            return True
+        if self.request.user.code == self.access_permission:
+            return True
+        return False
+
+    def get_pagination(self):
+         #페이지 네이션
+        paginator = Paginator(self.context['user_list'], 2) #15개씩 묶어 페이지 생성 선언
+
+        page = self.request.GET.get('page',1 )
+        try:
+            paginator = paginator.page(page)
+        except PageNotAnInteger:
+            paginator = paginator.page(1)
+        except EmptyPage:
+            paginator = paginator.page(paginator.num_pages)
+            
+        self.context['user_list'] = paginator
+
+    @method_decorator(login_required(login_url='/'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get(self, *args, **kwargs):
+        self.context['form'] = self.form
+        return render(self.request, self.template_name, self.context)
+
+    #post 요청일때
+    def post(self, *args, **kwargs):
+        pk = int(self.request.POST.get('user'))
+        user_chk = self.model.objects.filter(user=self.request.user).first()
+
+        user = get_user_model().objects.filter(pk=pk).first()
+        if user_chk is None:
+            form = self.form(self.request.POST)
+            if form.is_valid():
+                req = form.save(commit=False)
+                req.user = user
+                req.save()
+                return HttpResponse('완료되었습니다.')
+        else:
+            return HttpResponse("실패했습니다.")
         return render(self.request, self.template_name, self.context)

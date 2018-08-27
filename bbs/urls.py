@@ -98,7 +98,10 @@ urlpatterns += [
     path('society/seoulunv/approval/', views.seoulUnvApproval, name="seoulunv_approval_list"),              #승인목록
     path('society/seoulunv/approval/accept', views.seoulUnvAjaxAccept, name="seoulunv_approval_accept"),      #승인허가
     path('society/seoulunv/approval/reject', views.seoulUnvAjaxReject, name="seoulunv_approval_reject"),      #승인허가
-    path('society/seoulunv/list/', views.seoulUnvAjaxList, name="seoulunv_list_ajax"),                      #게시글목록ajax
+    path('society/seoulunv/list/', views.seoulUnvAjaxList, name="seoulunv_list_ajax"),                      #게시글목록ajaxseoulUnvAjaxList
+    path('society/seoulunv/request/', views.seoulUnvAjaxRequest , name="seoulunv_request_ajax"),                      #게시글목록
+    path('society/seoulunv/request/submit/', views.seoulUnvAjaxClear , name="seoulunv_request_ajax"),                      #게시글목록 ajaxseoulUnvAjaxList
+    
 ]
 
 #호재게시판

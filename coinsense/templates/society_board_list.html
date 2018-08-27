@@ -5,6 +5,7 @@
 <script type="text/javascript" src="{% static 'bbs/society_request_list_ajax.js' %}"></script>
 <script type="text/javascript" src="{% static 'bbs/society_request_pagination.js' %}"></script>
 <script type="text/javascript" src="{% static 'bbs/society_request_accept_ajax.js' %}"></script>
+<script type="text/javascript" src="{% static 'bbs/society_approval_request_ajax.js' %}"></script>
 
 {% endblock%}
 {% block content %}
@@ -27,10 +28,13 @@
                 <a style="color: #383838;border: 1px solid #383838;padding-left: 10px;padding-right: 10px;" href="{{url}}"><b>글쓰기</b></a>
             {% else %}
                 {% if request.user.is_authenticated %}
-                <a style="color: #383838;border: 1px solid #383838;padding-left: 10px;padding-right: 10px;" href="#"><b >권한요청</b></a>
+                    {% if check_r %}
+                    
+                    <a class="approval_request"style="color: #383838;border: 1px solid #383838;padding-left: 10px;padding-right: 10px;" href="#"><b >권한요청</b></a>
+                    {% endif %}
                 {% endif %}
             {% endif %}
-
+            
             
         </div>
     </div>
@@ -120,5 +124,4 @@
     </form>
     </div>
 </div>
-        
 {% endblock %}

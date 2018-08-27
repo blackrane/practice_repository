@@ -6,7 +6,7 @@ import json
 from django.db.models import Q
 
 #App 
-from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView, SocietyApprovalView,SocietyAcceptView, SocietyRejectView
+from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView, SocietyApprovalView,SocietyAcceptView, SocietyRejectView, SocietyRequestView
 from . import models
 from . import forms
 from account.forms import LoginForm
@@ -325,9 +325,10 @@ seoulUnvList = BoardListView.as_view(
     template_name = "society_board_list.html",
     create_url = 'bbs:seoulunv_create',
     read_url='bbs:seoulunv_read',
-    approval_url='bbs:seoulunv_approval_list',
+    approval_url='bbs:seoulunv_approval_list',      #승인 url
     title="서울대 학회게시판",
     permission="A0",
+    check_model= models.SeoulUnvSocietyRequest,
 )
 
 seoulUnvCreate = BoardCreateView.as_view(
@@ -381,24 +382,24 @@ seoulUnvApproval = SocietyApprovalView.as_view(
     template_name="bbs/society_request_list.html",
     accept_url='bbs:seoulunv_approval_accept',
     reject_url='bbs:seoulunv_approval_reject',
-    access_permission="A00"
+    access_permission="A00" #승인목록 접근권한
 )
 
 #승인수락 ajax
 seoulUnvAjaxAccept = SocietyAcceptView.as_view(
     model = models.SeoulUnvSocietyRequest,
     template_name = "bbs/society_request_list.html",
-    access_permission='A00',
     accept_url='bbs:seoulunv_approval_accept',
     reject_url='bbs:seoulunv_approval_reject',
-    code="A0",
+    access_permission='A00',                    #접근가능한 코드
+    code="A0",                                  #승인후 변경될 코드
 )
 
 #승인거절 ajax
 seoulUnvAjaxReject = SocietyRejectView.as_view(
     model = models.SeoulUnvSocietyRequest,
     template_name = "bbs/society_request_list.html",
-    access_permission='A00',
+    access_permission='A00',                       
     accept_url='bbs:seoulunv_approval_accept',
     reject_url='bbs:seoulunv_approval_reject',
 )
@@ -411,7 +412,18 @@ seoulUnvAjaxList = SocietyApprovalView.as_view(
     read_url = 'bbs:seoulunv_read',
 )
 
+#권한요청
+seoulUnvAjaxRequest = SocietyRequestView.as_view(
+    model = models.SeoulUnvSocietyRequest,
+    form = forms.SeoulUnvSocietyRequestForm,
+    template_name="bbs/society_request_form_ajax.html"
+)
 
+seoulUnvAjaxClear = SocietyRequestView.as_view(
+    model = models.SeoulUnvSocietyRequest,
+    form = forms.SeoulUnvSocietyRequestForm,
+    template_name="bbs/society_request_form_ajax.html"
+)
 ###################################################
 #제휴문의 생성
 withCreate = BoardCreateView.as_view(

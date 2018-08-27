@@ -192,10 +192,3 @@ class SeoulUnvSocietyRequestForm(forms.ModelForm):
     class Meta:
         model = models.SeoulUnvSocietyRequest
         fields = ['username','unv_number','department']
-        widgets={
-        'text': forms.TextInput(attrs={
-        'class':"input_first_title",
-        'style':'width:670px;height:40px;margin-right:10px;',
-        'placeholder':'댓글을 입력해주세요.',
-            })
-        }
