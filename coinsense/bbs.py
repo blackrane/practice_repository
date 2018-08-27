@@ -46,6 +46,10 @@ def get_ranking():
     ranking = board[:5]
     return ranking
 
+def get_notice():
+    notice_list = models.Notice.objects.all().order_by('-id')[:5]    #공지사항
+    return notice_list
+
 class BoardListView(UserPassesTestMixin,View):
     model = None
     login_form = None
@@ -56,7 +60,6 @@ class BoardListView(UserPassesTestMixin,View):
     context={}
     title = None
     permission = None
-    notice_model = models.Notice    #공지사항
     access_permission=None          #접근권한전용
     approval_url= None              #학회전용 승인 url
     check_model = None              #학회 승인 비지블 on/off
@@ -107,8 +110,8 @@ class BoardListView(UserPassesTestMixin,View):
         self.context['url']= reverse(self.create_url)
         self.context['read_url'] = self.read_url
         self.context['permission'] = self.get_permission()
-        self.context['notice'] = self.notice_model.objects.all()
         self.context['ranking_list']= get_ranking()
+        
         if self.approval_url is not None:
             self.context['approval_list']= reverse(self.approval_url)
 
@@ -139,6 +142,8 @@ class BoardListView(UserPassesTestMixin,View):
         self.get_serach()
         self.get_pagination()
         self.get_check_model()
+        self.context['notice_list'] = get_notice()
+        self.context['notice'] = get_notice()
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -147,7 +152,7 @@ class BoardListView(UserPassesTestMixin,View):
         self.context['error'] = login_func(self.request)
         self.context['boardtitle'] = self.title
         self.context['permission'] = self.get_permission()
-        self.context['notice'] = self.notice_model.objects.all()
+        self.context['notice_list'] = get_notice()
         return render(self.request, self.get_template_name(), self.context)
 
 

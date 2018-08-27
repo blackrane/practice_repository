@@ -120,7 +120,7 @@ urlpatterns += [
 
 #공지사항
 urlpatterns += [
-    path('notice/<int:pk>', views.Notice, name="notice"),
+    path('notice/<int:pk>', views.noticeRead, name="notice"),
 ]
 
 #성공 여부 

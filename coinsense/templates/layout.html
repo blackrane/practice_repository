@@ -217,7 +217,7 @@
         		<div id="notice">
         		    공지사항
         		    <div id="notice_sub">
-        		        {% for i in notice %}
+        		        {% for i in notice_list %}
         		        	<a style="color:black;" href="{% url 'bbs:notice' pk=i.id %}">&ensp;{{ i.title|truncatechars:20 }}<br></a>
         		        {% endfor %}
         		    </div>

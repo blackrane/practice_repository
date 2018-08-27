@@ -556,9 +556,12 @@ def favorableLike(request):
     return HttpResponse(json.dumps(context))
 
 #공지사항
-def Notice(request, pk):
+def noticeRead(request, pk):
     post = get_object_or_404(models.Notice, pk=pk)
-    notice = models.Notice.objects.all()
+    if post.author != request.user:
+        post.views= post.views+1
+        post.save()
+    notice = models.Notice.objects.order_by('-id')[:3]
     context={
         'post':post,
         'notice':notice

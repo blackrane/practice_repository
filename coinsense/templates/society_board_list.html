@@ -55,22 +55,15 @@
             <!-- 공지사항 -->
             <tbody>       
               
-            {% load el_pagination_tags %}
-            
-            {% for i in notice %}
-                <!-- 현재 페이지가 1페이지 라면 -->
-                {% if request.get_full_path == '/first_page' %}
+            {% for notice in notice_list %}
                 <tr>
-                        <td>공지</td>
-                        <td>{{ i.title }}</td>
-                        <td>관리자</td>
-                        <td>{{ i.updated_at.year }}.{{ i.updated_at.month }}.{{ i.updated_at.day }}</td>
-                        <td>조회</td>
-                        <td>
-                           *
-                        </td>
+                    <td>공지</td>
+                    <td><a style="color:black" href="{% url 'bbs:notice' pk=notice.id %}">{{ notice.title }}</a></td>
+                    <td>관리자</td>
+                    <td>{{ notice.updated_at.year }}.{{ notice.updated_at.month }}.{{ notice.updated_at.day }}</td>
+                    <td>{{notice.views}}</td>
+                    <td></td>
                 </tr>
-                {% endif %}
             {% endfor %} 
 
             {% for post in post_list %}
