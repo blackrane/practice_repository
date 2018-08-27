@@ -245,6 +245,9 @@ class Favorable_Like(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)    #필수요소
     updated_at = models.DateTimeField(auto_now=True)        #필수요소
 
+class FavorableRequest(models.Model):
+    content = models.CharField(verbose_name="제보내용",max_length=20)
+    date = models.DateTimeField('날짜')
 
 ###############################################################################################################################
 #  ForumBitCoin

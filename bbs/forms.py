@@ -192,3 +192,10 @@ class SeoulUnvSocietyRequestForm(forms.ModelForm):
     class Meta:
         model = models.SeoulUnvSocietyRequest
         fields = ['username','unv_number','department']
+
+
+#호재요청
+class FavorableRequestForm(forms.ModelForm):
+    class Meta:
+        model = models.FavorableRequest
+        fields = ['content','date']
