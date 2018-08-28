@@ -35,23 +35,7 @@
             <!-- 공지사항 -->
             <tbody>       
               
-            {% load el_pagination_tags %}
-            
-            {% for i in notice %}
-                <!-- 현재 페이지가 1페이지 라면 -->
-                {% if request.get_full_path == '/first_page' %}
-                <tr>
-                        <td>공지</td>
-                        <td>{{ i.title }}</td>
-                        <td>관리자</td>
-                        <td>{{ i.updated_at.year }}.{{ i.updated_at.month }}.{{ i.updated_at.day }}</td>
-                        <td>조회</td>
-                        <td>
-                           *
-                        </td>
-                </tr>
-                {% endif %}
-            {% endfor %} 
+ 
 
             {% for post in post_list %}
                 <tr>
@@ -68,7 +52,38 @@
 
             </tbody>
         </table>
-        </div>    
+        </div>   
+        <div style="width:800px;">
+                <div style="display: table; margin-left: auto; margin-right: auto;padding-top: 3%;">
+                    <div class='col-log-12'>
+                        <ul class="pagination pagination-lg col-lg-12 col-md-12" style="margin-left: 20px;">
+                          {% if post_list.has_previous %}
+                          <li>
+                            <a style="color:black" href="?page={{ post_list.previous_page_number }}" aria-label="Previous">
+                              이전&ensp;
+                            </a>
+                          </li>
+                          {% else %}
+                  
+                          {% endif %}
+                  
+                          {% for i in post_list.paginator.page_range %}
+                          <!--현재페이지-->
+                            {% if post_list.number == i %}
+                              <li class="active" style="font-size: 20px;line-height: 25px;"><a style="color:black" href="#"><b>&ensp;{{i}}&ensp;</b></a></li>
+                            {% else %}
+                              <li><a style="color:black" href="?page={{i}}">&ensp;{{i}}&ensp;</a></li>
+                            {% endif %}
+                          {% endfor %}
+                          
+                          {% if post_list.has_next %}
+                            <li><a  style="color:black" href="?page={{ post_list.next_page_number }}" aria-label="Next">&ensp;다음</i></a></li>
+                          {% else %}  
+                  
+                          {% endif %}
+                          </ul><!--/.pagination-->
+                          </div>
+                </div> 
     </div>        
 </div>
 
