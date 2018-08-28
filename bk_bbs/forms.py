@@ -172,3 +172,24 @@ class ICORatingBkCommentForm(forms.ModelForm):
         'placeholder':'댓글을 입력해주세요.',
             })
         }
+
+#BK ICO 폼
+class BKICORatingCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.BKICORating
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
+
+#컬럼 ICO 폼
+class ColumICORatingCreationForm(forms.ModelForm):
+    class Meta:
+        model = models.ColumBKICORating
+        fields = ['title','summer_field']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+        }
+

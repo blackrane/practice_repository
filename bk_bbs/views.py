@@ -384,19 +384,19 @@ icoRatingRead = bbs.BoardReadView.as_view(
     comment_Form_class = forms.ICORatingCommentForm,
     form_class = LoginForm,
     template_name='Ico_rating_read.html',
-    title ="뉴스",
-    like_url='bk:icoRating_like',
-    dislike_url='bk:icoRating_dislike',
+    title ="ICO",
+    like_url='bk:bk_icoRating_like',
+    dislike_url='bk:bk_icoRating_dislike',
     update_url='bk:icoRating_update',
     destroy_url= 'bk:icoRating_destroy',
-    comment_url= 'bk:icoRating_comment',
+    ico_bk_post = models.BKICORating,
 )
 
 icoRatingUpdate = bbs.BoardUpdateView.as_view(
     model = models.ICORating,
     form_class= forms.ICORatingCreationForm,
     template_name='Board_Create.html',
-    title ="뉴스",
+    title ="ICO",
 )
 
 icoRatingDestroy = bbs.BoardDestroyView.as_view(
@@ -411,8 +411,82 @@ icoRatingDisLike = bbs.DisLikeView.as_view(
     model = models.ICORating
 )
 
-icoRatingComment = bbs.CommentView.as_view(
-    model = models.ICORating,
+icoRatingComment = bbs.IcoFreeOpinionView.as_view(
+    model = models.ICORatingComment,
     form_class = forms.ICORatingCommentForm,
-    template_name="Comment.html",
+    template_name="bk_bbs/ico_free_opinion_ajax.html",
+)
+
+#ico bk 뷰
+bkicoCreate = bbs.BoardCreateView.as_view(
+    model = models.BKICORating,
+    form_class = forms.BKICORatingCreationForm,
+    template_name='Board_Create.html',
+    title ="BK 작성",
+    access_permission="BK",
+    bk = True
+)
+
+bkicoUpdate = bbs.BoardUpdateView.as_view(
+    model = models.BKICORating,
+    form_class= forms.BKICORatingCreationForm,
+    template_name='Board_Create.html',
+    title ="BK 수정",
+    bk = True
+)
+
+bkIcoRatingLike = bbs.LikeView.as_view(
+    model = models.BKICORating
+)
+
+bkIcoRatingDisLike = bbs.DisLikeView.as_view(
+    model = models.BKICORating
+)
+
+bkIcoReadAjax = bbs.IcoColumAjaxReadView.as_view(
+    template_name = 'bk_bbs/ico_opinion_ajax.html' ,           #템플릿 
+    model = models.ICORating,
+    ico_colum_post= models.BKICORating  ,           #ico_colum_post
+    update_url='bk:bk_ico_update' ,                 #수정 url
+    create_url='bk:bk_ico_create',
+    like_url ='bk:bk_icoRating_like',
+    dislike_url='bk:bk_icoRating_dislike',
+    destroy_url=''          ,        #삭제 url
+
+)
+#ico colum 뷰
+columRead = bbs.IcoColumAjaxReadView.as_view(
+    template_name = 'bk_bbs/ico_opinion_ajax.html' ,            #템플릿 
+    model = models.ICORating,
+    ico_colum_post= models.ColumBKICORating  ,                  #ico_colum_post
+    update_url='bk:colum_ico_update' ,                          #수정 url
+    create_url='bk:colum_ico_create',
+    like_url ='bk:colum_icoRating_like',
+    dislike_url='bk:colum_icoRating_dislike',
+    destroy_url=''          ,                                   #삭제 url
+)
+
+columIcoCreate = bbs.BoardCreateView.as_view(
+    model = models.ColumBKICORating,
+    form_class = forms.ColumICORatingCreationForm,
+    template_name='Board_Create.html',
+    title ="컬럼 작성",
+    access_permission="BK",
+    bk = True
+)
+
+columIcoUpdate = bbs.BoardUpdateView.as_view(
+    model = models.ColumBKICORating,
+    form_class= forms.ColumICORatingCreationForm,
+    template_name='Board_Create.html',
+    title ="컬럼 수정",
+    bk = True
+)
+
+columIcoRatingLike = bbs.LikeView.as_view(
+    model = models.ColumBKICORating
+)
+
+columIcoRatingDisLike = bbs.DisLikeView.as_view(
+    model = models.ColumBKICORating
 )

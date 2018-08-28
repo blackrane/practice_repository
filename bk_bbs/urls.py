@@ -83,5 +83,19 @@ urlpatterns += [
     path('icoRating/destroy/<int:pk>/', views.icoRatingDestroy, name="icoRating_destroy"),   #삭제
     path('icoRating/like/', views.icoRatingLike, name="icoRating_like"),                     #추천
     path('icoRating/dislike/', views.icoRatingDisLike, name="icoRating_dislike"),            #비추천
-    path('icoRating/comment/', views.icoRatingComment, name="icoRating_comment"),            #댓글
+    path('icoRating/comment/<int:pk>/', views.icoRatingComment, name="icoRating_comment"),    #댓글
+
+    path('icoRating/bkopinion/<int:pk>/',views.bkIcoReadAjax , name="bk_ico_read"),                     #bk ajax 읽기
+    path('icoRating/bkopinion/create/<int:pk>/', views.bkicoCreate, name="bk_ico_create"),              #bk 게시글 작성
+    path('icoRating/bkopinion/edit/<int:pk>/', views.bkicoUpdate, name="bk_ico_update"),                #bk 게시글 수정
+    path('icoRating/bkopinion/like/', views.bkIcoRatingLike, name="bk_icoRating_like"),                 #추천
+    path('icoRating/bkopinion/dislike/', views.bkIcoRatingDisLike, name="bk_icoRating_dislike"),        #비추천
+    
+    path('icoRating/colum/<int:pk>/',views.columRead , name="colum_ico_read"),                           #colum 읽기
+    path('icoRating/colum/create/<int:pk>/', views.columIcoCreate, name="colum_ico_create"),             #colum 생성
+    path('icoRating/colum/edit/<int:pk>/', views.columIcoUpdate, name="colum_ico_update"),               #colum 수정
+    path('icoRating/colum/like/', views.columIcoRatingLike, name="colum_icoRating_like"),                #colum 추천
+    path('icoRating/colum/dislike/', views.columIcoRatingDisLike, name="colum_icoRating_dislike"),       #colum 비추천
+
+    
 ]

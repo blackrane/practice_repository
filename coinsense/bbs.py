@@ -164,6 +164,7 @@ class BoardCreateView(UserPassesTestMixin, View):
     title = None
     access_permission = None
     notice_model = models.Notice
+    bk = None     
 
     #접근조건 view사용시 pass조건을 정하지않으면 로그인한 누구나 접근이가능하고,
     #조건 선택시 해당 조건의 유저만 들어갈수있다.
@@ -197,6 +198,13 @@ class BoardCreateView(UserPassesTestMixin, View):
     #post 요청일때
     def post(self, *args, **kwargs):
         form = self.form_class(self.request.POST or None, self.request.FILES or None)
+        if self.bk is not None: #bk 글쓰기라면
+            if form.is_valid():
+                bk_post = form.save(commit=False)
+                bk_post.ico_id = self.kwargs['pk']
+                bk_post.author = self.request.user
+                bk_post.save()
+                return redirect(bk_post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = self.request.user
@@ -206,19 +214,30 @@ class BoardCreateView(UserPassesTestMixin, View):
 
 #게시글 디테일 뷰
 class BoardReadView(View):
-    model = None #게시글 모델
-    comment_model = None # 댓글 모델
-    form_class = None #로그인 폼
-    comment_Form_class = None #댓글 폼
-    template_name = None #템플릿 
-    context={}
-    title = None #게시판이름
-    like_url=''
-    dislike_url=''
-    update_url=''
-    destroy_url=''
-    comment_url=''
+    model = None                    #게시글 모델
+    comment_model = None            # 댓글 모델
+    form_class = None               #로그인 폼
+    comment_Form_class = None       #댓글 폼
+    template_name = None            #템플릿 
+    context={}  
+    title = None                    #게시판이름
+    like_url=''                     #좋아요 url
+    dislike_url=''                  #싫어요 url
+    update_url=''                   #수정 url
+    destroy_url=''                  #삭제 url
+    comment_url=''                  #댓글 url
     notice_model = models.Notice
+    ico_bk_post=None                #ico_bk_post
+    
+    def get_ico_bk_post(self):
+        post = get_object_or_404(self.model, id=self.kwargs['pk'] )     #본 게시판의 pk를 가져와서
+        bk_post= self.ico_bk_post.objects.filter(ico=post).first()      #bk글이 있는지 확인한다. 없다면 None리턴
+        if bk_post is not None:                                         #bk글이 있다면
+            self.context['bk_post'] = bk_post                           #bk_post를 컨텐츠로 넣고
+            return True                                                 #화면에 보여줄 조건으로 설정
+        else:                                                           #없다면 
+            return False                                                #화면에 보여주지 않는다.
+        return False                                                   
 
     def get_comment_form(self):
         return self.comment_Form_class
@@ -246,14 +265,17 @@ class BoardReadView(View):
         self.context['comment_form'] = self.get_comment_form()
         self.context['comments'] = self.get_comment_model().filter(post=post)
         self.context['notice'] = self.notice_model.objects.all()
-
+        if self.ico_bk_post is not None:
+            self.context['bk_condition'] = self.get_ico_bk_post()
         #접근주소 가변처리
         self.context['like_url'] =  reverse(self.like_url)
         self.context['dislike_url'] = reverse(self.dislike_url)
         self.context['update_url'] = self.update_url
         self.context['destroy_url'] = self.destroy_url
-        self.context['comment_url'] = reverse(self.comment_url)
+        if self.comment_url != '':
+            self.context['comment_url'] = reverse(self.comment_url)
         self.context['ranking_list']= get_ranking()
+        
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -273,6 +295,7 @@ class BoardUpdateView(UserPassesTestMixin, View):
     title = None
     context={}
     notice_model = models.Notice
+    bk = None
 
     #작성자아니면 못들어온다.
     def test_func(self):
@@ -323,6 +346,10 @@ class BoardUpdateView(UserPassesTestMixin, View):
     #post 요청일때
     def post(self, *args, **kwargs):
         form = self.get_form()
+        if self.bk is not None: #bk 글쓰기라면
+            if form.is_valid():
+                bk_post=form.save()
+                return redirect(bk_post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = self.request.user
@@ -661,6 +688,7 @@ class SocietyRejectView(UserPassesTestMixin,View):
         self.context['reject_url'] = self.reject_url
         return render(self.request, self.template_name, self.context)
 
+
 from django.contrib.auth import get_user_model
 #승인 거절 ajax
 class SocietyRequestView(UserPassesTestMixin,View):
@@ -721,3 +749,90 @@ class SocietyRequestView(UserPassesTestMixin,View):
         else:
             return HttpResponse("실패했습니다.")
         return render(self.request, self.template_name, self.context)
+
+
+
+#ajax로 기존 base내용은 유지한태로 특정 부위만 내용 교체기 때문에
+#Colum에서 필요한 녀석들로 채우면 된다.
+#ico에 colum이 있다면 보여줄 colum 모델 
+#ico에 colum이 없다면 글이 없다고 보여줄 조건
+#ico에 colum이 없을때 글쓰기 권한이 있는 자라면 보여줄 조건
+class IcoColumAjaxReadView(View):
+    model = None
+    template_name = None            #템플릿 
+    context={}  
+    like_url=''                     #좋아요 url
+    dislike_url=''                  #싫어요 url
+    update_url=''                   #수정 url
+    create_url=''
+    destroy_url=''                  #삭제 url
+    ico_colum_post=None             #ico_colum_post
+    
+    def get_ico_colum_post(self):
+        post = get_object_or_404(self.model, id=self.kwargs['pk'] )     #본 게시판의 pk를 가져와서
+        self.context['ico']= post
+        colum_post = self.ico_colum_post.objects.filter(ico=post).first()     #bk글이 있는지 확인한다. 없다면 None리턴
+        if colum_post is not None:                                         #bk글이 있다면
+            self.context['column_post'] = colum_post                           #bk_post를 컨텐츠로 넣고
+            return True                                                 #화면에 보여줄 조건으로 설정
+        else:                                                           #없다면 
+            return False                                                #화면에 보여주지 않는다.
+        return False                                                   
+
+    def get_comment_form(self):
+        return self.comment_Form_class
+
+    def get_comment_model(self):
+        return self.comment_model.objects.all()
+    
+    def get_template_name(self):
+        return self.template_name
+
+    #get 요청일때
+    def get(self, *args, **kwargs):
+        self.context['create_url'] = self.create_url
+        self.context['update_url'] = self.update_url
+        self.context['like_url'] = self.like_url
+        self.context['dislike_url'] = self.dislike_url
+        if self.ico_colum_post is not None:
+            self.context['bk_condition'] = self.get_ico_colum_post()
+        print
+        return render(self.request, self.get_template_name(), self.context)
+
+    #post 요청일때
+    def post(self, *args, **kwargs):
+        return render(self.request, self.get_template_name(), self.context)
+
+#GET 방식 보여주기 POST 작성하기
+#GET 방식으로 접근시 해당 게시글의 PK를 받아드린다.
+class IcoFreeOpinionView(View):
+    model=None
+    form_class=None
+    template_name = None                                #템플릿 이름
+    ico_model = None                                    #ico모델 
+    comment_url = ''
+
+    def get(self, *args, **kwrags):
+        context={}
+        pk = self.kwargs['pk']
+        comment = self.model.objects.filter(post_id=pk).first()
+        if comment is not None:
+            context['comment_list'] = self.model.objects.all()
+            context['com'] = True
+        else:
+            context['com'] = False
+        context['post'] = pk
+        context['comment_form'] = self.form_class
+        return render(self.request, self.template_name, context)
+
+    def post(self, *args, **kwargs):
+        context={}
+        self.template_name = 'bk_bbs/free_opinion_ajax.html'
+        form = self.form_class(self.request.POST)
+        if form.is_valid():
+            com = form.save(commit=False)
+            com.author = self.request.user
+            com.post_id = self.kwargs['pk']
+            com.save()
+            context['comment'] = com
+        return render(self.request, self.template_name, context)

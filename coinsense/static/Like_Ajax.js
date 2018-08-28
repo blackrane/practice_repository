@@ -1,4 +1,10 @@
-$(document).on('click','.like', function(e){
+
+
+
+
+$(document).on('click','.like', like)
+
+ function like(e){
     e.stopPropagation(); // 같은 영역에 속해있는 중복 클릭 방지 
     e.preventDefault();  // 이벤트 진행 중지 
     var pk = $(this).attr('name');
@@ -27,4 +33,4 @@ $(document).on('click','.like', function(e){
         //  alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
       },
     });
-  })
+  }
