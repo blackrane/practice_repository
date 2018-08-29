@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'account',
     'bbs',
     'django_summernote',
-    'el_pagination',
     'bk_bbs',
 ]
 

@@ -20,6 +20,8 @@ from account.views import login_func
 from itertools import chain
 from operator import attrgetter
 
+from bk_bbs.module import CustomAnonymousUser
+
 #모든 게시글 합침
 def get_board():
     board = models.FreeBoard.objects.all()          #자유게시판
@@ -64,10 +66,10 @@ class BoardListView(UserPassesTestMixin,View):
     approval_url= None              #학회전용 승인 url
     check_model = None              #학회 승인 비지블 on/off
 
+    #학회 리스트 접근여부 접근권한자에 따라 승인목록 on/off 택
     def get_check_model(self):
         if self.check_model is not None: #체크모델이 들어왔다면
             user = self.check_model.objects.filter(user=self.request.user).first() #유저가 학회에 신청했는지 확인한다.
-            print(user)
             if user is not None:                                              #결과 None이 아니라면 객체가 있으므로 보여주면안됨
                 self.context['check_r'] = False                               #결과 None이 맞다면 객체가 없으므로 보여줘야함
             else:
@@ -112,6 +114,7 @@ class BoardListView(UserPassesTestMixin,View):
         self.context['permission'] = self.get_permission()
         self.context['ranking_list']= get_ranking()
         
+        #학회 승인 리스트 주소
         if self.approval_url is not None:
             self.context['approval_list']= reverse(self.approval_url)
 
@@ -141,7 +144,13 @@ class BoardListView(UserPassesTestMixin,View):
         self.context_init()
         self.get_serach()
         self.get_pagination()
-        self.get_check_model()
+
+        #승인신청 보여주기
+        if self.request.user.is_authenticated: #로그인 대상에게 
+            self.get_check_model()
+        else:                                   #비로그인 대상
+            pass
+
         self.context['notice_list'] = get_notice()
         self.context['notice'] = get_notice()
         return render(self.request, self.get_template_name(), self.context)
