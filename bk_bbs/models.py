@@ -38,6 +38,9 @@ class MarketBoard(summer_model.Attachment):
     def get_absolute_url(self):
         return reverse('bk:market_read', args=[self.id])
 
+    def get_board_name(self):
+        return "판매 게시판"
+
 class MarketBoardComment(models.Model):
     post = models.ForeignKey(MarketBoard, verbose_name="Free Board", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
     author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
@@ -90,6 +93,9 @@ class Event(summer_model.Attachment):
 
     def get_absolute_url(self):
         return reverse('bk:event_read', args=[self.id])
+
+    def get_board_name(self):
+        return "이벤트 게시판"
 
 class EventComment(models.Model):
     post = models.ForeignKey(Event, verbose_name="event", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
@@ -144,6 +150,9 @@ class CoinAnalysis(summer_model.Attachment):
     def get_absolute_url(self):
         return reverse('bk:coinanalysis_read', args=[self.id])
 
+    def get_board_name(self):
+        return "코인분석 게시판"
+
 class CoinAnalysisComment(models.Model):
     post = models.ForeignKey(CoinAnalysis, verbose_name="CoinAnalysis", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
     author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
@@ -196,6 +205,9 @@ class Analysis(summer_model.Attachment):
 
     def get_absolute_url(self):
         return reverse('bk:analysis_read', args=[self.id])
+
+    def get_board_name(self):
+        return "시황분석 게시판"
 
 class AnalysisComment(models.Model):
     post = models.ForeignKey(Analysis, verbose_name="Analysis", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
@@ -251,6 +263,9 @@ class Video(summer_model.Attachment):
     def get_absolute_url(self):
         return reverse('bk:video_read', args=[self.id])
 
+    def get_board_name(self):
+        return "동영상 게시판"
+
 class VideoComment(models.Model):
     post = models.ForeignKey(Video, verbose_name="Video", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
     author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
@@ -304,6 +319,9 @@ class News(summer_model.Attachment):
     def get_absolute_url(self):
         return reverse('bk:news_read', args=[self.id])
 
+    def get_board_name(self):
+        return "뉴스 게시판"
+
 class NewsComment(models.Model):
     post = models.ForeignKey(News, verbose_name="News", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
     author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
@@ -356,6 +374,9 @@ class ICORating(summer_model.Attachment):
 
     def get_absolute_url(self):
         return reverse('bk:icoRating_read', args=[self.id])
+
+    def get_board_name(self):
+        return "ICO"
 
 class ICORatingComment(models.Model):
     post = models.ForeignKey(ICORating, verbose_name="ICORating", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
@@ -419,6 +440,9 @@ class BKICORating(summer_model.Attachment):
 
     def get_absolute_url(self):
         return reverse('bk:icoRating_read', args=[self.ico.id])
+
+    def get_board_name(self):
+        return "ICO BK 게시판"
 
 class BKICORatingLike(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)

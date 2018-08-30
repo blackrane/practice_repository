@@ -39,6 +39,7 @@ def get_board():
     nb = bk_models.News.objects.all()               #뉴스게시판
     ic = bk_models.ICORating.objects.all()          #ico게시판
 
+    #chain함수로 모든 쿼리셋을 하나로 합치면서 views 내림차순으로 정렬하여 리턴
     all_board = sorted(chain(board, na,ht,fb,gb,uc,mk,ev,ca,ab,vb,nb,ic), key=attrgetter('views'), reverse=True)
     return all_board
 

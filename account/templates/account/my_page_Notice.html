@@ -1,45 +1,27 @@
-
-{% extends "layout.html" %}
 {% load static%}
-
-
-{% block content %}
-	<div class="my_page_div" style="width:800px;height: 600px;margin-top: 330px;">
-		<div class="my_page_sub_div1">
-			<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="my_page_list">회원정보 보기</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
-			<li><span class="my_page_list">글 저장함 보기</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
-			<li><span class="my_page_list">쪽지함 보기</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
-			<li><span class="my_page_list my_page_list_select"> 내 알림 목록</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
-			<li><span class="my_page_list"> 작성 글 보기</span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
-			<li><span class="my_page_list"> 작성 댓글 보기</span></li>
-		</div>
-		<div style="margin-top: 20px;" class="my_page_sub_div3">
-			<h3>지난 알림</h3>
-			<table class="table table-striped" style="border-top: 5px solid #444444;border-bottom: 5px solid #444444;margin-top: 20px;">
-				<thead>
-					<tr>
-					  <th style="width: 2000px;" scope="row">내용</th>
-					  <th scope="row">일시</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-					  <td>권현우님께서 회원님의 게시글에 댓글을 남기셨습니다.</td> <!--|truncatechars:20-->
-					  <td>2018-08-23 17:00</td>
-					</tr>
-					<tr>
-					  <td>회원님의 포인트가 30point 적립되었습니다.(우수회원 지급)</td> <!--|truncatechars:20-->
-					  <td>2018-08-23 17:00</td>
-					</tr>
-					<tr>
-					  <td>댓글이 달림, 포인트적립등 개인에게 필요한 알림이 쌓인다.</td> <!--|truncatechars:20-->
-					  <td>2018-08-23 17:00</td>
-					</tr>
-				  	
-				</tbody>
-			</table>
-		</div>
-
-		
-	</div>
-{% endblock %}
+<div style="margin-top: 20px;" class="my_page_sub_div3">
+	<h3>지난 알림</h3>
+	<table class="table table-striped" style="border-top: 5px solid #444444;border-bottom: 5px solid #444444;margin-top: 20px;">
+		<thead>
+			<tr>
+				<th style="width: 2000px;" scope="row">내용</th>
+				<th scope="row">일시</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>권현우님께서 회원님의 게시글에 댓글을 남기셨습니다.</td> <!--|truncatechars:20-->
+				<td>2018-08-23 17:00</td>
+			</tr>
+			<tr>
+				<td>회원님의 포인트가 30point 적립되었습니다.(우수회원 지급)</td> <!--|truncatechars:20-->
+				<td>2018-08-23 17:00</td>
+			</tr>
+			<tr>
+				<td>댓글이 달림, 포인트적립등 개인에게 필요한 알림이 쌓인다.</td> <!--|truncatechars:20-->
+				<td>2018-08-23 17:00</td>
+			</tr>
+				
+		</tbody>
+	</table>
+</div>

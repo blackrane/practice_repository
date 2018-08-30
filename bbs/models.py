@@ -37,6 +37,9 @@ class FreeBoard(summer_model.Attachment):
 
     def get_absolute_url(self):
         return reverse('bbs:free_read', args=[self.id])
+    
+    def get_board_name(self):
+        return "자유게시판"
 
 class FreeBoardComment(models.Model):
     post = models.ForeignKey(FreeBoard, verbose_name="Free Board", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
@@ -91,6 +94,9 @@ class NormalAnalysis(summer_model.Attachment):
     def get_absolute_url(self):
         return reverse('bbs:analysis_read', args=[self.id])
 
+    def get_board_name(self):
+        return "시황분석게시판"
+
 class NormalAnalysisComment(models.Model):
     post = models.ForeignKey(NormalAnalysis, verbose_name="Free Board", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
     author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
@@ -144,6 +150,9 @@ class HoneyTip(summer_model.Attachment):
 
     def get_absolute_url(self):
         return reverse('bbs:honeytip_read', args=[self.id])
+   
+    def get_board_name(self):
+        return "꿀팁 게시판"
 
 class HoneyTipComment(models.Model):
     post = models.ForeignKey(HoneyTip, verbose_name="HoneyTip Comment", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
@@ -199,6 +208,9 @@ class ForumBitCoin(summer_model.Attachment):
 
     def get_absolute_url(self):
         return reverse('bbs:forumbitcoin_read', args=[self.id])
+
+    def get_board_name(self):
+        return "포럼-비트코인 게시판"
 
 class ForumBitCoinComment(models.Model):
     post = models.ForeignKey(ForumBitCoin, verbose_name="HoneyTip Comment", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
@@ -281,6 +293,9 @@ class Gallery(summer_model.Attachment):
     def get_absolute_url(self):
         return reverse('bbs:gallery_read', args=[self.id])
 
+    def get_board_name(self):
+        return "갤러리"
+
 class GalleryComment(models.Model):
     post = models.ForeignKey(Gallery, verbose_name="HoneyTip Comment", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
     author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
@@ -335,6 +350,9 @@ class UserColumn(summer_model.Attachment):
     def get_absolute_url(self):
         return reverse('bbs:usercolumn_read', args=[self.id])
 
+    def get_board_name(self):
+        return "유저 칼럼"
+        
 class UserColumnComment(models.Model):
     post = models.ForeignKey(UserColumn, verbose_name="Comment", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
     author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
@@ -430,6 +448,9 @@ class SeoulUnv(summer_model.Attachment):
     def get_code(self):
         return 'A00'
 
+    def get_board_name(self):
+        return "서울학회 게시판"
+        
 class SeoulUnvComment(models.Model):
     post = models.ForeignKey(SeoulUnv, verbose_name="HoneyTip Comment", on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss') 
     author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,verbose_name="유저네임",  related_name='%(app_label)s_%(class)ss')
