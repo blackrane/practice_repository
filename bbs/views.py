@@ -6,7 +6,7 @@ import json
 from django.db.models import Q
 
 #App 
-from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView, SocietyApprovalView,SocietyAcceptView, SocietyRejectView, SocietyRequestView
+from coinsense.bbs import BoardCreateView, BoardListView, BoardReadView, BoardUpdateView, BoardDestroyView, LikeView, DisLikeView, CommentView, ForumListView, SocietyApprovalView,SocietyAcceptView, SocietyRejectView, SocietyRequestView, BookMarkView
 from . import models
 from . import forms
 from account.forms import LoginForm
@@ -45,6 +45,7 @@ freeRead = BoardReadView.as_view(
     update_url='bbs:free_update',
     destroy_url='bbs:free_destroy',
     comment_url='bbs:free_comment',
+    bookmark_url='bbs:free_bookmark',
 )
 
 freeUpdate = BoardUpdateView.as_view(
@@ -71,6 +72,9 @@ freeComment = CommentView.as_view(
     template_name="Comment.html",
 )
 
+freeBookMark = BookMarkView.as_view(
+    model = models.FreeBoard
+)
 #일반시황분석
 normalAnalysisList = BoardListView.as_view(
     model= models.NormalAnalysis,

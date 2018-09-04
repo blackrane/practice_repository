@@ -58,7 +58,7 @@ $('#myModal').on('shown.bs.modal', function () {
         <br>
         <br>
         <br>
-        <div style="display: table; margin: 0 auto;width:300px;margin-bottom: 20px;">
+        <div style="display: table; margin: 0 auto;width:400px;margin-bottom: 20px;">
             
             <form style="float:left;margin-right: 10px;margin-left: 50px;" action="" method="post" >
                 <input id="like{{post.id}}"class="like" style="cursor: pointer;width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{like_url}}" value="추천 {{like_count}}">
@@ -70,7 +70,9 @@ $('#myModal').on('shown.bs.modal', function () {
                 <input class="dislike" style="cursor: pointer;width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{dislike_url}}" value="비추천 {{dislike_count}}">
             </form>
             <!--//end 싫어요-->
-
+            <form style="float:left;margin-right: 10px;" action="" method="post" >
+                <input class="book-mark"" style="cursor: pointer;width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{ bookmark_url}}" value="찜 등록">
+            </form>
             <!--신고-->
             <form action="" method="post" >
                 {% csrf_token %}

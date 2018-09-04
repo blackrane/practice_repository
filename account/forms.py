@@ -123,6 +123,88 @@ class UserCreationForm(forms.ModelForm):
 			
 		return user
 
+class UserUpdateForm(forms.ModelForm):
+	phone_num = forms.IntegerField( widget=forms.NumberInput(
+		attrs = {
+			'class' : 'form-control',
+			'placeholder':'-없이 번호만 입력하세요.',
+		})
+	)
+
+	address = forms.CharField(widget=forms.TextInput(
+		attrs = {'class':'form-control','placeholder':'주소를입력해주세요.'}),
+		required=False
+	)
+
+	email = forms.CharField(widget=
+		forms.EmailInput(attrs={
+			'class':'form-control',
+			'placeholder':'email@xxxxx.com',
+			}))
+
+	class Meta:
+		model = get_user_model()
+		fields = ['username','nickname','Photo','in_short']
+		widgets = {
+			'username':forms.TextInput(attrs={
+				'class':'form-control',
+				'placeholder':'id'
+				}),
+			'nickname':forms.TextInput(attrs={
+				'class':'form-control',
+				'placeholder':'닉네임을 입력해주세요.'
+				}),
+			'Photo':forms.FileInput(attrs={
+				'class':'form-control',
+				
+				}),
+			'in_short':forms.TextInput(attrs={
+				'class':'form-control',
+				'placeholder':'한마디를 입력해주세요.'
+				}),
+		}
+		
+	def clean_username(self):
+		username = self.cleaned_data.get('username', None)
+		if username is None:
+			raise forms.ValidationError("아이디를 입력해주세요.")
+		else:
+			unique_test= get_user_model().objects.all().filter(username=username)
+			if unique_test:
+				raise forms.ValidationError("동일한 아이디가 존재합니다.")
+		return username
+
+	def clean_nickname(self):
+		nickname = self.cleaned_data.get('nickname',None)
+		if nickname is None:
+			raise forms.ValidationError("닉네임을 입력해주세요.")
+		else:
+			unique_test= get_user_model().objects.all().filter(nickname=nickname)
+			if unique_test:
+				raise forms.ValidationError("동일한 닉네임이 존재합니다.")
+		return nickname
+
+	def clean(self):
+		email = self.cleaned_data.get("email",None)
+		
+		if email is None:
+			raise forms.ValidationError("이메일을 입력해주세요.")
+		else:
+			user_data= Profil.objects.all().filter(email=email)
+			if user_data:
+			 	raise forms.ValidationError("동일한 이메일이 존재합니다.")
+		return self.cleaned_data
+
+	def save(self, commit=True):
+		user = super().save(commit=False)
+		if commit:
+			user.save()
+			email = self.cleaned_data['email']
+			address = self.cleaned_data['address']
+			phone_num = self.cleaned_data.get('phone_num',000)
+			
+		return user
+
 #admin전용
 class UserChangeForm(forms.ModelForm):
     """A form for updating users. Includes all the fields on

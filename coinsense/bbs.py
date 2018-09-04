@@ -236,6 +236,7 @@ class BoardReadView(View):
     update_url=''                   #수정 url
     destroy_url=''                  #삭제 url
     comment_url=''                  #댓글 url
+    bookmark_url=None                 #북마크 url
     notice_model = models.Notice
     ico_bk_post=None                #ico_bk_post
     
@@ -285,7 +286,8 @@ class BoardReadView(View):
         if self.comment_url != '':
             self.context['comment_url'] = reverse(self.comment_url)
         self.context['ranking_list']= get_ranking()
-        
+        if self.bookmark_url is not None:
+            self.context['bookmark_url'] = reverse(self.bookmark_url)
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -445,6 +447,34 @@ class DisLikeView(View):
                'username': self.request.user.nickname }
         return HttpResponse(json.dumps(context))
 
+#북마크 AjaxView
+class BookMarkView(View):
+    model = None
+    context={}
+
+    #로그인한 사용자만 들어올 수 있다.
+    @method_decorator(login_required(login_url='/'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    #post 요청일때
+    def post(self, *args, **kwargs):
+        #프론트에서 받아온 pk를 통해 post를 가져온다.
+        post = get_object_or_404(self.model, pk=self.request.POST.get('pk', None))
+        
+        #해당 post의 bookmark_set으로 중간자 모델 bookmark에 접근하여 요청한 유저의 튜플을
+        #가져오고, 없다면 만드는 작업을 수행한다. 
+        post_bookmark, post_bookmark_created = post.bookmark_set.get_or_create(user=self.request.user)
+        if not post_bookmark_created:
+            post_bookmark.delete()
+            message = "찜 등록"
+        else:
+            message = "찜 해제"
+
+        context = {
+               'message': message,
+               }
+        return HttpResponse(json.dumps(context))
 #댓글생성
 class CommentView(View):
     model = None

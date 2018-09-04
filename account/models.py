@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     #닉네임
     nickname = models.CharField(
-        verbose_name=_('Nickname'),
+        verbose_name=_('닉네임'),
         max_length=30,
         unique=True,
         blank=False,
@@ -61,7 +61,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     #사진
     Photo = models.ImageField(
-        verbose_name=_('Nickname'),
+        verbose_name=_('프로필 사진'),
         upload_to="account/%Y/%m/%d",
         blank=True,
         null=True,
@@ -69,7 +69,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     #한마디
     in_short= models.CharField(
-        verbose_name=_('In short'),
+        verbose_name=_('한마디'),
         max_length=255,
         blank=True,
         default="작성한 한마디가 없습니다."

@@ -12,24 +12,14 @@
 			</tr>
 		</thead>
 		<tbody>
+			{% for bookmark in bookmark_list %}
 			<tr>
-				<td scope="row">자유게시판</th>
-				<td>제목입니다제목입니다</td> <!--|truncatechars:20-->
-				<td>권현우</td>
-				<td>2018-08-23 17:00</td>
+				<td scope="row">{{bookmark.post.get_board_name}}</th>
+				<td><a style="color:black;" href="{{bookmark.post.get_absolute_url }}">{{bookmark.post.title}}</a></td> 
+				<td>{{bookmark.post.author}}</td>
+				<td>{{bookmark.post.created_at}}</td>
 			</tr>
-				<tr>
-				<td scope="row">자유게시판</th>
-				<td>제목입니다제목입니다</td> <!--|truncatechars:20-->
-				<td>권현우</td>
-				<td>2018-08-23 17:00</td>
-			</tr>
-			<tr>
-				<td scope="row">시황분석공유</th>
-				<td>제목입니다제목입니다</td> <!--|truncatechars:20-->
-				<td>권현우</td>
-				<td>2018-08-23 17:00</td>
-			</tr>
+			{% endfor %}
 		</tbody>
 	</table>
 </div>

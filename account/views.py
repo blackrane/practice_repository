@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, get_user_model, authenticate, update_session_auth_hash
 from django.utils import timezone
 from django.core.paginator import Paginator, PageNotAnInteger , EmptyPage
+from django.core import serializers     #직렬화
 
 #app
 from bbs import models
@@ -116,6 +117,24 @@ def myPage(request):
     context['ranking_list']= bbs.get_ranking()
     return render(request, 'account/my_page.html',context)
 
+#내 정보 수정 페이지
+def myUpdate(request):
+    context={}
+    if request.method == "POST":
+        form = UserCreationForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            form.save()
+            return redirect('account:index')
+
+    elif request.method=="GET":
+        form = UserCreationForm(instance=request.user, initial={
+            'address':request.user.user_of.address,
+            'email':request.user.user_of.email,
+            'phone_num':request.user.user_of.phone_number,
+            })
+
+    context['form']=form
+    return render(request, 'account/my_page_update.html', context)
 #내가쓴글
 def myWrite(request):
     post_list = get_my_post(request.user.pk)
@@ -132,17 +151,17 @@ def myComments(request):
     context={'comment_list': comment_list}
     return render(request, 'account/my_page_mycomment.html',context)
 
+#글저장함
+def MyPostSave(request):
+    context={}
+    bookmark_list = request.user.bookamrk_set.filter(user=request.user).all()
+    context['bookmark_list'] = bookmark_list
+    return render(request, 'account/my_page_postsave.html', context)
+
 #마이페이지 ajax
 def myPageAjax(request):
     context={}
     return render(request, 'account/my_page_ajax.html',context)
-
-
-
-#글저장함
-def MyPostSave(request):
-    context={}
-    return render(request, 'account/my_page_postsave.html', context)
 
 #쪽지함
 def myMessage(request):

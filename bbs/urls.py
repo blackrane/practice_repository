@@ -12,7 +12,9 @@ urlpatterns = [
     path('free/destroy/<int:pk>/', views.freeDestroy, name="free_destroy"),
     path('free/like/', views.freeLike, name="free_like"),
     path('free/dislike/', views.freeDisLike, name="free_dislike"),
-    path('free/comment/', views.freeComment, name="free_comment"),
+    path('free/comment/', views.freeComment, name="free_comment"), 
+    path('free/bookmark/', views.freeBookMark, name="free_bookmark"),
+    
 ]
 
 #시황분석 게시판 주소

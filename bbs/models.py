@@ -20,6 +20,11 @@ class FreeBoard(summer_model.Attachment):
                                            blank=True,
                                            related_name='dislike_user_set',
                                            through='DisLike') # post.like_set 으로 접근 가능
+    bookmark_user_set = models.ManyToManyField(get_user_model(),
+                                           blank=True,
+                                           related_name='bookmark_user_set',
+                                           through='BookMark') # post.like_set 으로 접근 가능
+                                        
 
     def __str__(self):
         return self.title
@@ -58,6 +63,12 @@ class Like(models.Model):
 
 class DisLike(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    post = models.ForeignKey(FreeBoard, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class BookMark(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='bookamrk_set')
     post = models.ForeignKey(FreeBoard, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
