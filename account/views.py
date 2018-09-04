@@ -4,6 +4,8 @@ from django.contrib.auth import login, get_user_model, authenticate, update_sess
 from django.utils import timezone
 from django.core.paginator import Paginator, PageNotAnInteger , EmptyPage
 from django.core import serializers     #직렬화
+from django.contrib.auth.decorators import login_required
+
 
 #app
 from bbs import models
@@ -135,6 +137,16 @@ def myUpdate(request):
 
     context['form']=form
     return render(request, 'account/my_page_update.html', context)
+
+#회원탈퇴
+@login_required
+def myDestroy(request):
+    context={}
+    if request.method == "POST":
+        request.user.delete()
+        return redirect('/')
+    return render(request, 'account/account_destroy.html',context)
+        
 #내가쓴글
 def myWrite(request):
     post_list = get_my_post(request.user.pk)
