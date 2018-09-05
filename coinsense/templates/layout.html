@@ -55,6 +55,7 @@
 	  });
 	  });
 	</script>
+	<script type="text/javascript" src="{% static 'id_save.js' %}"></script>
 </head>
 <body class="container">
 	<header>
@@ -168,8 +169,8 @@
        					          {% endfor %}
 							</table>
 							<div style="float:left;margin-top: 10px;">
-        						<input style="width:20px;margin-left:10px;" type="checkbox" id="scales" name="feature" value="scales" checked /><label style="width:80px;" for="scales">아이디저장</label>
-   								<input style="width:20px;" type="checkbox" id="scales" name="feature" value="scales" checked /><label style="width:80px;" for="scales">로그인유지</label>
+        						<input style="width:20px;margin-left:10px;" type="checkbox" id="id_save" name="feature" value="scales" /><label style="width:80px;" for="scales">아이디저장</label>
+   								<input style="width:20px;" type="checkbox" id="scales" name="login_for" value="scales" /><label style="width:80px;" for="scales">로그인유지</label>
 							</div>
 							<input style="background-color: #F4F4F7;border: 1px solid black;" id="submit_login" type="submit" value="로그인" />
 						</form>

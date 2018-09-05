@@ -78,7 +78,11 @@ def login_func(request):
         login(request, user)
         user = get_user_model().objects.get(pk=request.user.id)
         user.last_login=timezone.now
-
+        
+        #장기 로그인 여부 체크박스 확인 체크되었다면 임시로 일주일간 로그인유지
+        if request.POST.get('login_for'):
+            if request.POST['login_for']:
+                request.session.set_expiry(604800)
         return ''
     else:
         return '아이디/비밀번호가 틀렸습니다.'

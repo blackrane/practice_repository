@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'bk_bbs',
 ]
 
+#세션 유지기간 추가
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 #추가설정
 AUTH_USER_MODEL = 'account.User'
 
