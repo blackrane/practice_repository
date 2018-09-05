@@ -72,7 +72,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name=_('한마디'),
         max_length=255,
         blank=True,
-        default="작성한 한마디가 없습니다."
     )
 
     #레벨
@@ -160,3 +159,5 @@ class Profil(models.Model):
         verbose_name=_('Address'),
         blank=True
     )
+
+    

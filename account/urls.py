@@ -9,8 +9,8 @@ urlpatterns = [
     path('', views.index, name='index'),                                            #메인
     path('signup/', views.signup, name="signup"),                                   #회원가입                                   #
     path('logout/', auth_views.logout, name='logout',kwargs={'next_page':'/'}),     #로그아웃
-    path('info/destroy', views.myDestroy, name="destroy"),
-    
+    path('info/destroy/', views.myDestroy, name="destroy"),                         #회원탈퇴 페이지
+    path('info/pw/', views.myPasswordUpdate, name="my_pw_update"),                   #비밀번호 수정 페이지
 
     path('info/',views.myPage, name="my_page"),                                     #회원정보    
     path('info/ajax', views.myPageAjax, name="my_page_ajax"),

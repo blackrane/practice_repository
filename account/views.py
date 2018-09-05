@@ -5,12 +5,12 @@ from django.utils import timezone
 from django.core.paginator import Paginator, PageNotAnInteger , EmptyPage
 from django.core import serializers     #직렬화
 from django.contrib.auth.decorators import login_required
-
-
+from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
 #app
 from bbs import models
 from bk_bbs import models as bk_models
-from .forms import LoginForm, UserCreationForm
+from .forms import LoginForm, UserCreationForm, UserUpdateForm
 from bbs.models import FreeBoard
 
 #Python 
@@ -123,20 +123,31 @@ def myPage(request):
 def myUpdate(request):
     context={}
     if request.method == "POST":
-        form = UserCreationForm(request.POST or None, request.FILES or None)
+        data ={'in_short':request.user.in_short}        
+        form = UserUpdateForm(request.POST, request.FILES, data, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('account:index')
-
-    elif request.method=="GET":
-        form = UserCreationForm(instance=request.user, initial={
-            'address':request.user.user_of.address,
-            'email':request.user.user_of.email,
-            'phone_num':request.user.user_of.phone_number,
-            })
-
-    context['form']=form
+            return redirect('/info/')
+    data ={'in_short':request.user.in_short}
+    context['form'] = UserUpdateForm(data)
     return render(request, 'account/my_page_update.html', context)
+
+#비밀번호 수정 페이지
+def myPasswordUpdate(request):
+    context={}
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user,request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request,user)
+            messages.success(request, "패스워드 변경에 성공했다.")
+            return redirect('/info/')
+        else:
+            messages.error(request, '패스워드 변경 실패')
+    else:
+        form = PasswordChangeForm(request.user)
+    context['form'] = form 
+    return render(request, 'account/my_page_update.html',context)
 
 #회원탈퇴
 @login_required
