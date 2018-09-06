@@ -71,8 +71,12 @@ def get_my_comment(pk):
     return all_com
 
 def login_func(request):
-    username = request.POST['username']
-    password = request.POST['password']
+    if 'username' in request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+    else:
+        username = False
+        password = False
     user= authenticate(request, username=username,password=password)
     if user is not None:
         login(request, user)

@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserChangeForm, UserCreationForm
 from django.contrib.auth import get_user_model
+from .models import notify
 
 class UserAdmin(BaseUserAdmin):
     # The forms to add and change user instances
@@ -31,4 +32,8 @@ class UserAdmin(BaseUserAdmin):
 
 # Now register the new UserAdmin...
 admin.site.register(get_user_model(), UserAdmin)
+
+@admin.register(notify)
+class notifyAdmin(admin.ModelAdmin):
+    list_display = ['user','board','post','content','created_at']
 

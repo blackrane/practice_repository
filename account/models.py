@@ -6,6 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
+from django.contrib.auth import get_user_model
 
 #입력필드: id, password(상속), 닉네임, 사진, 한마디
 
@@ -161,3 +162,13 @@ class Profil(models.Model):
     )
 
     
+#신고하기
+class notify(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    board = models.CharField(verbose_name="board",max_length=20)
+    post = models.CharField(verbose_name="title",max_length=40)
+    content = models.CharField(verbose_name="신고 사유 ",max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.content

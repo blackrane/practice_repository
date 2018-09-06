@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import Profil
+from .models import Profil, notify
 from django.core.validators import RegexValidator
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
@@ -203,3 +203,12 @@ class UserChangeForm(forms.ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+#신고하기 폼
+class NotifyForm(forms.ModelForm):
+	class Meta:
+		model = notify
+		fields = ['content']
+		widgets={
+			'text': forms.Textarea(attrs={'class':"",'placeholder':'사유를 입력해 주세요',})
+        		}

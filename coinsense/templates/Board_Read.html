@@ -21,12 +21,27 @@
 }
 
     </script>
+    <script type="text/javascript">
+        $(function(){
+            $('.notify').click(function(){
+                alert('신고가 접수되었습니다.'); 
+            });
+        });
+    </script>
     <script type="text/javascript" src="{% static 'Like_Ajax.js' %}"></script>
     <script type="text/javascript" src="{% static 'DisLike_Ajax.js' %}"></script>
     <script type="text/javascript" src="{% static 'Comment.js' %}"></script>
 {% endblock script %}
 
 {% block content %}
+<style type="text/css">
+    label{
+        margin-right: 10px;
+    }
+    #id_content{
+        width: 90%;
+    }
+</style>
 <script type="text/javascript">
 $('#myModal').on('shown.bs.modal', function () {
   $('#myInput').trigger('focus')
@@ -74,13 +89,46 @@ $('#myModal').on('shown.bs.modal', function () {
                 <input class="book-mark"" style="cursor: pointer;width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" name="{{post.id}}" href="{{ bookmark_url}}" value="찜 등록">
             </form>
             <!--신고-->
-            <form action="" method="post" >
-                {% csrf_token %}
-                <input type="hidden" name="like" value="{{ post_list.pk }}">
-                <input type="hidden" name="like_post" value="{{ post_list.post }}">
-                <input style="cursor: pointer;width:75px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="submit" id="like" value="신고">
-            </form>
+
+                <input style="width:45px;height: 25px;font-size: 14px;background-color: #F4F4F7;border: 1px solid black;" type="button" id="like" data-toggle="modal" data-target="#exampleModal" value="신고">
+
             <!--//end신고-->
+            
+
+            <!--신고하기 Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">허위 신고시 제재를 받을 수 있습니다</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                        <form method="post" action="">
+                            <div class="input_title" style="float: left !important;">
+                                {% csrf_token %}
+                            </div>
+                            
+                            <div class="input_content">
+                                <input type="hidden" name="like" value="{{ post_list.pk }}">
+                                <input type="hidden" name="like_post" value="{{ post_list.post }}">
+                                {{ notify_form }}
+                                
+                            </div>
+                        
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <button type="submit" class="btn btn-primary notify">신고하기</button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+
 
         </div>
     </div>

@@ -13,7 +13,7 @@ import json
 from bbs import models
 from bk_bbs import models as bk_models
 #App import
-from account.forms import LoginForm
+from account.forms import LoginForm, NotifyForm
 from account.views import login_func
 
 #합치기 위해
@@ -262,12 +262,14 @@ class BoardReadView(View):
     #get 요청일때
     def get(self, *args, **kwargs):
         pk=self.kwargs['pk']
+        forms = NotifyForm()
         post = get_object_or_404(self.model, id=pk )
         
         if not post.author == self.request.user:
             post.views = post.views+1
             post.save()
         
+        self.context['notify_form'] = NotifyForm()
         self.context['post'] = post
         self.context['like_count'] = post.like_count
         self.context['dislike_count'] = post.dislike_count
@@ -292,10 +294,20 @@ class BoardReadView(View):
 
     #post 요청일때
     def post(self, *args, **kwargs):
+        pk=self.kwargs['pk']
+        forms = NotifyForm(self.request.POST)
+        post = get_object_or_404(self.model, id=pk )
+        if forms.is_valid():
+            notify = forms.save(commit=False)
+            notify.user = self.request.user
+            notify.post = post.title
+            notify.board = self.title
+            notify.save()
         self.context['post'] = get_object_or_404(self.model, id= self.kwargs['pk'])
         self.context['error'] = login_func(self.request)
         self.context['boardtitle'] = self.title
         self.context['notice'] = self.notice_model.objects.all()
+        self.context['notify_form'] = forms #신고하기폼
         return render(self.request, self.get_template_name(), self.context)
 
 #게시글 수정 뷰
