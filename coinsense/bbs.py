@@ -22,6 +22,7 @@ from operator import attrgetter
 
 from bk_bbs.module import CustomAnonymousUser
 
+
 #모든 게시글 합침
 def get_board():
     board = models.FreeBoard.objects.all()          #자유게시판

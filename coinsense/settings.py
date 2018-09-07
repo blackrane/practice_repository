@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'bbs',
     'django_summernote',
     'bk_bbs',
+    'django.contrib.humanize',
 ]
 
 #세션 유지기간 추가

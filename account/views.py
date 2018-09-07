@@ -17,6 +17,45 @@ from bbs.models import FreeBoard
 from itertools import chain
 from operator import attrgetter
 
+
+#코인가격 API받아오기위한
+import json
+import urllib.request
+from urllib.request import Request, urlopen
+import time
+
+
+
+def coinnest_price():
+    #코인네스트
+    request = Request('https://api.coinnest.co.kr/api/pub/tickerall' , headers={'User-Agent': 'Mozilla/5.0'})
+    read = urlopen(request).read()
+    jsons = json.loads(read)
+    coinnest_btc = int(jsons['KRW_BTC']['last'])
+    coinnest_eth = int(jsons['KRW_ETH']['last'])
+    coinnest_ltc = int(jsons['KRW_LTC']['last'])
+    coinnest_etc = int(jsons['KRW_ETC']['last'])
+    coinnest_bch = int(jsons['KRW_BCH']['last'])
+    coinnest_qtum = int(jsons['KRW_QTUM']['last'])
+    coinnest_price = [coinnest_btc, coinnest_eth, coinnest_ltc, coinnest_etc,'-', coinnest_bch,'-', coinnest_qtum,'-','-']
+    return coinnest_price
+
+def cashierest_price():
+    #캐셔레스트
+    request = Request('https://rest.cashierest.com/public/ticker/all' , headers={'User-Agent': 'Mozilla/5.0'})
+    read = urlopen(request).read()
+    jsons = json.loads(read)
+    print(jsons)
+    cashierest_btc = int(float(jsons['ReturnData']['KRW_BTC']['last']))
+    cashierest_eth = int(float(jsons['ReturnData']['KRW_ETH']['last']))
+    cashierest_bch = int(float(jsons['ReturnData']['KRW_BCH']['last']))
+    cashierest_eos = int(float(jsons['ReturnData']['KRW_EOS']['last']))
+    cashierest_trx = int(float(jsons['ReturnData']['KRW_TRX']['last']))
+    cashierest_price = [cashierest_btc, cashierest_eth, '-', '-','-', cashierest_bch,'-', '-',cashierest_eos,cashierest_trx]
+    return cashierest_price
+
+
+
 def get_pagination(model_list, bundle, page):
         #페이지 네이션
     paginator = Paginator(model_list, bundle) #15개씩 묶어 페이지 생성 선언
@@ -93,6 +132,9 @@ def login_func(request):
 
 from coinsense import bbs
 def index(request,context={}):
+    coinnest = coinnest_price()
+    cashierest = cashierest_price()
+
     if request.method == "POST":        
         form = LoginForm(request.POST)
         context['error']= login_func(request)
@@ -101,6 +143,8 @@ def index(request,context={}):
     context['post_list'] = FreeBoard.objects.all().order_by('-id')
     context['notice'] = models.Notice.objects.all()
     context['ranking_list']= bbs.get_ranking()
+    context['coinnest_price']= coinnest
+    context['cashierest_price']= cashierest
     return render(request, 'account/index.html', context)
 
 def signup(request,context={}):
