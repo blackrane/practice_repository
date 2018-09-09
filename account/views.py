@@ -10,8 +10,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 #app
 from bbs import models
 from bk_bbs import models as bk_models
-from .forms import LoginForm, UserCreationForm, UserUpdateForm
+from .forms import LoginForm, UserCreationForm, UserUpdateForm, NoteForm
 from bbs.models import FreeBoard
+from .models import Note
 
 #Python 
 from itertools import chain
@@ -241,6 +242,8 @@ def myPageAjax(request):
 #쪽지함
 def myMessage(request):
     context={}
+    note_list = Note.objects.filter(recive_user=request.user)
+    context['note_list'] = note_list
     return render(request, 'account/my_page_message.html', context)
 
 #알림목록
@@ -250,4 +253,19 @@ def myNotice(request):
 
 #쪽지
 def note(request):
-    return render(request, 'Notice.html', {})
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.send_user = request.user
+            note.save()
+            return redirect('/')
+    form = NoteForm()
+    return render(request, 'account/note_create.html', {'form':form})
+
+@login_required
+def noteDestroy(request, pk):
+    if request.method == "POST":
+        Note = get_object_or_404(Note, pk=pk)
+        Note.delete()
+    return redirect('/info/')

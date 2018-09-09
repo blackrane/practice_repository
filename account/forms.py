@@ -3,7 +3,14 @@ from django.contrib.auth import get_user_model
 from .models import Profil, notify
 from django.core.validators import RegexValidator
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from .models import Note
 
+
+class NoteForm(forms.ModelForm):
+	class Meta:
+		model = Note
+		fields = ['recive_user', 'content']
+		
 class LoginForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
