@@ -524,10 +524,12 @@ def sucessPage(request, select):
         context['sub_message'] ='(단. 허위신고시 제재를 받을수 있습니다.)'
     return render(request, 'SucessPage.html', context)
 
-
 ###################################################
 #호재 게시판 
 def favorable(request):
+    if request.method=="POST":
+        pass
+        
     search = request.GET.get('search', None) #검색
   
     favorable = models.Favorable.objects.all()

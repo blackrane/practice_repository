@@ -247,3 +247,7 @@ def myMessage(request):
 def myNotice(request):
     context={}
     return render(request, 'account/my_page_Notice.html', context)
+
+#쪽지
+def note(request):
+    return render(request, 'Notice.html', {})

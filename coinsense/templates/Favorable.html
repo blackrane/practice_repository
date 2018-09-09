@@ -72,7 +72,8 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="get">
+          <form action="POST">
+              {% csrf_token %}
             <div class="form-group">
               <label for="recipient-name" class="col-form-label">제보자:</label>
               <input type="text" class="form-control" id="recipient-name">
@@ -85,7 +86,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">제보취소</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal">제보하기</button>
+          <button type="button" class="btn btn-primary" >제보하기</button>
         </div>
       </div>
     </div>

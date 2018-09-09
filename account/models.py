@@ -7,7 +7,8 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
 from django.contrib.auth import get_user_model
-
+from django_summernote import models as summer_model
+from django_summernote import fields as summer_fields
 #입력필드: id, password(상속), 닉네임, 사진, 한마디
 
 class UserManager(BaseUserManager):
@@ -172,3 +173,11 @@ class notify(models.Model):
 
     def __str__(self):
         return self.content
+
+class Note(summer_model.Attachment):
+    send_user = models.ForeignKey(User ,on_delete=models.CASCADE,  related_name='send_user')
+    recive_user = models.ForeignKey(User ,on_delete=models.CASCADE,  related_name='recive_user')
+    content = summer_fields.SummernoteTextField(default='')
+    send_del = models.BooleanField(default=False,)
+    recive_del = models.BooleanField(default=False,)
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)

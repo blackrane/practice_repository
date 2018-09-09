@@ -10,7 +10,7 @@ class FreeBoardCreationForm(forms.ModelForm):
         fields = ['title','summer_field']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': '제목을 입력하세요 (최대 : 30자)','class':'input_first_title'}),
-            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요'),})
+            'summer_field' :summer_fields.SummernoteTextFormField(error_messages={'required':(u'데이터를 입력해주세요')},)
         }
 
 class FreeBoardCommentForm(forms.ModelForm):

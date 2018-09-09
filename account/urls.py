@@ -11,7 +11,7 @@ urlpatterns = [
     path('logout/', auth_views.logout, name='logout',kwargs={'next_page':'/'}),     #로그아웃
     path('info/destroy/', views.myDestroy, name="destroy"),                         #회원탈퇴 페이지
     path('info/pw/', views.myPasswordUpdate, name="my_pw_update"),                   #비밀번호 수정 페이지
-
+    path('note/' , views.note, name="note"),
     path('info/',views.myPage, name="my_page"),                                     #회원정보    
     path('info/ajax', views.myPageAjax, name="my_page_ajax"),
     path('info/update', views.myUpdate, name="my_update"),                          #수정페이지
