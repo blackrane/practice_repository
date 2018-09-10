@@ -63,6 +63,8 @@
          <li><a href="#" style="color:black;" id="favorite" title="즐겨찾기 등록">즐겨찾기 추가</a></li>
          {% if not user.is_authenticated %}
          <li id="top-menu-sub"><a href="{% url 'account:signup' %}">회원가입</a></li>
+         {% else %}
+         <li id="top-menu-sub"><a href="{% url 'account:note' %}">쪽지</a></li>
          {% endif %}
       </div>
 
@@ -260,8 +262,8 @@
                </script>
                
                <p style="clear: both;margin-left: 10px;float: left;width:130px;">{{ user }}<br>{{ users.nickname }}</p>
-               <a href="{% url 'account:my_page' %}"><p style="color:black;margin-top: 24.5px;padding-left:6.5px;width:65px;float: left;font-size: 12px;border: 1px solid black;">회원정보</p></a>
-               <a href="{% url 'account:logout' %}"><p style="color:black;margin-top: 26.5px;margin-left: 210px;padding-left:6.5px;width:65px;font-size: 12px;border: 1px solid black;">로그아웃</p></a>
+               <p style="color:black;margin-top: 24.5px;padding-left:6.5px;width:65px;float: left;font-size: 12px;border: 1px solid black;"><a style="color:black" href="{% url 'account:my_page' %}">회원정보</a></p>
+               <p style="color:black;margin-top: 26.5px;margin-left: 210px;padding-left:6.5px;width:65px;font-size: 12px;border: 1px solid black;"><a style="color:black" href="{% url 'account:logout' %}">로그아웃</a></p>
             </div>            
             {% endif %}
             <!--비 로그인 -->
