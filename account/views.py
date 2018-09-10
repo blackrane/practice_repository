@@ -45,7 +45,7 @@ def cashierest_price():
     request = Request('https://rest.cashierest.com/public/ticker/all' , headers={'User-Agent': 'Mozilla/5.0'})
     read = urlopen(request).read()
     jsons = json.loads(read)
-    print(jsons)
+    #print(jsons)
     cashierest_btc = int(float(jsons['ReturnData']['KRW_BTC']['last']))
     cashierest_eth = int(float(jsons['ReturnData']['KRW_ETH']['last']))
     cashierest_bch = int(float(jsons['ReturnData']['KRW_BCH']['last']))
@@ -55,7 +55,7 @@ def cashierest_price():
     return cashierest_price
 
 
-
+'''
 def get_pagination(model_list, bundle, page):
         #페이지 네이션
     paginator = Paginator(model_list, bundle) #15개씩 묶어 페이지 생성 선언
@@ -68,7 +68,7 @@ def get_pagination(model_list, bundle, page):
         paginator = paginator.page(paginator.num_pages)
 
     return paginator
-
+'''
 def get_my_post(pk):
     board = models.FreeBoard.objects.filter(author=pk)          #자유게시판
     na = models.NormalAnalysis.objects.filter(author=pk)        #시황분석
@@ -132,9 +132,10 @@ def login_func(request):
 
 from coinsense import bbs
 def index(request,context={}):
+    '''
     coinnest = coinnest_price()
     cashierest = cashierest_price()
-
+'''
     if request.method == "POST":        
         form = LoginForm(request.POST)
         context['error']= login_func(request)
@@ -143,8 +144,10 @@ def index(request,context={}):
     context['post_list'] = FreeBoard.objects.all().order_by('-id')
     context['notice'] = models.Notice.objects.all()
     context['ranking_list']= bbs.get_ranking()
+    '''
     context['coinnest_price']= coinnest
     context['cashierest_price']= cashierest
+    '''
     return render(request, 'account/index.html', context)
 
 def signup(request,context={}):

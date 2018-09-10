@@ -129,17 +129,58 @@ class BoardListView(UserPassesTestMixin,View):
     
     def get_pagination(self):
          #페이지 네이션
-        paginator = Paginator(self.context['post_list'], 2) #15개씩 묶어 페이지 생성 선언
 
+        paginator = Paginator(self.context['post_list'], 1) #숫자만큼씩 묶어 페이지 생성 선언
+        
         page = self.request.GET.get('page',1 )
+        
         try:
             paginator = paginator.page(page)
         except PageNotAnInteger:
             paginator = paginator.page(1)
         except EmptyPage:
             paginator = paginator.page(paginator.num_pages)
-
+        #paginator=max(paginator.paginator.page_range)/1
+        print(paginator.paginator.page_range)
+        print(paginator.has_previous)
+        print(max(paginator.paginator.page_range))
+        
+        
         self.context['post_list'] = paginator
+
+        #10개단위 페이지 이동
+        def next_page(page):
+            if page+10>=max(paginator.paginator.page_range):
+                return max(paginator.paginator.page_range)
+            else:
+                return page + 10
+            return page + 10
+        def before_page(page):
+            if page-10<=1:
+                return 1
+            else:
+                return page - 10
+
+        # 1 page경우
+        if int(page)==1:
+            self.context['range'] = range(1,11)
+        # last page경우
+        elif int(page)==max(paginator.paginator.page_range):
+            self.context['range'] = range(int(page)-9,int(page)+1)    
+        # 현재 페이지+5가 마지막 페이지번호보다 큰경우
+        elif int(page)+5 > max(paginator.paginator.page_range):
+            self.context['range'] = range(max(paginator.paginator.page_range)-9,max(paginator.paginator.page_range)+1)    
+        # 현재 페이지-5가 마지막 페이지번호보다 작은경우
+        elif int(page)-5 < 1:
+            self.context['range'] = range(1,11)    
+        else:
+            self.context['range'] = range(int(page)-5,int(page)+5)
+        self.context['last_page'] = max(paginator.paginator.page_range)
+        self.context['next_page'] = next_page(int(page))
+        self.context['before_page'] = before_page(int(page))
+        
+        
+
 
     #get 요청일때
     def get(self, *args, **kwargs):

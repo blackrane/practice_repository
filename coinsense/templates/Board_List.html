@@ -62,15 +62,16 @@
                     <ul class="pagination pagination-lg col-lg-12 col-md-12" style="margin-left: 20px;">
                       {% if post_list.has_previous %}
                       <li>
-                        <a style="color:black" href="?page={{ post_list.previous_page_number }}" aria-label="Previous">
-                          이전&ensp;
+                        <li><a  style="color:black" href="?page={{ 1 }}" aria-label="Next">&ensp;[<<]</i></a></li>
+                        <a style="color:black" href="?page={{ before_page }}" aria-label="Previous">
+                          [<]&ensp;
                         </a>
                       </li>
                       {% else %}
               
                       {% endif %}
               
-                      {% for i in post_list.paginator.page_range %}
+                      {% for i in range %}
                       <!--현재페이지-->
                         {% if post_list.number == i %}
                           <li class="active" style="font-size: 20px;line-height: 25px;"><a style="color:black" href="#"><b>&ensp;{{i}}&ensp;</b></a></li>
@@ -80,12 +81,13 @@
                       {% endfor %}
                       
                       {% if post_list.has_next %}
-                        <li><a  style="color:black" href="?page={{ post_list.next_page_number }}" aria-label="Next">&ensp;다음</i></a></li>
+                        <li><a  style="color:black" href="?page={{ next_page }}" aria-label="Next">&ensp;[>]</i></a></li>
+                        <li><a  style="color:black" href="?page={{ last_page }}" aria-label="Next">&ensp;[>>]</i></a></li>
                       {% else %}  
-              
+                        
                       {% endif %}
-                      </ul><!--/.pagination-->
-                      </div>
+                    </ul><!--/.pagination-->
+                </div>
             </div>
             <form action="" method="get">
                 <input style="width:300px;margin-top: 20px;margin-left: 240px;border: 1px solid #383838;" type="text" name="search" value="{{ q }}">
