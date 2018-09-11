@@ -181,3 +181,4 @@ class Note(models.Model):
     send_del = models.BooleanField(default=False,)
     recive_del = models.BooleanField(default=False,)
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    is_read = models.BooleanField(default=False)

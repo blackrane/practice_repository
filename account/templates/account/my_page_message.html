@@ -7,6 +7,7 @@
 				<th style="width: 800px;" scope="row">보낸사람</th>
 				<th style="width: 2000px;" scope="row">내용</th>
 				<th style="width:2000px"scope="row">작성일</th>
+				<th scope="row">읽음</th>
 				<th scope="row">삭제</th>
 			</tr>
 		</thead>
@@ -14,8 +15,9 @@
 			{% for note in note_list %}
 			<tr>
 				<td scope="row">{{note.send_user}}</th>
-				<td>{{note.content}}</td> <!--|truncatechars:20-->
+				<td><a href="{% url 'account:note_read' note.pk %}"> {{note.content}}</a></td> <!--|truncatechars:20-->
 				<td>{{note.created_at}}</td>
+				<td>{{note.is_read}}</td>
 				<td><a style="color:black" href="">삭제</a></td>
 			</tr>
 			{% endfor %}

@@ -8,7 +8,7 @@
 		<div class="my_page_sub_div1">
 			<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="my_page_list my_page_list_select"><a class="my" href="{% url 'account:my_page_ajax' %}">회원정보 보기</a></span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
 			<li><span class="my_page_list"><a class=" my_pos" href="{% url 'account:my_pos'%}">글 저장함 보기</a> </span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
-			<li><span class="my_page_list "><a class="my_msg" href="{% url 'account:my_msg'%}">쪽지함 보기</a> </span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
+			<li><span class="my_page_list "><a class="my_msg" href="{% url 'account:my_msg'%}">쪽지함 보기{{note_count}}</a> </span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
 			<li><span class="my_page_list "> <a class="my_notice" href="{% url 'account:my_notice'%}">내 알림 목록</a> </span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
 			<li><span class="my_page_list "> <a class="my_write" href="{% url 'account:my_write'%}">작성 글 보기</a> </span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</li>
 			<li><span class="my_page_list "> <a class="my_com" href="{% url 'account:my_com'%}">작성 댓글 보기</a> </span></li>

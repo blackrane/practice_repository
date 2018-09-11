@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
 ]
 
-CKEDITOR_UPLOAD_PATH="uploads/"
 #세션 유지기간 추가
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 

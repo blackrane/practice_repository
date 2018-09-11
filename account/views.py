@@ -173,6 +173,8 @@ def myPage(request):
     context={}
     context['notice'] = models.Notice.objects.all()
     context['ranking_list']= bbs.get_ranking()
+    note_count = Note.objects.filter(is_read=False).count()
+    context['note_count'] = note_count
     return render(request, 'account/my_page.html',context)
 
 #내 정보 수정 페이지
@@ -242,19 +244,20 @@ def myPageAjax(request):
     context={}
     return render(request, 'account/my_page_ajax.html',context)
 
-#쪽지함
-def myMessage(request):
-    context={}
-    note_list = Note.objects.filter(recive_user=request.user)
-    context['note_list'] = note_list
-    return render(request, 'account/my_page_message.html', context)
+
 
 #알림목록
 def myNotice(request):
     context={}
     return render(request, 'account/my_page_Notice.html', context)
 
-#쪽지
+#쪽지함
+def myMessage(request):
+    context={}
+    note_list = Note.objects.filter(recive_user=request.user)
+    context['note_list'] = note_list
+    return render(request, 'account/my_page_message.html', context)
+#쪽지 생성
 def note(request):
     if request.method == 'POST':
         form = NoteForm(request.POST)
@@ -272,3 +275,10 @@ def noteDestroy(request, pk):
         Note = get_object_or_404(Note, pk=pk)
         Note.delete()
     return redirect('/info/')
+
+def noteRead(request, pk):
+    note = get_object_or_404(Note, pk=pk)
+    if not note.is_read:
+        note.is_read = True
+    note.save()
+    return render(request, 'account/note_read.html',{'note':note})
