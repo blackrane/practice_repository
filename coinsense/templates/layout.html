@@ -23,8 +23,9 @@
       }
       
    </style>
-   <script src="//code.jquery.com/jquery.min.js"></script>
-   
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
    <!-- 즐겨찾기 추가하기 스크립트-->
    <script type="text/javascript">
       $(document).ready(function(){
@@ -299,7 +300,9 @@
               <div id="best_login">
                   <b>인기글</b>
                   <div id="best_sub">
-                      
+                    {% for ranking in ranking_list %}
+                    <p><a style="color:black"href="{{ranking.get_absolute_url}}"> {{ranking.title}}</a></p>
+                     {% endfor %}
                   </div>
               </div>
               {% endif %}
@@ -583,8 +586,8 @@
 <footer>
    <hr>
    <ul>
-      <li>제휴문의</li>
-      <li id="maple">게재중단요청</li>
+        <li ><a  style="color:black"href="{% url 'bbs:with_create' %}">제휴문의</a></li>
+        <li id="maple"><a style="color:black" href="{% url 'bbs:sr_create' %}">게재중단요청</a></li>
    </ul>
    <hr id="hr_bottom">
    <p>E_mail : info@blackrane.com</p>
