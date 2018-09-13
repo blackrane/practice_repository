@@ -60,7 +60,7 @@ function page(e){
     e.preventDefault();  // 이벤트 진행 중지 
     
     page= $(this).attr("name")
-    var url = $(this).attr('href'); //선택된 요소의 부모의 name속성 캐치
+    var url = $(this).attr('href');
     $.ajax({
             type : 'get', // post방식으로 전송
             url : url, // 서버로 보낼 url 주소

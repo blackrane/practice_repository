@@ -79,7 +79,7 @@
                 <div class="modal-body">
                     <ul id="notice-list">
                         {%for event in event_list %}
-                            <li>{{event.content}}</li>
+                            <li>{{event.content}}  {{event.created_at}}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -89,6 +89,30 @@
             </div>
             </div>
         </div>
+        <!--알림 웹 소켓 스크립트 수행-->
+        <script>
+
+            let nl = document.querySelector('#notice-list');            //알람 추가할 리스트
+            var text = document.querySelector('#notice-button');        //새로운 알람을 알려주기위함
+
+            let user = "{{request.user}}";  // 자신만의 그룹을 생성하기 위해 유저 이름을 가져옴
+            let url = 'ws://'+ window.location.host + '/ws/notice/'+ user+'/' ; // 라우팅 주소에 담아
+            let socket = new WebSocket(url);    //웹 소켓을 생성
+            socket.onmessage = function(e){
+                var data = JSON.parse(e.data);
+                console.log(data);
+                var count = Number(text.innerHTML.substring(3)); //공백포함 알림(공백) 이후부터 즉 숫자만가져옴
+                count += 1; //증가시키고
+                text.innerHTML="알림 "+count; //내용을수정함!
+                
+                /* 알림에 내용 추가하기*/
+                var el = document.createElement("li"); //li엘리먼트생성
+                el.innerHTML=data['message'];// 내용 채우기
+                nl.appendChild(el);         //추가
+                
+            }
+            document.ws=socket;
+        </script>
          {% endif %}
       </div>
 

@@ -108,14 +108,15 @@ def get_my_comment(pk):
     all_com = sorted(chain(board, na,ht,fb,gb,uc,su,mb,ca,ab,vb,nb,ic,icbk,eb), key=attrgetter('created_date'), reverse=True)
     return all_com
 
+
 def login_func(request):
     if 'username' in request.POST:
         username = request.POST['username']
         password = request.POST['password']
+        
     else:
         username = False
         password = False
-        
     user= authenticate(request, username=username,password=password)
     if user is not None:
         login(request, user)
@@ -149,7 +150,10 @@ def index(request,context={}):
     context['cashierest_price']= cashierest
     '''
 
-
+    #회원이 아닐 때 
+    if not request.user.username == 'AnonymousUser':
+        context['event_list'] = NoticeList.objects.filter(user=request.user)
+        context['event_count'] = NoticeList.objects.filter(user=request.user, is_read=False).count()
     return render(request, 'account/index.html', context)
 
 def signup(request,context={}):
@@ -177,6 +181,9 @@ def myPage(request):
     context['ranking_list']= bbs.get_ranking()
     note_count = Note.objects.filter(is_read=False).count()
     context['note_count'] = note_count
+    
+    context['event_list'] = NoticeList.objects.filter(user=request.user)
+    context['event_count'] = NoticeList.objects.filter(user=request.user, is_read=False).count()
     return render(request, 'account/my_page.html',context)
 
 #내 정보 수정 페이지
