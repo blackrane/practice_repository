@@ -9,7 +9,7 @@ from .models import Note
 class NoteForm(forms.ModelForm):
 	class Meta:
 		model = Note
-		fields = ['recive_user', 'content']
+		fields = ['receive_user', 'content']
 		
 class LoginForm(forms.ModelForm):
     class Meta:

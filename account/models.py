@@ -176,9 +176,15 @@ class notify(models.Model):
 
 class Note(models.Model):
     send_user = models.ForeignKey(User ,on_delete=models.CASCADE,  related_name='send_user')
-    recive_user = models.ForeignKey(User ,on_delete=models.CASCADE,  related_name='recive_user')
+    receive_user = models.ForeignKey(User ,on_delete=models.CASCADE,  related_name='recive_user')
     content = models.TextField("내용",blank=False,)
     send_del = models.BooleanField(default=False,)
     recive_del = models.BooleanField(default=False,)
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     is_read = models.BooleanField(default=False)
+
+class NoticeList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)        #알림받아야 하는 유저
+    content = models.TextField()                                    #알림내용
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)

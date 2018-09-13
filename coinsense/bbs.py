@@ -345,8 +345,10 @@ class BoardReadView(View):
             notify.post = post.title
             notify.board = self.title
             notify.save()
+        
+        self.context['error'] = login_func(self.request)   #로그인처리
+
         self.context['post'] = get_object_or_404(self.model, id= self.kwargs['pk'])
-        self.context['error'] = login_func(self.request)
         self.context['boardtitle'] = self.title
         self.context['notice'] = self.notice_model.objects.all()
         self.context['notify_form'] = forms #신고하기폼

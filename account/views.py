@@ -12,7 +12,7 @@ from bbs import models
 from bk_bbs import models as bk_models
 from .forms import LoginForm, UserCreationForm, UserUpdateForm, NoteForm
 from bbs.models import FreeBoard
-from .models import Note
+from .models import Note, NoticeList
 
 #Python 
 from itertools import chain
@@ -55,8 +55,6 @@ def cashierest_price():
     cashierest_price = [cashierest_btc, cashierest_eth, '-', '-','-', cashierest_bch,'-', '-',cashierest_eos,cashierest_trx]
     return cashierest_price
 
-
-'''
 def get_pagination(model_list, bundle, page):
         #페이지 네이션
     paginator = Paginator(model_list, bundle) #15개씩 묶어 페이지 생성 선언
@@ -69,7 +67,7 @@ def get_pagination(model_list, bundle, page):
         paginator = paginator.page(paginator.num_pages)
 
     return paginator
-'''
+
 def get_my_post(pk):
     board = models.FreeBoard.objects.filter(author=pk)          #자유게시판
     na = models.NormalAnalysis.objects.filter(author=pk)        #시황분석
@@ -117,6 +115,7 @@ def login_func(request):
     else:
         username = False
         password = False
+        
     user= authenticate(request, username=username,password=password)
     if user is not None:
         login(request, user)
@@ -149,6 +148,8 @@ def index(request,context={}):
     context['coinnest_price']= coinnest
     context['cashierest_price']= cashierest
     '''
+
+
     return render(request, 'account/index.html', context)
 
 def signup(request,context={}):
@@ -169,6 +170,7 @@ def signup(request,context={}):
 
     return render(request, 'account/signup.html', context)
 
+@login_required
 def myPage(request):
     context={}
     context['notice'] = models.Notice.objects.all()
@@ -178,6 +180,7 @@ def myPage(request):
     return render(request, 'account/my_page.html',context)
 
 #내 정보 수정 페이지
+@login_required
 def myUpdate(request):
     context={}
     if request.method == "POST":
@@ -191,6 +194,7 @@ def myUpdate(request):
     return render(request, 'account/my_page_update.html', context)
 
 #비밀번호 수정 페이지
+@login_required
 def myPasswordUpdate(request):
     context={}
     if request.method == "POST":
@@ -217,6 +221,7 @@ def myDestroy(request):
     return render(request, 'account/account_destroy.html',context)
         
 #내가쓴글
+@login_required
 def myWrite(request):
     post_list = get_my_post(request.user.pk)
     page = request.GET.get('page', 1)
@@ -225,6 +230,7 @@ def myWrite(request):
     return render(request, 'account/my_page_mypost.html',context)
 
 #내가 작성한 댓글
+@login_required
 def myComments(request):
     comment_list = get_my_comment(request.user.pk)
     page = request.GET.get('page',1 )
@@ -233,6 +239,7 @@ def myComments(request):
     return render(request, 'account/my_page_mycomment.html',context)
 
 #글저장함
+@login_required
 def MyPostSave(request):
     context={}
     bookmark_list = request.user.bookamrk_set.filter(user=request.user).all()
@@ -240,6 +247,7 @@ def MyPostSave(request):
     return render(request, 'account/my_page_postsave.html', context)
 
 #마이페이지 ajax
+@login_required
 def myPageAjax(request):
     context={}
     return render(request, 'account/my_page_ajax.html',context)
@@ -247,17 +255,22 @@ def myPageAjax(request):
 
 
 #알림목록
-def myNotice(request):
-    context={}
+@login_required
+def myNotice(request,context={}):
+    context['event_list'] = NoticeList.objects.filter(user=request.user)
+    context['event_count'] = NoticeList.objects.filter(is_read=False).count()
     return render(request, 'account/my_page_Notice.html', context)
 
 #쪽지함
+@login_required
 def myMessage(request):
     context={}
-    note_list = Note.objects.filter(recive_user=request.user)
+    note_list = Note.objects.filter(receive_user=request.user)
     context['note_list'] = note_list
     return render(request, 'account/my_page_message.html', context)
+
 #쪽지 생성
+@login_required
 def note(request):
     if request.method == 'POST':
         form = NoteForm(request.POST)
@@ -265,6 +278,7 @@ def note(request):
             note = form.save(commit=False)
             note.send_user = request.user
             note.save()
+            NoticeList.objects.create(user=note.receive_user , content="{0}님께 쪽지 받음".format(request.user))
             return redirect('/')
     form = NoteForm()
     return render(request, 'account/note_create.html', {'form':form})
@@ -276,6 +290,7 @@ def noteDestroy(request, pk):
         Note.delete()
     return redirect('/info/')
 
+@login_required
 def noteRead(request, pk):
     note = get_object_or_404(Note, pk=pk)
     if not note.is_read:
