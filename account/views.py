@@ -279,16 +279,21 @@ def myMessage(request):
 #쪽지 생성
 @login_required
 def note(request):
+    context={}
     if request.method == 'POST':
         form = NoteForm(request.POST)
         if form.is_valid():
             note = form.save(commit=False)
             note.send_user = request.user
             note.save()
-            NoticeList.objects.create(user=note.receive_user , content="{0}님께 쪽지 받음".format(request.user))
+            NoticeList.objects.create(user=note.receive_user , content="{0}님께 쪽지 받음".format(request.user), link=note.get_absolute_url())
             return redirect('/')
     form = NoteForm()
-    return render(request, 'account/note_create.html', {'form':form})
+    context['form']= form
+    if not request.user.username == 'AnonymousUser':
+        context['event_list'] = NoticeList.objects.filter(user=request.user)
+        context['event_count'] = NoticeList.objects.filter(user=request.user, is_read=False).count()
+    return render(request, 'account/note_create.html', context)
 
 @login_required
 def noteDestroy(request, pk):

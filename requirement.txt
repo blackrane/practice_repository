@@ -7,3 +7,5 @@ django-summernote==0.8.8.8
 Pillow==5.2.0
 pytz==2018.5
 wincertstore==0.2
+service-identity==17.0.0
+channels-redis==2.3.0

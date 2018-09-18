@@ -15,7 +15,7 @@ from bk_bbs import models as bk_models
 #App import
 from account.forms import LoginForm, NotifyForm
 from account.views import login_func
-
+from account.models import NoticeList
 #합치기 위해
 from itertools import chain
 from operator import attrgetter
@@ -115,7 +115,9 @@ class BoardListView(UserPassesTestMixin,View):
         self.context['read_url'] = self.read_url
         self.context['permission'] = self.get_permission()
         self.context['ranking_list']= get_ranking()
-        
+        if not self.request.user.username == 'AnonymousUser':
+            self.context['event_list'] = NoticeList.objects.filter(user=self.request.user)
+            self.context['event_count'] = NoticeList.objects.filter(user=self.request.user, is_read=False).count()
         #학회 승인 리스트 주소
         if self.approval_url is not None:
             self.context['approval_list']= reverse(self.approval_url)
@@ -245,6 +247,9 @@ class BoardCreateView(UserPassesTestMixin, View):
         self.context['boardtitle'] = self.title
         self.context['notice'] = self.notice_model.objects.all()
         self.context['ranking_list']= get_ranking()
+        if not self.request.user.username == 'AnonymousUser':
+            self.context['event_list'] = NoticeList.objects.filter(user=self.request.user)
+            self.context['event_count'] = NoticeList.objects.filter(user=self.request.user, is_read=False).count()
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때
@@ -332,6 +337,11 @@ class BoardReadView(View):
         self.context['ranking_list']= get_ranking()
         if self.bookmark_url is not None:
             self.context['bookmark_url'] = reverse(self.bookmark_url)
+
+        #알림 처리
+        if not self.request.user.username == 'AnonymousUser':
+            self.context['event_list'] = NoticeList.objects.filter(user=self.request.user)
+            self.context['event_count'] = NoticeList.objects.filter(user=self.request.user, is_read=False).count()
         return render(self.request, self.get_template_name(), self.context)
 
     #post 요청일때

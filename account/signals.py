@@ -14,6 +14,7 @@ def announce_new_user(sender, instance, created, **kwargs):
             user_name ,{
                 "type":"user.event",
                 "event": "New Event",
-                "message" : instance.content
+                "message" : instance.content,
+                "link" : instance.link
                 },
         )

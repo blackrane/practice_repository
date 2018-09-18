@@ -9,6 +9,7 @@ from django.core.validators import RegexValidator
 from django.contrib.auth import get_user_model
 from django_summernote import models as summer_model
 from django_summernote import fields as summer_fields
+from django.urls import reverse
 #입력필드: id, password(상속), 닉네임, 사진, 한마디
 
 class UserManager(BaseUserManager):
@@ -183,8 +184,12 @@ class Note(models.Model):
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
+    def get_absolute_url(self):
+        return reverse('account:note_read', args=[self.id])
+
 class NoticeList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)        #알림받아야 하는 유저
     content = models.TextField()                                    #알림내용
+    link = models.CharField(max_length=128)
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

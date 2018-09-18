@@ -277,6 +277,13 @@ class FavorableRequest(models.Model):
 class Gallery(summer_model.Attachment):
     author = models.ForeignKey(get_user_model() ,on_delete=models.CASCADE,  related_name='%(app_label)s_%(class)ss')
     title = models.CharField(verbose_name="title",max_length=40)
+    #사진
+    photo = models.ImageField(
+        verbose_name='gallery photo',
+        upload_to="gallery/%Y/%m/%d",
+        blank=True,
+        null=True,
+    )
     summer_field = summer_fields.SummernoteTextField(default='')
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, auto_now=True)

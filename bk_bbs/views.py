@@ -374,7 +374,7 @@ icoRatingCreate = bbs.BoardCreateView.as_view(
     model = models.ICORating,
     form_class = forms.ICORatingCreationForm,
     template_name='Board_Create.html',
-    title ="뉴스 작성",
+    title ="ICORATING 작성",
     access_permission="BK",
 )
 

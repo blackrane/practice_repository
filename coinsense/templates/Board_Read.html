@@ -68,6 +68,9 @@ $('#myModal').on('shown.bs.modal', function () {
         >
         <p style="float: left;">&ensp;{{ post.user.nickname }}</p>
         <p style="float: right;">https://coinsense.com{{ request.path }}</p>
+        {% if post.photo %}
+        <img src="{{post.photo.url}}" alt="">
+        {% endif %}
         <br>
             <div style="clear:both;margin-top: 50px;">{{ post.summer_field|safe }}</div>
         <br>
