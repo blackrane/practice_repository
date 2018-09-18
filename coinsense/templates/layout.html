@@ -107,7 +107,7 @@
                 ws.onmessage = function(e){
                     //json 데이터를 받아
                     var data = JSON.parse(e.data);
-                    
+                    console.log(data);
                     //레이아웃에 있는 숫자를 변경하기 위해 공백포함 알림(공백) 이후부터 즉 숫자만가져옴
                     var count = Number(text.innerHTML.substring(3)); 
                     //알림을 1증가 시키고
@@ -117,7 +117,7 @@
                     
                     /* 알림 리스트에 내용 추가하기*/
                     var el = document.createElement("li"); //li엘리먼트생성
-                    el.innerHTML="<a stle='color:black' href='" +data['link']>+"'>"+data['message']+"</a>";// 내용 채우기
+                    el.innerHTML="<a stle='color:black' href='"+data['link']+"'>"+data['message']+"</a>";// 내용 채우기
                     nl.appendChild(el);         //추가
                 }
                 //디버깅을 위함 콘솔창에서 document.ws를 통해 소켓 테스트 가능

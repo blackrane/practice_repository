@@ -20,6 +20,6 @@ urlpatterns = [
     path('info/posts/', views.MyPostSave, name="my_pos"),                           #내가쓴글
     path('info/messages/', views.myMessage, name="my_msg"),                        #내 쪽지함
     path('info/notice/', views.myNotice, name="my_notice"),                         #내 알림
-    path('note/destroy', views.noteDestroy, name="note_destroy"),                    #쪽지제거
+    path('note/destroy/<int:pk>', views.noteDestroy, name="note_destroy"),                    #쪽지제거
     path('note/<int:pk>', views.noteRead, name="note_read"),                         #쪽지읽기
 ]

@@ -1,4 +1,7 @@
 {% load static %}
+{%if request.user.Photo %}
+    <img src="{{request.user.Photo.url}}" alt="">
+{% endif %}
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}

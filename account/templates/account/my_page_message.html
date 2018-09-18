@@ -18,7 +18,7 @@
 				<td><a href="{% url 'account:note_read' note.pk %}"> {{note.content}}</a></td> <!--|truncatechars:20-->
 				<td>{{note.created_at}}</td>
 				<td>{{note.is_read}}</td>
-				<td><a style="color:black" href="">삭제</a></td>
+				<td><a style="color:black" href="{%url 'account:note_destroy' note.pk%}">삭제</a></td>
 			</tr>
 			{% endfor %}
 		</tbody>

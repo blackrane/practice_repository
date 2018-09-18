@@ -148,12 +148,13 @@ class UserUpdateForm(forms.ModelForm):
 		'class':'form-control',
 		'placeholder':'email@xxxxx.com',
 		}),required=False,)
-
+	
 	class Meta:
 		model = get_user_model()
 		fields = ['Photo','in_short']
 		widgets = {
-			'Photo':forms.FileInput(attrs={
+			'Photo':forms.FileInput(
+				attrs={
 				'class':'form-control',
 				
 			}),

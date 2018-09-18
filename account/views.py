@@ -196,8 +196,13 @@ def myUpdate(request):
         if form.is_valid():
             form.save()
             return redirect('/info/')
-    data ={'in_short':request.user.in_short}
-    context['form'] = UserUpdateForm(data)
+    data ={
+        'in_short':request.user.in_short,
+        'email':request.user.user_of.email,
+        'phone_num':request.user.user_of.phone_number,
+        'address': request.user.user_of.address,
+        }
+    context['form'] = UserUpdateForm(initial=data)
     return render(request, 'account/my_page_update.html', context)
 
 #비밀번호 수정 페이지
@@ -290,9 +295,8 @@ def note(request):
             return redirect('/')
     form = NoteForm()
     context['form']= form
-    if not request.user.username == 'AnonymousUser':
-        context['event_list'] = NoticeList.objects.filter(user=request.user)
-        context['event_count'] = NoticeList.objects.filter(user=request.user, is_read=False).count()
+    context['event_list'] = NoticeList.objects.filter(user=request.user)
+    context['event_count'] = NoticeList.objects.filter(user=request.user, is_read=False).count()
     return render(request, 'account/note_create.html', context)
 
 @login_required
@@ -304,8 +308,12 @@ def noteDestroy(request, pk):
 
 @login_required
 def noteRead(request, pk):
+    context={}
     note = get_object_or_404(Note, pk=pk)
     if not note.is_read:
         note.is_read = True
     note.save()
-    return render(request, 'account/note_read.html',{'note':note})
+    context['note']=note
+    context['event_list'] = NoticeList.objects.filter(user=request.user)
+    context['event_count'] = NoticeList.objects.filter(user=request.user, is_read=False).count()
+    return render(request, 'account/note_read.html',context)
