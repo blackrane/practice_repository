@@ -5,6 +5,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.contrib.auth import get_user_model
 from .models import Profil
+
 @receiver(post_save, sender=NoticeList)
 def new_notice(sender, instance, created, **kwargs):
     if created:

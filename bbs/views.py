@@ -56,7 +56,11 @@ freeUpdate = BoardUpdateView.as_view(
     title ="자유게시판 게시글 수정"
 )
 
-freeDestroy = BoardDestroyView.as_view()
+freeDestroy = BoardDestroyView.as_view(
+    model=models.FreeBoard,
+    redirect_url='bbs:free_list',
+
+)
 
 freeLike = LikeView.as_view(
     model = models.FreeBoard

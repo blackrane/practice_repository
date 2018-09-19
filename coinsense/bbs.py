@@ -12,10 +12,13 @@ from django.db.models import Q
 import json
 from bbs import models
 from bk_bbs import models as bk_models
+
 #App import
 from account.forms import LoginForm, NotifyForm
 from account.views import login_func
 from account.models import NoticeList
+from django_summernote.models import Attachment
+
 #합치기 위해
 from itertools import chain
 from operator import attrgetter
@@ -436,13 +439,40 @@ class BoardUpdateView(UserPassesTestMixin, View):
         return render(self.request, self.get_template_name(), self.get_context_data(form=form))
 
 class BoardDestroyView(UserPassesTestMixin, View):
+    model = None
+    redirect_url = None
     #작성자아니면 못들어온다.
     def test_func(self):
-        post = get_object_or_404(self.model, id=self.kwargs['pk'])
+        post = get_object_or_404(self.model, id=self.request.POST['pk'])
         if self.request.user == post.author:
             return True
-        return False
+        return True
+    
+    def post(self, *args, **kwargs):
+        
+        img_list=[]
+        query_list=[]
 
+        #attachement는 djangosummernote...로 시작 따라서 src로 받아온 문자열을
+        #필터작업을 위해서 /media/ 제거
+        for data in json.loads(self.request.POST.get('imgSrc')):
+            img_list.append(data[7:])
+        
+        #필터링된 attachement 튜플 삭제
+        #삭제시 파일삭제는 bbs.signals.py에서 정의된 함수로 신호를 보내 처리한다.
+        for img in img_list:
+            Attachment.objects.filter(file=img).delete()
+
+        #post를 가져와서
+        post = get_object_or_404(self.model, id=self.request.POST['pk'])
+
+        #게시글도 삭제한다.
+        post.delete()
+
+        #게시판으로 돌아가도록 해당 주소를 리턴
+        self.redirect_url = reverse(self.redirect_url)
+        
+        return HttpResponse(json.dumps(self.redirect_url))
 
 #좋아요 ajax
 class LikeView(View):

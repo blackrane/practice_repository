@@ -262,6 +262,7 @@ def MyPostSave(request):
 @login_required
 def myPageAjax(request):
     context={}
+
     return render(request, 'account/my_page_ajax.html',context)
 
 
