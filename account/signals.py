@@ -24,7 +24,7 @@ def new_notice(sender, instance, created, **kwargs):
 @receiver(post_save, sender=get_user_model())
 def new_user(sender, instance, created, **kwrags):
     user=instance
-    if Profil.objects.filter(user=user).first() is None:
+    if user.is_superuser:
         Profil.objects.create(user=user)
 
             
