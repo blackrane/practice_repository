@@ -5,12 +5,39 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import Note
 
+class ListTextWidget(forms.TextInput):
+    def __init__(self, data_list, name, *args, **kwargs):
+        super(ListTextWidget, self).__init__(*args, **kwargs)
+        self._name = name
+        self._list = data_list
+        self.attrs.update({'list': 'list__{}'.format(self._name)})
+
+    def render(self, name, value, attrs=None):
+        text_html = super(ListTextWidget, self).render(name, value, attrs=attrs)
+        data_list = '<datalist id="list__{}">'.format(self._name)
+        for item in self._list:
+            data_list += '<option value="{}">{}</option>'.format(item[0], item[1])
+        data_list += '</datalist>'
+
+        return text_html + data_list
+
+def get_user_list():
+	user_list = get_user_model().objects.all()
+	data_list =[]
+	for user in user_list:
+		data_list.append( (user.id,user))
+	return data_list
 
 class NoteForm(forms.ModelForm):
 	class Meta:
 		model = Note
 		fields = ['receive_user', 'content']
-		
+		widgets={
+			'receive_user':ListTextWidget(data_list=get_user_list() ,name="user_list")
+		}
+	def clean(self):
+		print(self.cleaned_data)
+
 class LoginForm(forms.ModelForm):
     class Meta:
         model = get_user_model()

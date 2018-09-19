@@ -270,7 +270,7 @@ def myPageAjax(request):
 @login_required
 def myNotice(request,context={}):
     context['event_list'] = NoticeList.objects.filter(user=request.user)
-    context['event_count'] = NoticeList.objects.filter(is_read=False).count()
+    context['event_count'] = NoticeList.objects.filter(user=request.user, is_read=False).count()
     return render(request, 'account/my_page_Notice.html', context)
 
 #쪽지함

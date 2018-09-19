@@ -53,7 +53,10 @@ INSTALLED_APPS = [
     'bk_bbs',
     'django.contrib.humanize',
 ]
-
+#서머노트 설정
+SUMMERNOTE_CONFIG = {
+    'attachment_filesize_limit': 5120 * 2880
+}
 #세션 유지기간 추가
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
