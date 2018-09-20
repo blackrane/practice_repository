@@ -593,6 +593,7 @@ class CommentView(View):
             com.post = post
             com.save()
             self.context['comment'] = com
+            NoticeList.objects.create(user=post.author , content="{0} 게시글에 새로운 댓글이 달렸습니다.".format(post), link=post.get_absolute_url())
             return render(self.request, self.template_name, self.context)
         self.context['form']= form
         return render(self.request, self.template_name, self.context)

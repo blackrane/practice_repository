@@ -15,5 +15,6 @@ def auto_delete_file_on_delete(sender, instance, **kwrags):
     #파일업로드하지 않았다면. name이 Null 파이썬에선 None으로 표시되기때문에
     #아래와 같이 1차적인 예외처리를 진행
     if not instance.name is None:
+        #디비에 저장된 path가 파일이 맞는지
         if os.path.isfile(instance.file.path):
             os.remove(instance.file.path)

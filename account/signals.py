@@ -4,12 +4,12 @@ from django.dispatch import receiver
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.contrib.auth import get_user_model
-from .models import Profil
+from .models import Profil, Note
 
 @receiver(post_save, sender=NoticeList)
 def new_notice(sender, instance, created, **kwargs):
+   
     if created:
-        print(instance.content)
         user_name = instance.user.username
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
@@ -20,6 +20,7 @@ def new_notice(sender, instance, created, **kwargs):
                 "link" : instance.link
                 },
         )
+
 
 
             
