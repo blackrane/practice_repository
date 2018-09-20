@@ -24,6 +24,8 @@ class UserManager(BaseUserManager):
         user = self.model(username=username, nickname=nickname, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+        if user.is_superuser:
+            Profil.objects.create(user=user)
         return user
 
     def create_user(self, username, nickname=None, password=None, **extra_fields):
