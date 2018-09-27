@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import FreeBoard, FreeBoardComment, Favorable, Notice, SeoulUnvSocietyRequest
 from django_summernote.admin import SummernoteModelAdmin
+
 # Register your models here.
 
 
@@ -15,9 +16,13 @@ admin.site.register(FreeBoardComment,FreeBoardAdmin)
 class FavorableAdmin(admin.ModelAdmin):
     summernote_fields = ('title','content','photo','date')
 
-@admin.register(Notice)
-class NoticeAdmin(admin.ModelAdmin):
-    summernote_fields = ('author','title','summer_field','updated_at','views')
+
+class NoticeAdmin(SummernoteModelAdmin):
+    exclude = ['file']
+    summernote_fileds=('summternote_field')
+
+admin.site.register(Notice, NoticeAdmin)
+
 
 @admin.register(SeoulUnvSocietyRequest)
 class SeoulUnvSocietyRequestAdmin(admin.ModelAdmin):

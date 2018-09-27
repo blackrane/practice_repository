@@ -429,7 +429,8 @@ class Notice(summer_model.Attachment):
     def __str__(self):
         return self.title
 
-
+    def get_absolute_url(self):
+        return reverse('bbs:notice', args=[self.id])
 ###############################################################################################################################
 #  ForumBitCoin
 class SeoulUnv(summer_model.Attachment):

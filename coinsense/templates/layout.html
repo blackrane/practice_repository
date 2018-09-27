@@ -356,7 +356,7 @@
                   <div id="notice_sub">
                       {% for i in notice %}
                          {% if forloop.counter < 5 %}
-                         <p>- {{ i.title }}</p>
+                         <a style="color:black"href="{{i.get_absolute_url}}"> <p>- {{ i.title }}</p></a>
                         {% endif %}
                       {% endfor %}
                   </div>
