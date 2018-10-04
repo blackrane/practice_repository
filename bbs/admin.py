@@ -18,7 +18,7 @@ class FavorableAdmin(admin.ModelAdmin):
 
 
 class NoticeAdmin(SummernoteModelAdmin):
-    exclude = ['file']
+    exclude = ['file','name']
     summernote_fileds=('summternote_field')
 
 admin.site.register(Notice, NoticeAdmin)
