@@ -341,7 +341,7 @@ class BoardReadView(View):
         if self.bookmark_url is not None:
             self.context['bookmark_url'] = reverse(self.bookmark_url)
 
-        #알림 처리
+        #알림 카운트
         if not self.request.user.username == 'AnonymousUser':
             self.context['event_list'] = NoticeList.objects.filter(user=self.request.user)
             self.context['event_count'] = NoticeList.objects.filter(user=self.request.user, is_read=False).count()
@@ -438,6 +438,7 @@ class BoardUpdateView(UserPassesTestMixin, View):
             return redirect(post)
         return render(self.request, self.get_template_name(), self.get_context_data(form=form))
 
+#ajax로 pk를받아드린다.
 class BoardDestroyView(UserPassesTestMixin, View):
     model = None
     redirect_url = None
@@ -502,7 +503,6 @@ class LikeView(View):
             message = "like_del"
         else:
             message = "like"
-
         context = {'like_count': post.like_count,
                'message': message,
                'username': self.request.user.nickname }

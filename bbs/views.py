@@ -202,6 +202,7 @@ honeyTipList = BoardListView.as_view(
     template_name = "Board_List.html",
     create_url = 'bbs:honeytip_create',
     read_url='bbs:honeytip_read',
+
     title="꿀팁 게시판",
 )
 
