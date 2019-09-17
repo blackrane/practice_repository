@@ -1,2 +1,2 @@
-# practice_repository
+# coinsense
 # Kwonsen
